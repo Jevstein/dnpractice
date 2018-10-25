@@ -1,0 +1,44 @@
+作业1：brks工程所有的配置信息放入lua脚本里，然后brks工程从lua脚本中获取配置信息，比如下列代码中的：
+		int main(int argc, char** argv)
+		{
+			if (argc != 2)
+			{
+				printf("please input brks <log file config>!\n");
+				return -1;
+			}
+
+			if(!Logger::instance()->init(std::string(argv[1])))
+			{
+				printf("init log module failed.\n");
+				return -1;
+			}
+			else
+			{
+				printf("init log module success!");
+			}
+
+			std::shared_ptr<DispatchMsgService> dms(new DispatchMsgService);
+			dms->open();
+
+			std::shared_ptr<MysqlConnection> mysqlconn(new MysqlConnection);
+			mysqlconn->Init("127.0.0.1", 3306, "root", "123456", "dongnaobike");
+
+			BusinessProcessor processor(dms, mysqlconn);
+			processor.init();
+
+			std::function< iEvent* (const iEvent*)> fun = std::bind(&DispatchMsgService::process, dms.get(), std::placeholders::_1);
+
+			Interface intf(fun);
+			intf.start(9090);
+
+			LOG_INFO("brks start successful!");
+
+			for(;;);
+
+			return 0;
+		}
+	把上面代码的数据库的信息ip，端口号，账户，密码和数据库名称放入lua脚本中，还有brks监听的端口也放入lua文件中。
+	
+**作业2：我们现在的测试框架是使用thrift生成的lua代码开发的，那么把这个框架改成thrift生成cpp文件，把这个cpp文件
+封装成so文件，lua调用so库的接口去写测试用例。要求消息内容定义成json文件（比如request.json），后台反馈的消息也与
+我们定义的json文件（比如response.json）进行比对，如果一致则说明后台处理消息成功，否则失败。

@@ -1,0 +1,47 @@
+$ cd gen-cpp
+ 
+$ ls -1 mytime_types.*
+mytime_types.cpp
+mytime_types.h
+ 
+# 和数据类型有关的内容，会命名为
+# ${thrift_file_name}_types.h/${thrift_file_name}_types.cpp。
+# 比如你使用typedef定义了类型别名，
+# 或者你定义了一个struct类型，都会在这两个文件中记录。
+ 
+# 对于struct类型，有必要多说一下，thrift会针对每一个struct类型
+# 生成一个对应的类，类中会包括一个构造函数、一个析构函数、
+# 域变量定义、用于设置域值的__set_XXX()方法、
+# 重载比较符（==，!=，&lt;）、设定读写此结构体的方法read/write，
+# 以及一个用于表示域是否设置了值的_${struct name}__isset结构体。
+ 
+# 另外，还会有一个独立定义的swap方法用来进行两个结构体的值交换。
+ 
+$ ls -1 mytime_constants.*
+mytime_constants.cpp
+mytime_constants.h
+ 
+# 和常量有关的内容，会命名为
+# ${thrift_file_name}_constants.h/${thrift_file_name}_constants.cpp。
+# 在.h头文件中会有一个${thrift_file_name}Constants类，
+# 其中会包括一个显式的构造函数，以及常量的域。
+# 而在cpp文件中则会在相应的构造函数中对这个常量进行赋值。
+ 
+$ ls -1 myservice*
+myservice.cpp
+myservice.h
+myservice_server.skeleton.cpp
+ 
+# 针对每一个service会产生一套对应的文件，命名为
+# ${service_name}.cpp/${service_name}.h/${service_name}_server.skeleton.cpp，
+# 在${service_name}.h中会看到有若干个类，他们都是以服务名作为前缀的，
+# 其中包括${service_name}If、${service_name}IfFactory、
+# ${service_name}IfSingletonFactory、${service_name}Null、
+# ${service_name}Client、${service_name}Processor、
+# ${service_name}ProcessorFactory、${service_name}Multiface。
+ 
+# 另外，thrift还会针对服务中的每一个具体的方法分别产生四个对应的类，即
+# ${service_name}_${method}_args、${service_name}_${method}_pargs、
+# ${service_name}_${method}_result、${service_name}_${method}_presult。
+ 
+# 另外，${service_name}_server.skeleton.cpp是一个server的模板例子。
