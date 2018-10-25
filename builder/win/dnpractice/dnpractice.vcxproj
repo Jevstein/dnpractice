@@ -64,11 +64,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\practice\demo_log4cpp\logger.h" />
     <ClInclude Include="..\..\..\practice\p2pserver\udp.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\practice\demo_log4cpp\log4cppdemo.cpp" />
+    <ClCompile Include="..\..\..\practice\demo_log4cpp\logger.cpp" />
     <ClCompile Include="..\..\..\practice\p2pserver\udp_client.c" />
     <ClCompile Include="..\..\..\practice\p2pserver\udp_server.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\practice\demo_log4cpp\log.conf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

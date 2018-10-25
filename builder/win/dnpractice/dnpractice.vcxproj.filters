@@ -24,6 +24,9 @@
     <ClInclude Include="..\..\..\practice\p2pserver\udp.h">
       <Filter>practice\p2pserver</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\practice\demo_log4cpp\logger.h">
+      <Filter>practice\demo_log4cpp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\practice\p2pserver\udp_client.c">
@@ -32,5 +35,16 @@
     <ClCompile Include="..\..\..\practice\p2pserver\udp_server.c">
       <Filter>practice\p2pserver</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\practice\demo_log4cpp\log4cppdemo.cpp">
+      <Filter>practice\demo_log4cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\practice\demo_log4cpp\logger.cpp">
+      <Filter>practice\demo_log4cpp</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\practice\demo_log4cpp\log.conf">
+      <Filter>practice\demo_log4cpp</Filter>
+    </None>
   </ItemGroup>
 </Project>
