@@ -1,0 +1,8 @@
+# Ignore everything in this directory
+*
+# Don't ignore directories, so we can recurse into them
+!*/
+!cfg/*
+!cfg/*/*
+# Except this file
+!.gitignore

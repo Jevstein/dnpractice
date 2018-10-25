@@ -199,6 +199,6 @@ int main(int argc, char *argv[]) {
 }
 
 //compile:
-// $ gcc -o udpclient udp_client.c -lpthread
+// $ gcc -o ../../bin/udpclient udp_client.c -lpthread
 //run:
 // $ ./udpclient "127.0.0.1" 8888 1

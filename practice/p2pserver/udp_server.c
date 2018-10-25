@@ -132,7 +132,7 @@ int main(int argc, char *argv[]) {
 }
 
 //compile:
-// $ gcc -o udpserver udp_server.c -lpthread
+// $ gcc -o ../../bin/udpserver udp_server.c -lpthread
 //
 //run:
 // $ ./udpserver 8888
