@@ -47,3 +47,5 @@ int main(int argc, char **argv) {
   return 0;
 }
 
+//complie:
+// $ g++ -o ../../bin/thrift_server *.cpp *.h -lthrift -lthriftnb -ldl -std=c++11

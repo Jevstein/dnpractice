@@ -37,4 +37,4 @@ int main(int argc, char *argv[]) {
 }
 
 //编译
-// $ g++ -o client *.cpp gen-cpp/YiService_constants.cpp gen-cpp/YiService.cpp gen-cpp/YiService_types.cpp -lthrift -ldl
+// $ g++ -o ../../bin/thrift_client *.cpp gen-cpp/YiService_constants.cpp gen-cpp/YiService.cpp gen-cpp/YiService_types.cpp -lthrift -ldl

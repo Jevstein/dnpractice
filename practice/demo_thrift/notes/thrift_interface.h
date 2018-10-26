@@ -55,8 +55,8 @@ typedef i32 MyInteger
 * Thrift也支持定义常量。
 * 对于结构复杂的常量，支持使用JSON形式来表示。
 */
-const i32 MY_NUM = 9853
-const map&lt;string,string&gt; MY_MAP = {'hello':'world', 'goodnight':'moon'}
+const i32 MY_NUM = 9853;    // 分号是可选的
+const map<string, string> MAP_CONST = { "hello": "world", "goodnight" : "moon" }
  
 /**
 * 你还可以定义枚举类型, 其被指定为32位整型。域的值是可以自定义的，而且
@@ -68,7 +68,25 @@ SUBTRACT = 2,
 MULTIPLY = 3,
 DIVIDE = 4
 }
- 
+
+/**
+* 进一步举例...
+*/
+enum TweetType {
+	TWEET,         // 编译器默认从1开始赋值
+	RETWEET = 2,  // 可以赋予某个常量某个整数
+	DM = 0xa,     //允许常量是十六进制整数
+	REPLY         // 末尾没有逗号
+}
+struct Tweet {
+	1: required i32 userId;
+	2: required string userName;
+	3: required string text;
+	4: optional Location loc;
+	5: optional TweetType tweetType = TweetType.TWEET // 给常量赋缺省值时，使用常量的全称
+	16 : optional string language = "english"
+}
+
 /**
 * 结构体则是一个复杂的数据类型。它由多个域组成，每个域会对应一个整数标识符，
 * 每一行的格式为：一个冒号，一个类型，一个域名称和一个（非必填的）默认值。
