@@ -64,17 +64,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\practice\demo_log4cpp\logger.h" />
-    <ClInclude Include="..\..\..\practice\p2pserver\udp.h" />
+    <ClInclude Include="..\..\..\examples\demo_log4cpp\logger.h" />
+    <ClInclude Include="..\..\..\examples\IPC\shm\shm_data.h" />
+    <ClInclude Include="..\..\..\examples\IPC\shm_sem\sem_data.h" />
+    <ClInclude Include="..\..\..\examples\p2pserver\udp.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\practice\demo_log4cpp\log4cppdemo.cpp" />
-    <ClCompile Include="..\..\..\practice\demo_log4cpp\logger.cpp" />
-    <ClCompile Include="..\..\..\practice\p2pserver\udp_client.c" />
-    <ClCompile Include="..\..\..\practice\p2pserver\udp_server.c" />
+    <ClCompile Include="..\..\..\examples\demo_log4cpp\log4cppdemo.cpp" />
+    <ClCompile Include="..\..\..\examples\demo_log4cpp\logger.cpp" />
+    <ClCompile Include="..\..\..\examples\IPC\fifo\fifo_read.c" />
+    <ClCompile Include="..\..\..\examples\IPC\fifo\fifo_write.c" />
+    <ClCompile Include="..\..\..\examples\IPC\mmap\mmap_read.cpp" />
+    <ClCompile Include="..\..\..\examples\IPC\mmap\mmap_write.cpp" />
+    <ClCompile Include="..\..\..\examples\IPC\pipe\pipe_test.c" />
+    <ClCompile Include="..\..\..\examples\IPC\shm\shm_read.cpp" />
+    <ClCompile Include="..\..\..\examples\IPC\shm\shm_write.cpp" />
+    <ClCompile Include="..\..\..\examples\IPC\shm_sem\sem_read.cpp" />
+    <ClCompile Include="..\..\..\examples\IPC\shm_sem\sem_write.cpp" />
+    <ClCompile Include="..\..\..\examples\p2pserver\udp_client.c" />
+    <ClCompile Include="..\..\..\examples\p2pserver\udp_server.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\practice\demo_log4cpp\log.conf" />
+    <None Include="..\..\..\examples\demo_log4cpp\log.conf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\examples\IPC\readme.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

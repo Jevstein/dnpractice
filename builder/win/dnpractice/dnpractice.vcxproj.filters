@@ -9,42 +9,101 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="practice">
+    <Filter Include="examples">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="practice\p2pserver">
+    <Filter Include="examples\p2pserver">
       <UniqueIdentifier>{9d3a1070-079b-47c3-8406-fb7915ad3f7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="practice\demo_log4cpp">
+    <Filter Include="examples\demo_log4cpp">
       <UniqueIdentifier>{66ad893c-acca-4e80-856b-48b40a2bd864}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\IPC">
+      <UniqueIdentifier>{fe6e15d9-d288-4ad3-8b98-6ddedbe67e86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\IPC\fifo">
+      <UniqueIdentifier>{3cc0b2cb-eb1c-41b5-a608-b9309c52982f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\IPC\shm">
+      <UniqueIdentifier>{040455a5-afe6-4d4f-ad73-2b8cc6db136c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\IPC\shm_sem">
+      <UniqueIdentifier>{78845283-067a-4b4a-a539-96c78b69338f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\IPC\pipe">
+      <UniqueIdentifier>{2dfb1156-1c79-4d05-93d3-ab1850146479}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\IPC\mmap">
+      <UniqueIdentifier>{933288cc-9d75-40af-b4bf-72d7b1c2b062}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\IPC\signal">
+      <UniqueIdentifier>{25aeb248-a4c5-4ac3-b31f-f3647800ea59}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\practice\p2pserver\udp.h">
-      <Filter>practice\p2pserver</Filter>
+    <ClInclude Include="..\..\..\examples\demo_log4cpp\logger.h">
+      <Filter>examples\demo_log4cpp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\practice\demo_log4cpp\logger.h">
-      <Filter>practice\demo_log4cpp</Filter>
+    <ClInclude Include="..\..\..\examples\p2pserver\udp.h">
+      <Filter>examples\p2pserver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\examples\IPC\shm\shm_data.h">
+      <Filter>examples\IPC\shm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\examples\IPC\shm_sem\sem_data.h">
+      <Filter>examples\IPC\shm_sem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\practice\p2pserver\udp_client.c">
-      <Filter>practice\p2pserver</Filter>
+    <ClCompile Include="..\..\..\examples\IPC\fifo\fifo_read.c">
+      <Filter>examples\IPC\fifo</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\practice\p2pserver\udp_server.c">
-      <Filter>practice\p2pserver</Filter>
+    <ClCompile Include="..\..\..\examples\IPC\fifo\fifo_write.c">
+      <Filter>examples\IPC\fifo</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\practice\demo_log4cpp\log4cppdemo.cpp">
-      <Filter>practice\demo_log4cpp</Filter>
+    <ClCompile Include="..\..\..\examples\demo_log4cpp\log4cppdemo.cpp">
+      <Filter>examples\demo_log4cpp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\practice\demo_log4cpp\logger.cpp">
-      <Filter>practice\demo_log4cpp</Filter>
+    <ClCompile Include="..\..\..\examples\demo_log4cpp\logger.cpp">
+      <Filter>examples\demo_log4cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\p2pserver\udp_client.c">
+      <Filter>examples\p2pserver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\p2pserver\udp_server.c">
+      <Filter>examples\p2pserver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\IPC\shm\shm_write.cpp">
+      <Filter>examples\IPC\shm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\IPC\shm\shm_read.cpp">
+      <Filter>examples\IPC\shm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\IPC\shm_sem\sem_read.cpp">
+      <Filter>examples\IPC\shm_sem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\IPC\shm_sem\sem_write.cpp">
+      <Filter>examples\IPC\shm_sem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\IPC\pipe\pipe_test.c">
+      <Filter>examples\IPC\pipe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\IPC\mmap\mmap_write.cpp">
+      <Filter>examples\IPC\mmap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\IPC\mmap\mmap_read.cpp">
+      <Filter>examples\IPC\mmap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\practice\demo_log4cpp\log.conf">
-      <Filter>practice\demo_log4cpp</Filter>
+    <None Include="..\..\..\examples\demo_log4cpp\log.conf">
+      <Filter>examples\demo_log4cpp</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\examples\IPC\readme.txt">
+      <Filter>examples\IPC</Filter>
+    </Text>
   </ItemGroup>
 </Project>
