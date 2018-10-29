@@ -5,8 +5,8 @@
  *  Created by Wangbojing/Jevstein on 2018/10/29 13:55.
  *  Copyright @ 2018year Jevstein. All rights reserved.
  *
- *  ×¢£ºÇëÓÃchromeä¯ÀÀÆ÷´ò¿ªwebsocket_client.html£¬¾­²â
- *    360ä¯ÀÀÆ÷ÎŞĞ§¡£
+ *  æ³¨ï¼šè¯·ç”¨chromeæµè§ˆå™¨æ‰“å¼€websocket_client.htmlï¼Œç»æµ‹
+ *    360æµè§ˆå™¨æ— æ•ˆã€‚
  */
 #include <stdio.h>
 #include <string.h>

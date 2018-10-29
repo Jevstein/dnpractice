@@ -81,11 +81,15 @@
     <ClCompile Include="..\..\..\examples\IPC\shm\shm_write.cpp" />
     <ClCompile Include="..\..\..\examples\IPC\shm_sem\sem_read.cpp" />
     <ClCompile Include="..\..\..\examples\IPC\shm_sem\sem_write.cpp" />
+    <ClCompile Include="..\..\..\examples\lastword\lastword.cpp" />
+    <ClCompile Include="..\..\..\examples\mutilprocess\mutilprocess.cpp" />
     <ClCompile Include="..\..\..\examples\p2pserver\udp_client.c" />
     <ClCompile Include="..\..\..\examples\p2pserver\udp_server.c" />
+    <ClCompile Include="..\..\..\examples\websocket\websocket_server.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\examples\demo_log4cpp\log.conf" />
+    <None Include="..\..\..\examples\websocket\websocket_client.html" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\examples\IPC\readme.txt" />
