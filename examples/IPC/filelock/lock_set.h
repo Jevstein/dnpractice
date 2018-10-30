@@ -54,6 +54,7 @@ int lock_set(int fd, int type)
 		case F_RDLCK: printf("Read lock already set by %d .\n", lock.l_pid); break;	//该文件已有读取锁
 		case F_WRLCK: printf("Write lock already set by %d .\n", lock.l_pid); break;//该文件已有写入锁
 		default:
+			printf("error: unknown type[%d] to set by %d .\n", lock.l_type, lock.l_pid);
 			break;
 		}
 	}
@@ -73,6 +74,7 @@ int lock_set(int fd, int type)
 	case F_WRLCK: printf("Write lock set by %d {\n", getpid());	break;
 	case F_UNLCK: printf("} Release lock by %d \n\n", getpid());	return 1;
 	default:
+		printf("error: unknown type[%d] by %d .\n", lock.l_type, lock.l_pid);
 		break;
 	}
 	return 0;
