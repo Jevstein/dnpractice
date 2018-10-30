@@ -52,6 +52,12 @@
     <Filter Include="examples\IPC\filelock">
       <UniqueIdentifier>{fe32a037-ba3c-4bd1-985e-b72ea4199fab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="examples\iniconfig">
+      <UniqueIdentifier>{fa9e71b3-809a-4249-a96c-ea07733e0802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\iniconfig\iniparser">
+      <UniqueIdentifier>{45e5846d-18f5-479d-9392-3271747bb918}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\examples\demo_log4cpp\logger.h">
@@ -65,6 +71,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\examples\IPC\shm_sem\sem_data.h">
       <Filter>examples\IPC\shm_sem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\examples\iniconfig\configdef.h">
+      <Filter>examples\iniconfig</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\examples\iniconfig\iniconfig.h">
+      <Filter>examples\iniconfig</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\examples\iniconfig\iniparser\dictionary.h">
+      <Filter>examples\iniconfig\iniparser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\examples\iniconfig\iniparser\iniparser.h">
+      <Filter>examples\iniconfig\iniparser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +140,18 @@
     <ClCompile Include="..\..\..\examples\IPC\filelock\lock_set.h">
       <Filter>examples\IPC\filelock</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\examples\iniconfig\example.cpp">
+      <Filter>examples\iniconfig</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\iniconfig\iniconfig.cpp">
+      <Filter>examples\iniconfig</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\iniconfig\iniparser\dictionary.c">
+      <Filter>examples\iniconfig\iniparser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\iniconfig\iniparser\iniparser.c">
+      <Filter>examples\iniconfig\iniparser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\examples\demo_log4cpp\log.conf">
@@ -129,6 +159,9 @@
     </None>
     <None Include="..\..\..\examples\websocket\websocket_client.html">
       <Filter>examples\websocket</Filter>
+    </None>
+    <None Include="..\..\..\examples\iniconfig\conf.ini">
+      <Filter>examples\iniconfig</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

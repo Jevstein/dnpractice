@@ -65,6 +65,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\examples\demo_log4cpp\logger.h" />
+    <ClInclude Include="..\..\..\examples\iniconfig\configdef.h" />
+    <ClInclude Include="..\..\..\examples\iniconfig\iniconfig.h" />
+    <ClInclude Include="..\..\..\examples\iniconfig\iniparser\dictionary.h" />
+    <ClInclude Include="..\..\..\examples\iniconfig\iniparser\iniparser.h" />
     <ClInclude Include="..\..\..\examples\IPC\shm\shm_data.h" />
     <ClInclude Include="..\..\..\examples\IPC\shm_sem\sem_data.h" />
     <ClInclude Include="..\..\..\examples\p2pserver\udp.h" />
@@ -72,6 +76,10 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\examples\demo_log4cpp\log4cppdemo.cpp" />
     <ClCompile Include="..\..\..\examples\demo_log4cpp\logger.cpp" />
+    <ClCompile Include="..\..\..\examples\iniconfig\example.cpp" />
+    <ClCompile Include="..\..\..\examples\iniconfig\iniconfig.cpp" />
+    <ClCompile Include="..\..\..\examples\iniconfig\iniparser\dictionary.c" />
+    <ClCompile Include="..\..\..\examples\iniconfig\iniparser\iniparser.c" />
     <ClCompile Include="..\..\..\examples\IPC\fifo\fifo_read.c" />
     <ClCompile Include="..\..\..\examples\IPC\fifo\fifo_write.c" />
     <ClCompile Include="..\..\..\examples\IPC\filelock\filelock.c" />
@@ -91,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\examples\demo_log4cpp\log.conf" />
+    <None Include="..\..\..\examples\iniconfig\conf.ini" />
     <None Include="..\..\..\examples\websocket\websocket_client.html" />
   </ItemGroup>
   <ItemGroup>
