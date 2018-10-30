@@ -49,6 +49,9 @@
     <Filter Include="examples\lastword">
       <UniqueIdentifier>{bc2e5c89-f109-46e9-a486-922cf07c3a66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="examples\IPC\filelock">
+      <UniqueIdentifier>{fe32a037-ba3c-4bd1-985e-b72ea4199fab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\examples\demo_log4cpp\logger.h">
@@ -112,6 +115,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\examples\lastword\lastword.cpp">
       <Filter>examples\lastword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\IPC\filelock\filelock.c">
+      <Filter>examples\IPC\filelock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\IPC\filelock\lock_set.h">
+      <Filter>examples\IPC\filelock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

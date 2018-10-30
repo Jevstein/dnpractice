@@ -74,6 +74,8 @@
     <ClCompile Include="..\..\..\examples\demo_log4cpp\logger.cpp" />
     <ClCompile Include="..\..\..\examples\IPC\fifo\fifo_read.c" />
     <ClCompile Include="..\..\..\examples\IPC\fifo\fifo_write.c" />
+    <ClCompile Include="..\..\..\examples\IPC\filelock\filelock.c" />
+    <ClCompile Include="..\..\..\examples\IPC\filelock\lock_set.h" />
     <ClCompile Include="..\..\..\examples\IPC\mmap\mmap_read.cpp" />
     <ClCompile Include="..\..\..\examples\IPC\mmap\mmap_write.cpp" />
     <ClCompile Include="..\..\..\examples\IPC\pipe\pipe_test.c" />
