@@ -104,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\examples\IPC\readme.txt" />
+    <Text Include="..\..\..\examples\memory\usermem_max\usermem_max.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

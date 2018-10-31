@@ -58,6 +58,12 @@
     <Filter Include="examples\iniconfig\iniparser">
       <UniqueIdentifier>{45e5846d-18f5-479d-9392-3271747bb918}</UniqueIdentifier>
     </Filter>
+    <Filter Include="examples\memory">
+      <UniqueIdentifier>{cbd82e83-ef8a-42e0-ae7f-8e95416c4d56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\memory\usermem_max">
+      <UniqueIdentifier>{13a53291-c14c-4344-a028-9e989782a418}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\examples\demo_log4cpp\logger.h">
@@ -167,6 +173,9 @@
   <ItemGroup>
     <Text Include="..\..\..\examples\IPC\readme.txt">
       <Filter>examples\IPC</Filter>
+    </Text>
+    <Text Include="..\..\..\examples\memory\usermem_max\usermem_max.cpp">
+      <Filter>examples\memory\usermem_max</Filter>
     </Text>
   </ItemGroup>
 </Project>
