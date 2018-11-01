@@ -1,12 +1,12 @@
 /*
- *  tcp_block_server.cpp 
- *  tcp_block_server
+ *  tcp_epoll_server.cpp 
+ *  tcp_epoll_server
  *
  *  Created by Jevstein on 2018/11/1 17:04.
  *  Copyright @ 2018year Jevstein. All rights reserved.
  *
  */
-#include "../socket_api.h"
+#include "epoll_api.h"
 
 bool start_server(const char *ip, int port)
 {
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
 }
 
 //complile:
-// $ g++ -o ../../../bin/tcp_block_server ../socket_api.cpp tcp_block_server.cpp
+// $ g++ -o ../../../bin/tcp_epoll_server ../socket_api.cpp tcp_epoll_server.cpp
 // 
 //package capture:
 // $ sudo tcpdump -iany tcp port 8888

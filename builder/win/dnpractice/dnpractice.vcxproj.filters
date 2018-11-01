@@ -70,6 +70,9 @@
     <Filter Include="examples\net\tcp_block">
       <UniqueIdentifier>{47057d75-77ef-4997-a838-af0539a5610b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="examples\net\tcp_epoll">
+      <UniqueIdentifier>{e350d57e-aa9a-4867-8d3d-558e999fb832}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\examples\demo_log4cpp\logger.h">
@@ -96,8 +99,11 @@
     <ClInclude Include="..\..\..\examples\iniconfig\iniparser\iniparser.h">
       <Filter>examples\iniconfig\iniparser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\examples\net\simpletcp\socket_api.h">
+    <ClInclude Include="..\..\..\examples\net\socket_api.h">
       <Filter>examples\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\examples\net\tcp_epoll\epoll_api.h">
+      <Filter>examples\net\tcp_epoll</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -167,14 +173,23 @@
     <ClCompile Include="..\..\..\examples\iniconfig\iniparser\iniparser.c">
       <Filter>examples\iniconfig\iniparser</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\examples\net\simpletcp\socket_api.cpp">
-      <Filter>examples\net</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\examples\net\tcp_block\tcp_block_client.cpp">
       <Filter>examples\net\tcp_block</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\examples\net\tcp_block\tcp_block_server.cpp">
       <Filter>examples\net\tcp_block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\net\tcp_epoll\tcp_epoll_client.cpp">
+      <Filter>examples\net\tcp_epoll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\net\tcp_epoll\tcp_epoll_server.cpp">
+      <Filter>examples\net\tcp_epoll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\net\socket_api.cpp">
+      <Filter>examples\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\net\tcp_epoll\epoll_api.cpp">
+      <Filter>examples\net\tcp_epoll</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 /*
- *  tcp_block_client.cpp 
- *  tcp_block_client
+ *  tcp_epoll_client.cpp 
+ *  tcp_epoll_client
  *
  *  Created by Jevstein on 2018/11/1 17:04.
  *  Copyright @ 2018year Jevstein. All rights reserved.
