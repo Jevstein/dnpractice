@@ -71,6 +71,7 @@
     <ClInclude Include="..\..\..\examples\iniconfig\iniparser\iniparser.h" />
     <ClInclude Include="..\..\..\examples\IPC\shm\shm_data.h" />
     <ClInclude Include="..\..\..\examples\IPC\shm_sem\sem_data.h" />
+    <ClInclude Include="..\..\..\examples\net\simpletcp\socket_api.h" />
     <ClInclude Include="..\..\..\examples\p2pserver\udp.h" />
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +94,9 @@
     <ClCompile Include="..\..\..\examples\IPC\shm_sem\sem_write.cpp" />
     <ClCompile Include="..\..\..\examples\lastword\lastword.cpp" />
     <ClCompile Include="..\..\..\examples\mutilprocess\mutilprocess.cpp" />
+    <ClCompile Include="..\..\..\examples\net\simpletcp\socket_api.cpp" />
+    <ClCompile Include="..\..\..\examples\net\tcp_block\tcp_block_client.cpp" />
+    <ClCompile Include="..\..\..\examples\net\tcp_block\tcp_block_server.cpp" />
     <ClCompile Include="..\..\..\examples\p2pserver\udp_client.c" />
     <ClCompile Include="..\..\..\examples\p2pserver\udp_server.c" />
     <ClCompile Include="..\..\..\examples\websocket\websocket_server.c" />

@@ -64,6 +64,12 @@
     <Filter Include="examples\memory\usermem_max">
       <UniqueIdentifier>{13a53291-c14c-4344-a028-9e989782a418}</UniqueIdentifier>
     </Filter>
+    <Filter Include="examples\net">
+      <UniqueIdentifier>{61838c8d-785a-4bb6-b61b-b2f65df90a61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\net\tcp_block">
+      <UniqueIdentifier>{47057d75-77ef-4997-a838-af0539a5610b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\examples\demo_log4cpp\logger.h">
@@ -89,6 +95,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\examples\iniconfig\iniparser\iniparser.h">
       <Filter>examples\iniconfig\iniparser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\examples\net\simpletcp\socket_api.h">
+      <Filter>examples\net</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +166,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\examples\iniconfig\iniparser\iniparser.c">
       <Filter>examples\iniconfig\iniparser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\net\simpletcp\socket_api.cpp">
+      <Filter>examples\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\net\tcp_block\tcp_block_client.cpp">
+      <Filter>examples\net\tcp_block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\net\tcp_block\tcp_block_server.cpp">
+      <Filter>examples\net\tcp_block</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
