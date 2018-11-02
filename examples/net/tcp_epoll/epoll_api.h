@@ -47,11 +47,15 @@ typedef int YI_EPFD;
 typedef void net_io_event;
 typedef net_io_event* net_io_event_p;
 
-YI_EPFD io_create(net_io_event** events, int max_nfds = 4096);
-int io_add_fd(YI_EPFD epfd, int fd, int events, void* key);
-int io_modify_fd(YI_EPFD epfd, int fd, int events, void* key);
-int io_del_fd(YI_EPFD epfd, int fd, int events = 0);
-int io_wait(YI_EPFD epfd, net_io_event* events, int max_nfds = 4096);
+YI_EPFD io_create(net_io_event** events, int nfds = 4096);
+bool io_add_fd(YI_EPFD epfd, YI_SOCKET sockfd, int events, void* key);
+bool io_modify_fd(YI_EPFD epfd, YI_SOCKET sockfd, int events, void* key);
+bool io_del_fd(YI_EPFD epfd, YI_SOCKET sockfd, int events = 0);
+int io_wait(YI_EPFD epfd, net_io_event** events, int maxevents = 2000);
 void io_close(YI_EPFD epfd, net_io_event* events);
+
+int io_get_event(net_io_event** events, int idx);
+void* io_get_userdata(net_io_event** events, int idx);
+
 
 #endif //__EPOLL_API_H__

@@ -39,7 +39,7 @@ YI_SOCKET socket_create(const char *addr, int port, int type /*= SOCK_STREAM*/, 
 	if (addrinfo_res)
 		*addrinfo_res = res;
 
-	LOG_INFO("create socket[%s:%d] success!", addr, port);
+	LOG_INFO("create socket[%s:%d] success, sockfd=%d", addr, port, sockfd);
 
 	return sockfd;
 }
@@ -85,11 +85,11 @@ YI_SOCKET socket_accept(YI_SOCKET sockfd, struct sockaddr_in6 *addr)
 	int connfd = ::accept(sockfd, (sockaddr*)addr, &addrlen);
 	if (connfd < 0)
 	{
-		LOG_ERR("failed to accept, fd=%d, err: %s", connfd, strerror(errno));
+		LOG_ERR("failed to accept, sockfd=%d, err: %s", connfd, strerror(errno));
 		return -1;
 	}
 
-	LOG_INFO("accept client[%s:%d] success, fd=%d"
+	LOG_INFO("accept client[%s:%d] success, sockfd=%d"
 		, inet_ntoa(((struct sockaddr_in *)addr)->sin_addr)
 		, ntohs(((struct sockaddr_in *)addr)->sin_port)
 		, connfd);
@@ -132,10 +132,9 @@ int socket_send(YI_SOCKET sockfd, const void *buf, size_t len)
 	if (ret < 0)
 	{
 		LOG_ERR("failed to send! ret=%d, err: %s", ret, strerror(errno));
-		return false;
 	}
 
-	return true;
+	return ret;
 }
 
 int socket_recv(YI_SOCKET sockfd, void *buf, size_t len)
@@ -144,17 +143,16 @@ int socket_recv(YI_SOCKET sockfd, void *buf, size_t len)
 	if (ret < 0)
 	{
 		LOG_ERR("failed to recv! ret=%d, err: %s", ret, strerror(errno));
-		return false;
 	}
 
-	return true;
+	return ret;
 }
 
 void socket_close(YI_SOCKET sockfd)
 {
 	::close(sockfd);
 
-	LOG_INFO("close fd=%d success!", sockfd);
+	LOG_INFO("close sockfd=%d success!", sockfd);
 }
 
 bool set_reuse_port(YI_SOCKET sockfd)
