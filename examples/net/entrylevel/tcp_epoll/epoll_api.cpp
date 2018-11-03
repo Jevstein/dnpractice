@@ -47,7 +47,7 @@ bool io_add_fd(YI_EPFD epfd, YI_SOCKET sockfd, int events, void* key)
 		return false;
 	}
 
-	LOG_INFO("io_add_fd(EPOLL_CTL_ADD) success! sockfd=%d, events=%d", sockfd, events);
+	LOG_INFO("set EPOLL_CTL_ADD success! sockfd=%d, events=%d", sockfd, events);
 
 	return true;
 }
@@ -61,7 +61,7 @@ bool io_modify_fd(YI_EPFD epfd, YI_SOCKET sockfd, int events, void* key)
 		return false;
 	}
 
-	LOG_INFO("io_modify_fd(EPOLL_CTL_MOD) success! sockfd=%d, events=%d", sockfd, events);
+	LOG_INFO("set EPOLL_CTL_MOD success! sockfd=%d, events=%d", sockfd, events);
 
 	return true;
 }
@@ -75,7 +75,7 @@ bool io_del_fd(YI_EPFD epfd, YI_SOCKET sockfd, int events /*= 0*/)
 		return false;
 	}
 
-	LOG_INFO("io_del_fd(EPOLL_CTL_DEL) success! sockfd=%d, events=%d", sockfd, events);
+	LOG_INFO("set EPOLL_CTL_DEL success! sockfd=%d, events=%d", sockfd, events);
 
 	return true;
 }

@@ -91,7 +91,7 @@ bool start_epoll(YI_SOCKET listen_fd)
 					continue;
 
 				st_socket *stsock_conn = new st_socket(conn_fd, 1);
-				if (!io_add_fd(epfd_, conn_fd, EPOLLIN, stsock_conn))
+				if (!io_add_fd(epfd_, conn_fd, EPOLLIN/* | EPOLLET*/, stsock_conn))
 					continue;
 			}
 			else
@@ -104,6 +104,7 @@ bool start_epoll(YI_SOCKET listen_fd)
 					int ret = onRecv(stsocket->sockfd);
 					if (ret == -3)
 					{//退出
+						io_del_fd(epfd_, stsocket->sockfd, 0);
 						socket_close(stsocket->sockfd);
 						delete stsocket;
 						loop = false;
@@ -111,6 +112,7 @@ bool start_epoll(YI_SOCKET listen_fd)
 					}
 					else if (ret == -2 || ret == -1)
 					{//关闭
+						io_del_fd(epfd_, stsocket->sockfd, 0);
 						socket_close(stsocket->sockfd);
 						delete stsocket;
 						break;
@@ -118,13 +120,13 @@ bool start_epoll(YI_SOCKET listen_fd)
 
 					// pre-send
 					strcpy(stsocket->buf, "hi~, client");
-					io_modify_fd(epfd_, stsocket->sockfd, EPOLLIN | EPOLLOUT, stsocket);
+					io_modify_fd(epfd_, stsocket->sockfd, EPOLLIN | EPOLLOUT/* | EPOLLET*/, stsocket);
 				}
 				else if (events & EPOLLOUT)
 				{//send
 					if (stsocket->buf[0] == '\0')
 					{//缓存无数据
-						io_modify_fd(epfd_, stsocket->sockfd, EPOLLIN, stsocket);
+						io_modify_fd(epfd_, stsocket->sockfd, EPOLLIN/* | EPOLLET*/, stsocket);
 					}
 					else
 					{//缓存有数据
@@ -140,8 +142,8 @@ bool start_epoll(YI_SOCKET listen_fd)
 					//connection->OnSend();
 				}
 				else
-				{//unknow
-					LOG_ERR("failed to get event: %d, err: %s", events, strerror(errno));
+				{//unknown
+					LOG_ERR("get unknown event: %d, err: %s", events, strerror(errno));
 				}
 			}
 		}
@@ -218,7 +220,7 @@ int main(int argc, char *argv[])
 }
 
 //complile:
-// $ g++ -g -o ../../../bin/tcp_epoll_server ../socket_api.cpp epoll_api.cpp tcp_epoll_server.cpp
+// $ g++ -g -o ../../../../bin/tcp_epoll_server ../socket_api.cpp epoll_api.cpp tcp_epoll_server.cpp
 // 
 //package capture:
 // $ sudo tcpdump -iany tcp port 8888

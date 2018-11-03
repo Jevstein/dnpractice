@@ -67,11 +67,17 @@
     <Filter Include="examples\net">
       <UniqueIdentifier>{61838c8d-785a-4bb6-b61b-b2f65df90a61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="examples\net\tcp_block">
+    <Filter Include="examples\net\entrylevel">
+      <UniqueIdentifier>{b747e553-0d8b-41e3-ad59-2abf5d5b228f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\net\entrylevel\tcp_block">
       <UniqueIdentifier>{47057d75-77ef-4997-a838-af0539a5610b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="examples\net\tcp_epoll">
+    <Filter Include="examples\net\entrylevel\tcp_epoll">
       <UniqueIdentifier>{e350d57e-aa9a-4867-8d3d-558e999fb832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\net\heighlevel">
+      <UniqueIdentifier>{35e29f3e-28e3-4462-9432-2e440dcefc79}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,11 +105,11 @@
     <ClInclude Include="..\..\..\examples\iniconfig\iniparser\iniparser.h">
       <Filter>examples\iniconfig\iniparser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\examples\net\socket_api.h">
-      <Filter>examples\net</Filter>
+    <ClInclude Include="..\..\..\examples\net\entrylevel\socket_api.h">
+      <Filter>examples\net\entrylevel</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\examples\net\tcp_epoll\epoll_api.h">
-      <Filter>examples\net\tcp_epoll</Filter>
+    <ClInclude Include="..\..\..\examples\net\entrylevel\tcp_epoll\epoll_api.h">
+      <Filter>examples\net\entrylevel\tcp_epoll</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -173,23 +179,23 @@
     <ClCompile Include="..\..\..\examples\iniconfig\iniparser\iniparser.c">
       <Filter>examples\iniconfig\iniparser</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\examples\net\tcp_block\tcp_block_client.cpp">
-      <Filter>examples\net\tcp_block</Filter>
+    <ClCompile Include="..\..\..\examples\net\entrylevel\socket_api.cpp">
+      <Filter>examples\net\entrylevel</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\examples\net\tcp_block\tcp_block_server.cpp">
-      <Filter>examples\net\tcp_block</Filter>
+    <ClCompile Include="..\..\..\examples\net\entrylevel\tcp_epoll\epoll_api.cpp">
+      <Filter>examples\net\entrylevel\tcp_epoll</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\examples\net\tcp_epoll\tcp_epoll_client.cpp">
-      <Filter>examples\net\tcp_epoll</Filter>
+    <ClCompile Include="..\..\..\examples\net\entrylevel\tcp_epoll\tcp_epoll_client.cpp">
+      <Filter>examples\net\entrylevel\tcp_epoll</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\examples\net\tcp_epoll\tcp_epoll_server.cpp">
-      <Filter>examples\net\tcp_epoll</Filter>
+    <ClCompile Include="..\..\..\examples\net\entrylevel\tcp_epoll\tcp_epoll_server.cpp">
+      <Filter>examples\net\entrylevel\tcp_epoll</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\examples\net\socket_api.cpp">
-      <Filter>examples\net</Filter>
+    <ClCompile Include="..\..\..\examples\net\entrylevel\tcp_block\tcp_block_client.cpp">
+      <Filter>examples\net\entrylevel\tcp_block</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\examples\net\tcp_epoll\epoll_api.cpp">
-      <Filter>examples\net\tcp_epoll</Filter>
+    <ClCompile Include="..\..\..\examples\net\entrylevel\tcp_block\tcp_block_server.cpp">
+      <Filter>examples\net\entrylevel\tcp_block</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
