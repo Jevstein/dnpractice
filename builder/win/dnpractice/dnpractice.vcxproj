@@ -64,6 +64,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\course\udp\udp-piece\circular_buffer.h" />
+    <ClInclude Include="..\..\..\course\udp\udp-piece\dn_socket.h" />
+    <ClInclude Include="..\..\..\course\udp\udp-piece\udp-piece.h" />
     <ClInclude Include="..\..\..\examples\demo_log4cpp\logger.h" />
     <ClInclude Include="..\..\..\examples\iniconfig\configdef.h" />
     <ClInclude Include="..\..\..\examples\iniconfig\iniconfig.h" />
@@ -76,6 +79,14 @@
     <ClInclude Include="..\..\..\examples\p2pserver\udp.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\course\udp\udp-piece\circular_buffer.c" />
+    <ClCompile Include="..\..\..\course\udp\udp-piece\dn_socket.cpp" />
+    <ClCompile Include="..\..\..\course\udp\udp-piece\main.c" />
+    <ClCompile Include="..\..\..\course\udp\udp-piece\udp-piece-client.c" />
+    <ClCompile Include="..\..\..\course\udp\udp-piece\udp-piece-server.c" />
+    <ClCompile Include="..\..\..\course\udp\udp-piece\udp-piece.c" />
+    <ClCompile Include="..\..\..\course\udp\udp-simple\udpclient_v1.c" />
+    <ClCompile Include="..\..\..\course\udp\udp-simple\udpserver_v1.c" />
     <ClCompile Include="..\..\..\examples\demo_log4cpp\log4cppdemo.cpp" />
     <ClCompile Include="..\..\..\examples\demo_log4cpp\logger.cpp" />
     <ClCompile Include="..\..\..\examples\iniconfig\example.cpp" />

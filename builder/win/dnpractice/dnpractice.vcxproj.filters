@@ -76,8 +76,20 @@
     <Filter Include="examples\net\entrylevel\tcp_epoll">
       <UniqueIdentifier>{e350d57e-aa9a-4867-8d3d-558e999fb832}</UniqueIdentifier>
     </Filter>
-    <Filter Include="examples\net\heighlevel">
+    <Filter Include="examples\net\highlevel">
       <UniqueIdentifier>{35e29f3e-28e3-4462-9432-2e440dcefc79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="course">
+      <UniqueIdentifier>{57282e45-b212-4669-b4ec-ccced1abfce4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="course\udp">
+      <UniqueIdentifier>{0bd3eeea-deb4-42c0-87a3-b27fb8e116f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="course\udp\udp-piece">
+      <UniqueIdentifier>{99ea013b-40ec-4cb7-a50b-e7c57a2fa9d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="course\udp\udp-simple">
+      <UniqueIdentifier>{e0171c82-b2f8-489f-877e-3f5bd049667d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +122,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\examples\net\entrylevel\tcp_epoll\epoll_api.h">
       <Filter>examples\net\entrylevel\tcp_epoll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\course\udp\udp-piece\circular_buffer.h">
+      <Filter>course\udp\udp-piece</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\course\udp\udp-piece\dn_socket.h">
+      <Filter>course\udp\udp-piece</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\course\udp\udp-piece\udp-piece.h">
+      <Filter>course\udp\udp-piece</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +217,30 @@
     </ClCompile>
     <ClCompile Include="..\..\..\examples\net\entrylevel\tcp_block\tcp_block_server.cpp">
       <Filter>examples\net\entrylevel\tcp_block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\course\udp\udp-piece\circular_buffer.c">
+      <Filter>course\udp\udp-piece</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\course\udp\udp-piece\dn_socket.cpp">
+      <Filter>course\udp\udp-piece</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\course\udp\udp-piece\main.c">
+      <Filter>course\udp\udp-piece</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\course\udp\udp-piece\udp-piece.c">
+      <Filter>course\udp\udp-piece</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\course\udp\udp-piece\udp-piece-client.c">
+      <Filter>course\udp\udp-piece</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\course\udp\udp-piece\udp-piece-server.c">
+      <Filter>course\udp\udp-piece</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\course\udp\udp-simple\udpclient_v1.c">
+      <Filter>course\udp\udp-simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\course\udp\udp-simple\udpserver_v1.c">
+      <Filter>course\udp\udp-simple</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
