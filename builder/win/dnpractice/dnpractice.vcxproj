@@ -81,7 +81,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\course\udp\udp-piece\circular_buffer.c" />
     <ClCompile Include="..\..\..\course\udp\udp-piece\dn_socket.cpp" />
-    <ClCompile Include="..\..\..\course\udp\udp-piece\main.c" />
     <ClCompile Include="..\..\..\course\udp\udp-piece\udp-piece-client.c" />
     <ClCompile Include="..\..\..\course\udp\udp-piece\udp-piece-server.c" />
     <ClCompile Include="..\..\..\course\udp\udp-piece\udp-piece.c" />

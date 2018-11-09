@@ -5,8 +5,14 @@
  *  Created by Lee/Jevstein on 2018/10/29 10:57.
  *  Copyright @ 2018year Jevstein. All rights reserved.
  *
- *  共享内存(shm): 读
+ *  1.共享内存(shm): 读
  *		shm_get,shm_at,shm_dt,shm_ctl
+ *
+ *  2.用法:
+ *		1）int shmget(key_t key, size_t size, int shmflg);//在物理内存创建一个共享内存，返回共享内存的编号。
+ *		2）void *shmat(int shmid, constvoid shmaddr,int shmflg);//连接成功后把共享内存区对象映射到调用进程的地址空间
+ *		3）void *shmdt(constvoid* shmaddr);//断开用户级页表到共享内存的那根箭头。
+ *		4）int shmctl(int shmid, int cmd, struct shmid_ds* buf);//释放物理内存中的那块共享内存。
  */
 
 #include <sys/ipc.h>

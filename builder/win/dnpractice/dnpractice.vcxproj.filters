@@ -224,9 +224,6 @@
     <ClCompile Include="..\..\..\course\udp\udp-piece\dn_socket.cpp">
       <Filter>course\udp\udp-piece</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\course\udp\udp-piece\main.c">
-      <Filter>course\udp\udp-piece</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\course\udp\udp-piece\udp-piece.c">
       <Filter>course\udp\udp-piece</Filter>
     </ClCompile>

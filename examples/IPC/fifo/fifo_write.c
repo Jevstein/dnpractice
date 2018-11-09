@@ -32,7 +32,7 @@ int main(int argc, char** argv)
 
     /*
      *  以只写方式打开FIFO文件，不能以读写方式打开FIFO，当然我们也可以设置为O_WRONLY | O_NONBLOCK，那么此时是
-     *  以非阻塞的方式打开文件，对于非阻塞，我们讲网络编程的时候会讲到
+     *  以非阻塞的方式打开文件
      */
     int fd = open(FIFO_FILE_PATH, O_WRONLY);
     if (-1 == fd)
