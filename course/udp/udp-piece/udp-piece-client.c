@@ -70,7 +70,7 @@ void echo_client(int sock)
 		{
 			char *buf;
 			int size;
-			buf = udp_piece_get(udp_piece, i, &size);
+			buf = udp_piece_get(udp_piece, pieces - i - 1, &size);
 			printf("向服务器发送分片[%d]长度：%d, buf = %p\n", i*2, 5, buf);  
 			//send_len = sendto(sock, buf, size, 0, (struct sockaddr *)&servaddr, sizeof(servaddr)); 
 			sendto(sock, buf, 5, 0, (struct sockaddr *)&servaddr, sizeof(servaddr)); 
@@ -101,3 +101,6 @@ int main(void)
     
     return 0;  
 }  
+
+//compile:
+// $ gcc -o ../../../bin/udp-piece-client udp-piece-client.c  udp-piece.c circular_buffer.c

@@ -86,6 +86,7 @@
     <ClCompile Include="..\..\..\course\udp\udp-piece\udp-piece.c" />
     <ClCompile Include="..\..\..\course\udp\udp-simple\udpclient_v1.c" />
     <ClCompile Include="..\..\..\course\udp\udp-simple\udpserver_v1.c" />
+    <ClCompile Include="..\..\..\examples\coroutine\ucontext\example.c" />
     <ClCompile Include="..\..\..\examples\demo_log4cpp\log4cppdemo.cpp" />
     <ClCompile Include="..\..\..\examples\demo_log4cpp\logger.cpp" />
     <ClCompile Include="..\..\..\examples\iniconfig\example.cpp" />
@@ -104,6 +105,8 @@
     <ClCompile Include="..\..\..\examples\IPC\shm_sem\sem_read.cpp" />
     <ClCompile Include="..\..\..\examples\IPC\shm_sem\sem_write.cpp" />
     <ClCompile Include="..\..\..\examples\lastword\lastword.cpp" />
+    <ClCompile Include="..\..\..\examples\memory\memory_detect\valgrind.cpp" />
+    <ClCompile Include="..\..\..\examples\memory\usermem_max\usermem_max.cpp" />
     <ClCompile Include="..\..\..\examples\mutilprocess\mutilprocess.cpp" />
     <ClCompile Include="..\..\..\examples\net\entrylevel\socket_api.cpp" />
     <ClCompile Include="..\..\..\examples\net\entrylevel\tcp_block\tcp_block_client.cpp" />
@@ -116,13 +119,13 @@
     <ClCompile Include="..\..\..\examples\websocket\websocket_server.c" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\examples\coroutine\ucontext\makefile" />
     <None Include="..\..\..\examples\demo_log4cpp\log.conf" />
     <None Include="..\..\..\examples\iniconfig\conf.ini" />
     <None Include="..\..\..\examples\websocket\websocket_client.html" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\examples\IPC\readme.txt" />
-    <Text Include="..\..\..\examples\memory\usermem_max\usermem_max.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

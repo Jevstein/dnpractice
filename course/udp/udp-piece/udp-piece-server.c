@@ -91,3 +91,6 @@ int main(void)
     
     return 0;  
 }  
+
+//compile:
+// $ gcc -o ../../../bin/udp-piece-server_ex udp-piece-server.c circular_buffer.c udp-piece.c

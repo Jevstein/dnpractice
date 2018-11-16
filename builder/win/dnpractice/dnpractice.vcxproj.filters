@@ -91,6 +91,15 @@
     <Filter Include="course\udp\udp-simple">
       <UniqueIdentifier>{e0171c82-b2f8-489f-877e-3f5bd049667d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="examples\coroutine">
+      <UniqueIdentifier>{c7f30869-ff34-4a84-a32e-b024751aa47a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\coroutine\ucontext">
+      <UniqueIdentifier>{b010856a-3ddf-4d00-9c8d-6b922d6227c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\memory\memory_detect">
+      <UniqueIdentifier>{82adddc0-8705-4e4c-a543-0c66dcd81c52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\examples\demo_log4cpp\logger.h">
@@ -239,6 +248,15 @@
     <ClCompile Include="..\..\..\course\udp\udp-simple\udpserver_v1.c">
       <Filter>course\udp\udp-simple</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\examples\coroutine\ucontext\example.c">
+      <Filter>examples\coroutine\ucontext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\memory\memory_detect\valgrind.cpp">
+      <Filter>examples\memory\memory_detect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\memory\usermem_max\usermem_max.cpp">
+      <Filter>examples\memory\usermem_max</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\examples\demo_log4cpp\log.conf">
@@ -250,13 +268,13 @@
     <None Include="..\..\..\examples\iniconfig\conf.ini">
       <Filter>examples\iniconfig</Filter>
     </None>
+    <None Include="..\..\..\examples\coroutine\ucontext\makefile">
+      <Filter>examples\coroutine\ucontext</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\examples\IPC\readme.txt">
       <Filter>examples\IPC</Filter>
-    </Text>
-    <Text Include="..\..\..\examples\memory\usermem_max\usermem_max.cpp">
-      <Filter>examples\memory\usermem_max</Filter>
     </Text>
   </ItemGroup>
 </Project>

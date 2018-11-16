@@ -291,16 +291,12 @@ int udp_piece_merge_ex( udp_piece_t *udp_piece, void *buf, int size )
 		circular_buffer_get( udp_piece->circular_buffer, 0, &value0 );          /* 通过索引获取当前值 */
 		circular_buffer_get( udp_piece->circular_buffer, 1, &value1 );
 		if ( value0 == 0xAF && value1 == 0xAE )
-		{
 			break;
-		}
-		else  
-		{
-			circular_buffer_pop_front( udp_piece->circular_buffer, 1);        /* 出队列一个元素 */
-		}
+
+		circular_buffer_pop_front( udp_piece->circular_buffer, 1);        /* 出队列一个元素 */
 	}
 
-	/* 如果剩余的数据长度仍大于于 */
+	/* 如果剩余的数据长度仍大于帧头 */
 	while ( circular_buffer_size( udp_piece->circular_buffer ) > HEAD_SIZE )
 	{
 		/* 当前分片的数据长度（不含帧头） */
@@ -308,16 +304,14 @@ int udp_piece_merge_ex( udp_piece_t *udp_piece, void *buf, int size )
 		circular_buffer_get( udp_piece->circular_buffer, HEAD_POS_P_LENGTH + 1, &value1 );
 
 		uint32_t data_len = (value0 << 8) + value1;
-		//data_len	<<= 8;
-		//data_len	+= value1;
 
 		/* UDP_DEBUG("%s(%d)\n", __FUNCTION__, __LINE__); */
 		if ( circular_buffer_size( udp_piece->circular_buffer ) >= (HEAD_SIZE + data_len) )
 		{
-			circular_buffer_get( udp_piece->circular_buffer, HEAD_POS_P_INDEX, &value0 );                   /* 通过索引获取当前值 */
+			circular_buffer_get( udp_piece->circular_buffer, HEAD_POS_P_INDEX, &value0 );               /* 通过索引获取当前值 */
 			circular_buffer_get( udp_piece->circular_buffer, HEAD_POS_P_INDEX + 1, &value1 );
 			p_index = (value0 << 8) + value1;
-			if ( udp_piece->total_size == 0 )                                                               /* 重置后第一次收到分片 */
+			if ( udp_piece->total_size == 0 )                                                           /* 重置后第一次收到分片 */
 			{
 				/* 计算当前分片所属分片组数据的总大小 */
 				circular_buffer_get( udp_piece->circular_buffer, HEAD_POS_TOTAL_SIZE, &value0 );        /* 通过索引获取当前值 */
@@ -388,7 +382,7 @@ int udp_piece_merge_ex( udp_piece_t *udp_piece, void *buf, int size )
 			}
 
 
-			UDP_DEBUG( "remain size = %d\n", circular_buffer_size( udp_piece->circular_buffer ) );
+			UDP_DEBUG( ", remain size = %d\n", circular_buffer_size( udp_piece->circular_buffer ) );
 
 			udp_piece->recv_len += data_len;
 			if ( udp_piece->recv_pieces == udp_piece->total_pieces )
@@ -403,7 +397,7 @@ int udp_piece_merge_ex( udp_piece_t *udp_piece, void *buf, int size )
 				else  
 				{
 					UDP_ERR( "recv_len != total_size! recv_len: %d, total_size: %d", udp_piece->recv_len, udp_piece->total_size );
-					get_all_pieces - 1;
+					get_all_pieces = -1;
 				}
 			}
 		}
