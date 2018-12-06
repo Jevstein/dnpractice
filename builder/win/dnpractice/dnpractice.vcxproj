@@ -116,6 +116,7 @@
     <ClCompile Include="..\..\..\examples\net\entrylevel\tcp_epoll\tcp_epoll_server.cpp" />
     <ClCompile Include="..\..\..\examples\p2pserver\udp_client.c" />
     <ClCompile Include="..\..\..\examples\p2pserver\udp_server.c" />
+    <ClCompile Include="..\..\..\examples\thread\priority\thread_priority.c" />
     <ClCompile Include="..\..\..\examples\websocket\websocket_server.c" />
   </ItemGroup>
   <ItemGroup>

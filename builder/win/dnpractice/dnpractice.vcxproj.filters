@@ -100,6 +100,12 @@
     <Filter Include="examples\memory\memory_detect">
       <UniqueIdentifier>{82adddc0-8705-4e4c-a543-0c66dcd81c52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="examples\thread">
+      <UniqueIdentifier>{524188ac-841d-4b26-be32-256da3f7691e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\thread\priority">
+      <UniqueIdentifier>{c341e996-a342-4527-9d6a-fa00632f5c24}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\examples\demo_log4cpp\logger.h">
@@ -256,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\examples\memory\usermem_max\usermem_max.cpp">
       <Filter>examples\memory\usermem_max</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\examples\thread\priority\thread_priority.c">
+      <Filter>examples\thread\priority</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
