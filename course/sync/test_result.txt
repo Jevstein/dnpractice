@@ -1,0 +1,78 @@
+
+lizhiyong@ubuntu:~/vip2/sync$ ./cas_lock_test 10
+num:40
+cost:90
+lizhiyong@ubuntu:~/vip2/sync$ ./cas_lock_test 100
+num:400
+cost:95
+lizhiyong@ubuntu:~/vip2/sync$ ./cas_lock_test 1000
+num:4000
+cost:1038
+lizhiyong@ubuntu:~/vip2/sync$ ./cas_lock_test 10000
+num:40000
+cost:302
+lizhiyong@ubuntu:~/vip2/sync$ ./cas_lock_test 100000
+num:400000
+cost:6360
+lizhiyong@ubuntu:~/vip2/sync$ ./cas_lock_test 1000000
+num:4000000
+cost:73386
+lizhiyong@ubuntu:~/vip2/sync$ ./cas_lock_test 10000000
+num:40000000
+cost:835266
+lizhiyong@ubuntu:~/vip2/sync$ ./cas_lock_test 100000000
+num:400000000
+cost:7686936
+
+
+lizhiyong@ubuntu:~/vip2/sync$ ./mutex_lock_test 10
+num:40
+cost:233
+lizhiyong@ubuntu:~/vip2/sync$ ./mutex_lock_test 100
+num:400
+cost:151
+lizhiyong@ubuntu:~/vip2/sync$ ./mutex_lock_test 1000
+num:4000
+cost:196
+lizhiyong@ubuntu:~/vip2/sync$ ./mutex_lock_test 10000
+num:40000
+cost:1160
+lizhiyong@ubuntu:~/vip2/sync$ ./mutex_lock_test 100000
+num:400000
+cost:26400
+lizhiyong@ubuntu:~/vip2/sync$ ./mutex_lock_test 1000000
+num:4000000
+cost:407001
+lizhiyong@ubuntu:~/vip2/sync$ ./mutex_lock_test 10000000
+num:40000000
+cost:3879887
+lizhiyong@ubuntu:~/vip2/sync$ ./mutex_lock_test 100000000
+num:400000000
+cost:36932044
+
+
+lizhiyong@ubuntu:~/vip2/sync$ ./spin_lock_test 10
+num:40
+cost:124
+lizhiyong@ubuntu:~/vip2/sync$ ./spin_lock_test 100
+num:400
+cost:104
+lizhiyong@ubuntu:~/vip2/sync$ ./spin_lock_test 1000
+num:4000
+cost:176
+lizhiyong@ubuntu:~/vip2/sync$ ./spin_lock_test 10000
+num:40000
+cost:1270
+lizhiyong@ubuntu:~/vip2/sync$ ./spin_lock_test 100000
+num:400000
+cost:16694
+lizhiyong@ubuntu:~/vip2/sync$ ./spin_lock_test 1000000
+num:4000000
+cost:253826
+lizhiyong@ubuntu:~/vip2/sync$ ./spin_lock_test 10000000
+num:40000000
+cost:2445208
+lizhiyong@ubuntu:~/vip2/sync$ ./spin_lock_test 100000000
+num:400000000
+cost:25252324
+
