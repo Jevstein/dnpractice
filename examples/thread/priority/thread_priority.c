@@ -1,6 +1,6 @@
 /*
- *  priority_test.c 
- *  priority_test
+ *  thread_priority.c 
+ *  thread_priority
  *
  *  Created by Jevstein on 2018/12/6 16:23.
  *  Copyright @ 2018year Jevstein. All rights reserved.
@@ -13,111 +13,111 @@
 #include <sched.h>
 #include <assert.h>
 
-static int api_get_thread_policy(pthread_attr_t *attr)
+static int api_get_thread_policy (pthread_attr_t *attr)
 {
-	int policy;
-	int rs = pthread_attr_getschedpolicy(attr, &policy);
-	assert(rs == 0);
+    int policy;
+    int rs = pthread_attr_getschedpolicy (attr, &policy);
+    assert (rs == 0);
 
-	switch (policy)
-	{
-	case SCHED_FIFO:
-		printf("policy = SCHED_FIFO\n");
-		break;
-	case SCHED_RR:
-		printf("policy = SCHED_RR");
-		break;
-	case SCHED_OTHER:
-		printf("policy = SCHED_OTHER\n");
-		break;
-	default:
-		printf("policy = UNKNOWN\n");
-		break;
-	}
-	return policy;
+    switch (policy)
+    {
+        case SCHED_FIFO:
+            printf ("policy = SCHED_FIFO\n");
+            break;
+        case SCHED_RR:
+            printf ("policy = SCHED_RR");
+            break;
+        case SCHED_OTHER:
+            printf ("policy = SCHED_OTHER\n");
+            break;
+        default:
+            printf ("policy = UNKNOWN\n");
+            break; 
+    }
+    return policy;
 }
 
-static void api_show_thread_priority(pthread_attr_t *attr, int policy)
+static void api_show_thread_priority (pthread_attr_t *attr,int policy)
 {
-	int priority = sched_get_priority_max(policy);
-	assert(priority != -1);
-	printf("max_priority = %d\n", priority);
-	priority = sched_get_priority_min(policy);
-	assert(priority != -1);
-	printf("min_priority = %d\n", priority);
+    int priority = sched_get_priority_max (policy);
+    assert (priority != -1);
+    printf ("max_priority = %d\n", priority);
+    priority = sched_get_priority_min (policy);
+    assert (priority != -1);
+    printf ("min_priority = %d\n", priority);
 }
 
-static int api_get_thread_priority(pthread_attr_t *attr)
+static int api_get_thread_priority (pthread_attr_t *attr)
 {
-	struct sched_param param;
-	int rs = pthread_attr_getschedparam(attr, &param);
-	assert(rs == 0);
-	printf("priority = %d\n", param.__sched_priority);
-	return param.__sched_priority;
+    struct sched_param param;
+    int rs = pthread_attr_getschedparam (attr, &param);
+    assert (rs == 0);
+    printf ("priority = %d\n", param.__sched_priority);
+    return param.__sched_priority;
 }
 
-static void api_set_thread_policy(pthread_attr_t *attr, int policy)
+static void api_set_thread_policy (pthread_attr_t *attr,int policy)
 {
-	int rs = pthread_attr_setschedpolicy(attr, policy);
-	assert(rs == 0);
-	api_get_thread_policy(attr);
+    int rs = pthread_attr_setschedpolicy (attr, policy);
+    assert (rs == 0);
+    api_get_thread_policy (attr);
 }
-
+    
 int main(void)
 {
-	pthread_attr_t attr;       // Ïß³ÌÊôĞÔ
-	struct sched_param sched;  // µ÷¶È²ßÂÔ
-	int rs;
+    pthread_attr_t attr;       // çº¿ç¨‹å±æ€§
+    struct sched_param sched;  // è°ƒåº¦ç­–ç•¥
+    int rs;
 
-	/*
-	* ¶ÔÏß³ÌÊôĞÔ³õÊ¼»¯
-	* ³õÊ¼»¯Íê³ÉÒÔºó£¬pthread_attr_t ½á¹¹Ëù°üº¬µÄ½á¹¹Ìå
-	* ¾ÍÊÇ²Ù×÷ÏµÍ³ÊµÏÖÖ§³ÖµÄËùÓĞÏß³ÌÊôĞÔµÄÄ¬ÈÏÖµ
-	*/
-	rs = pthread_attr_init(&attr);
-	assert(rs == 0);     // Èç¹û rs ²»µÈÓÚ 0£¬³ÌĞò abort() ÍË³ö
+    /* 
+     * å¯¹çº¿ç¨‹å±æ€§åˆå§‹åŒ–
+     * åˆå§‹åŒ–å®Œæˆä»¥åï¼Œpthread_attr_t ç»“æ„æ‰€åŒ…å«çš„ç»“æ„ä½“
+     * å°±æ˜¯æ“ä½œç³»ç»Ÿå®ç°æ”¯æŒçš„æ‰€æœ‰çº¿ç¨‹å±æ€§çš„é»˜è®¤å€¼
+     */
+    rs = pthread_attr_init (&attr);
+    assert (rs == 0);     // å¦‚æœ rs ä¸ç­‰äº 0ï¼Œç¨‹åº abort() é€€å‡º
 
-	/* »ñµÃµ±Ç°µ÷¶È²ßÂÔ */
-	int policy = api_get_thread_policy(&attr);
+    /* è·å¾—å½“å‰è°ƒåº¦ç­–ç•¥ */
+    int policy = api_get_thread_policy (&attr);
 
-	/* ÏÔÊ¾µ±Ç°µ÷¶È²ßÂÔµÄÏß³ÌÓÅÏÈ¼¶·¶Î§ */
-	printf("Show current configuration of priority\n");
-	api_show_thread_priority(&attr, policy);
+    /* æ˜¾ç¤ºå½“å‰è°ƒåº¦ç­–ç•¥çš„çº¿ç¨‹ä¼˜å…ˆçº§èŒƒå›´ */
+    printf ("Show current configuration of priority\n");
+    api_show_thread_priority(&attr, policy);
 
-	/* »ñÈ¡ SCHED_FIFO ²ßÂÔÏÂµÄÏß³ÌÓÅÏÈ¼¶·¶Î§ */
-	printf("show SCHED_FIFO of priority\n");
-	api_show_thread_priority(&attr, SCHED_FIFO);
+    /* è·å– SCHED_FIFO ç­–ç•¥ä¸‹çš„çº¿ç¨‹ä¼˜å…ˆçº§èŒƒå›´ */
+    printf ("show SCHED_FIFO of priority\n");
+    api_show_thread_priority(&attr, SCHED_FIFO);
 
-	/* »ñÈ¡ SCHED_RR ²ßÂÔÏÂµÄÏß³ÌÓÅÏÈ¼¶·¶Î§ */
-	printf("show SCHED_RR of priority\n");
-	api_show_thread_priority(&attr, SCHED_RR);
+    /* è·å– SCHED_RR ç­–ç•¥ä¸‹çš„çº¿ç¨‹ä¼˜å…ˆçº§èŒƒå›´ */
+    printf ("show SCHED_RR of priority\n");
+    api_show_thread_priority(&attr, SCHED_RR);
 
-	/* ÏÔÊ¾µ±Ç°Ïß³ÌµÄÓÅÏÈ¼¶ */
-	printf("show priority of current thread\n");
-	int priority = api_get_thread_priority(&attr);
+    /* æ˜¾ç¤ºå½“å‰çº¿ç¨‹çš„ä¼˜å…ˆçº§ */
+    printf ("show priority of current thread\n");
+    int priority = api_get_thread_priority (&attr);
 
-	/* ÊÖ¶¯ÉèÖÃµ÷¶È²ßÂÔ */
-	printf("Set thread policy\n");
+    /* æ‰‹åŠ¨è®¾ç½®è°ƒåº¦ç­–ç•¥ */
+    printf ("Set thread policy\n");
 
-	printf("set SCHED_FIFO policy\n");
-	api_set_thread_policy(&attr, SCHED_FIFO);
+    printf ("set SCHED_FIFO policy\n");
+    api_set_thread_policy(&attr, SCHED_FIFO);
 
-	printf("set SCHED_RR policy\n");
-	api_set_thread_policy(&attr, SCHED_RR);
+    printf ("set SCHED_RR policy\n");
+    api_set_thread_policy(&attr, SCHED_RR);
 
-	/* »¹Ô­Ö®Ç°µÄ²ßÂÔ */
-	printf("Restore current policy\n");
-	api_set_thread_policy(&attr, policy);
+    /* è¿˜åŸä¹‹å‰çš„ç­–ç•¥ */
+    printf ("Restore current policy\n");
+    api_set_thread_policy (&attr, policy);
 
-	/*
-	* ·´³õÊ¼»¯ pthread_attr_t ½á¹¹
-	* Èç¹û pthread_attr_init µÄÊµÏÖ¶ÔÊôĞÔ¶ÔÏóµÄÄÚ´æ¿Õ¼äÊÇ¶¯Ì¬·ÖÅäµÄ£¬
-	* phread_attr_destory ¾Í»áÊÍ·Å¸ÃÄÚ´æ¿Õ¼ä
-	*/
-	rs = pthread_attr_destroy(&attr);
-	assert(rs == 0);
+    /* 
+     * ååˆå§‹åŒ– pthread_attr_t ç»“æ„
+     * å¦‚æœ pthread_attr_init çš„å®ç°å¯¹å±æ€§å¯¹è±¡çš„å†…å­˜ç©ºé—´æ˜¯åŠ¨æ€åˆ†é…çš„ï¼Œ
+     * phread_attr_destory å°±ä¼šé‡Šæ”¾è¯¥å†…å­˜ç©ºé—´
+     */
+    rs = pthread_attr_destroy (&attr);
+    assert (rs == 0);
 
-	return 0;
+    return 0;
 }
 
 
