@@ -1,0 +1,8 @@
+﻿# dockerfile
+
+FROM gcc:latest
+RUN  mkdir /usr/src/docker_demo_app
+COPY docker_demo.c /usr/src/docker_demo_app
+WORKDIR /usr/src/docker_demo_app
+RUN  gcc docker_demo.c 
+CMD ["./a.out"]
