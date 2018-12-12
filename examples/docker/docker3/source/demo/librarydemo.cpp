@@ -5,9 +5,8 @@
 /* dlopen + dlsym + dlclose */
 #include <dlfcn.h>
 
-#define LOG_DBG(fmt,...) printf(fmt, ##__VA_ARGS__)
-#define LOG_ERR(fmt,...) printf(fmt, ##__VA_ARGS__)
-//#define LOG_ERR(fmt,...) printf(fmt" ["__FILE__":%s().%d]\n", ##__VA_ARGS__, __FUNC__, __LINE__)
+#define LOG_DBG(fmt,...) printf(fmt"\n", ##__VA_ARGS__)
+#define LOG_ERR(fmt,...) printf(fmt" ["__FILE__":%s().%d]\n", ##__VA_ARGS__, __FUNCTION__, __LINE__)
 
 class LibTestCase
 {
@@ -38,8 +37,7 @@ public:
 #define DYNLIB_LOAD( a ) dlopen( a, RTLD_NOW )
 #define DYNLIB_GETSYM( a, b ) dlsym( a, b )
 #define DYNLIB_UNLOAD( a ) dlclose( a )
-	typedef int BD_SOCKET;
-#define P_EXPORT_DLL
+//#define P_EXPORT_DLL
 #endif
 
 		double ret = 0.0f;
