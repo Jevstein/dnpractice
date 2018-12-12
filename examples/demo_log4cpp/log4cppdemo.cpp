@@ -5,7 +5,7 @@
  *  Created by Jevstein on 2018/10/25 17:34.
  *  Copyright @ 2018year Jevstein. All rights reserved.
  *
- *  ²Î¿¼: https://github.com/zhiyong0804/server_develop_guide_book/blob/master/chapter11/11.2_log4cpp.md
+ *  å‚è€ƒ: https://github.com/zhiyong0804/server_develop_guide_book/blob/master/chapter11/11.2_log4cpp.md
  */
 #include <stdio.h>
 #include <iostream>

@@ -27,7 +27,7 @@ LD		:= g++
 AR		:= ar rcs
 RANLIB	:= ranlib
 
-DEBUG_CXXFLAGS		:=  -Wall -g -DDEBUG
+DEBUG_CXXFLAGS		:= -Wall -g -DDEBUG
 RELEASE_CXXFLAGS	:= -Wall -O3 -DNDEBUG
 
 DEBUG_LDFLAGS		:= -g

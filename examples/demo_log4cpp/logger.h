@@ -5,7 +5,7 @@
  *  Created by Jevstein on 2018/10/25 17:57.
  *  Copyright @ 2018year Jevstein. All rights reserved.
  *
- *  日志优先级：NOTSET < DEBUG < INFO < NOTICE < WARN < ERROR < CRIT < ALERT < FATAL = EMERG
+ *  鏃ュ織浼樺厛绾э細NOTSET < DEBUG < INFO < NOTICE < WARN < ERROR < CRIT < ALERT < FATAL = EMERG
  */
 #ifndef DISTRIBUTED_LOGGER_H_
 #define DISTRIBUTED_LOGGER_H_
@@ -46,9 +46,9 @@ protected:
 //LOG(ERROR) << "oh, what happed?";
 
 
-//// 输出到std::cout
+//// 杈撳嚭鍒皊td::cout
 //log4cpp::Appender *appender = new log4cpp::OstreamAppender("root", &std::cout);
-//// 输出到log文件
+//// 杈撳嚭鍒發og鏂囦欢
 ////log4cpp::Appender *appender = new log4cpp::FileAppender("root", "test.log");
 //
 //log4cpp::PatternLayout *patternLayout = new log4cpp::PatternLayout();
