@@ -3,71 +3,78 @@
 # by jevstein
 # 2018/12/11
 #
+# DEBUG	: DEBUG can be set to YES to include debug info, or NO otherwise(RELEASE)
+#		  you can also use like this: make DEBUG:=NO
 #**********************************************************
 
-#**********************************************************
-#
-#	user design
-#**********************************************************
+# 1.CONFIG
+DEBUG 		:= YES
+APP			:= demo
+APP_OUT		:= demo
+ROOT_DIR	:= ../..
+PROJECT_DIR := .
+OUT_DIR		:= $(ROOT_DIR)/bin
+DEFS_DIR	:= 
+INCS_DIR	:= -I$(ROOT_DIR)/include
+LIBS_DIR	:= $(ROOT_DIR)/lib
+LIBS		:= -ldl -lpthread\
+			   -L$(LIBS_DIR)/ -lStaticLibrary
+SRCS		:= $(wildcard *.cpp)
 
-# DEBUG can be set to YES to include debug info, or NO otherwise
-DEBUG := YES
-HOME	:= ../..
-OUTPUT	:= $(HOME)/bin/demo
-DEFS	:= 
-INCS	:= -I$(HOME)/include\
-		   #-I../../libs/libghttp-1.0.9
-LIBS	:= -ldl -lpthread\
-           -L$(HOME)/lib/ -lStaticLibrary
+# 2.TOOL CHAIN
+CXX				:= g++
+COMMON_FLAGS	:= -g
+CXX_FLAGS		:= $(COMMON_FLAGS)
+MKDIR_P     	:= mkdir -p
+CP          	:= cp
+RM				:= rm
+INSTALL			:= $(CP)
 
-#**********************************************************
-#CXX		:= colorgcc /usr/bin/g++
-CXX		:= g++
-LD		:= g++
-AR		:= ar rcs
-RANLIB	:= ranlib
-
-DEBUG_CXXFLAGS		:= -Wall -g -DDEBUG
-RELEASE_CXXFLAGS	:= -Wall -O3 -DNDEBUG
-
-DEBUG_LDFLAGS		:= -g
-RELEASE_LDFLAGS		:=
-
-ifeq (YES, $(DEBUG))
-	CXXFLAGS		:= $(DEBUG_CXXFLAGS) $(INCS)
-	LDFLLAGS		:= $(DEBUG_LDFLAGS) $(INCS)
+ifeq ($(DEBUG), YES)
+    OBJ_DIR		:= Debug
 else
-	CXXFLAGS		:= $(RELEASE_CXXFLAGS) $(INCS)
-	LDFLLAGS		:= $(RELEASE_CSSFLAGS) $(INCS)
+    OBJ_DIR		:= Release
 endif
 
-all:$(OUTPUT)
-
-SRCS	:= $(wildcard *.cpp)
-
+# 3.FILES
 OBJS	:= $(addsuffix .o, $(basename $(SRCS)))
+OBJS	:= $(patsubst %.o, $(OBJ_DIR)/%.o, $(OBJS))
 
-DEPS	:= $(addsuffix .d, $(basename $(SRCS)))
-#**********************************************************
-#	OUTPUT
-#**********************************************************
+# 4.OUTPUT
+all: prog install
+	$(info $(APP_OUT)\makefile -> all success!)
 
-$(OUTPUT):$(OBJS)
-	$(LD) -o $@ $(CXXFLAGS) $(OBJS) $(LIBS)
-	#$(AR) $@ $(OBJS)
-	
-#**********************************************************
-#	common rule
-#**********************************************************
-include $(subst .cpp,.d,$(SRCS))
+prog: $(OBJ_DIR)/$(APP_OUT)
+	$(info $(APP_OUT)\makefile -> $(OBJ_DIR)/$(APP_OUT))
 
-%.d : %.cpp
-	$(CXX) -M $(CPPFLAGS) $(INCS) $< > $@.$$$$; \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$;
-
-%.o : %.cpp
-	$(CXX) -c -o $@ $(CXXFLAGS) $(INCS) $<
+install: $(OUT_DIR)/$(APP_OUT)
+	$(info $(APP)\makefile -> $(OUT_DIR)/$(APP_OUT))
 
 clean:
-	rm -f $(OBJS) $(OUTPUT) $(DEPS) *.d
+	$(RM) -rf $(OBJ_DIR)
+
+cleaninstall:
+	$(RM) $(OUT_DIR)/$(APP_OUT)
+
+cleanall: clean cleaninstall
+	$(info $(APP)\makefile -> clean all success!)
+
+# 5.COMMON RULE
+$(OBJ_DIR)/%.o : %.cpp
+	$(info creating $@ ...)
+	@$(MKDIR_P) $(OBJ_DIR) ..
+	$(CXX) -c $(CXXFLAGS) $(INCS_DIR) $< -o $@
+
+$(OBJ_DIR)/$(APP_OUT): $(OBJS)
+	$(info linking ...)
+	$(CXX) $(CXX_FLAGS) -o $(OBJ_DIR)/$(APP_OUT) $(OBJS) $(LIBS)
+
+$(OUT_DIR)/$(APP_OUT): $(OBJ_DIR)/$(APP_OUT)
+	$(info installing ...)
+	@$(MKDIR_P) $(OUT_DIR) ..
+	@$(CP) $< $@
+
+#include $(subst .cpp,.d,$(SRCS))
+
+# 6.PHONY
+.PHONY: all prog install clean cleaninstall cleanall

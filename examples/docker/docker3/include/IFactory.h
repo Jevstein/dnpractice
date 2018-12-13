@@ -10,7 +10,7 @@
 // 对象接口
 struct IMath
 {
-	virtual ~IMath() = 0;
+	//virtual ~IMath() = 0;
 	virtual double add(double a, double b) = 0;//加法
 	virtual double sub(double a, double b) = 0;//减法
 	virtual double mul(double a, double b) = 0;//乘法
@@ -20,7 +20,7 @@ struct IMath
 // 工厂接口
 struct IFactory
 {
-	virtual ~IFactory();
+	//virtual ~IFactory();
 	virtual IMath* create_math();
 	virtual void destroy_math(IMath *math);
 };

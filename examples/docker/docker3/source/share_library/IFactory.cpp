@@ -4,10 +4,10 @@
 
 const char *LIB_INFO = "libDynamicLibrary version: 0.0.1 (" __DATE__ "," __TIME__ ")";
 
-IFactory::~IFactory()
-{
-
-}
+//IFactory::~IFactory()
+//{
+//
+//}
 
 IMath* IFactory::create_math()
 {

@@ -58,7 +58,7 @@ cleaninstall:
 cleanall: clean cleaninstall
 	$(info $(APP)\makefile -> clean all success!)
 
-# 5.common rule
+# 5.COMMON RULE
 $(OBJ_DIR)/%.o : %.cpp
 	$(info creating $@ ...)
 	@$(MKDIR_P) $(OBJ_DIR) ..

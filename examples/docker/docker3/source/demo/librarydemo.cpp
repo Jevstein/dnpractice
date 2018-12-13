@@ -44,6 +44,7 @@ public:
 
 		// 1.dlopen .so
 		LOG_DBG("1.dlopen '.so' ...");
+		
 		DYNLIB_HANDLE pHandler = DYNLIB_LOAD("../lib/libDynamicLibrary.so");//相对于exe的路径
 		if (pHandler == 0)
 		{
@@ -55,7 +56,7 @@ public:
 		LOG_DBG("2.find the exported function, and do something ...");
 		{
 			// 2.1.find the function named create_factory
-			LOG_DBG("2.1.find the function named create_factory ...");
+			LOG_DBG("  2.1.find the function named create_factory ...");
 			typedef	IFactory* (*PFNCreateFactory)();
 			PFNCreateFactory create_factory = (PFNCreateFactory)DYNLIB_GETSYM(pHandler, "create_factory");
 			if (!create_factory)
@@ -72,12 +73,12 @@ public:
 			}
 			
 			// 2.2.do math
-			LOG_DBG("2.2.control math object ...");
+			LOG_DBG("  2.2.control math object ...");
 			IMath *pMath = (IMath*)pFactory->create_math();
 			if (pMath)
 			{
 				// 2.2.1.do math
-				LOG_DBG("2.2.1.do math ...");
+				LOG_DBG("    2.2.1.do math ...");
 
 				LOG_DBG("		%lf + %lf = %lf", a, b, pMath->add(a, b));
 				LOG_DBG("		%lf - %lf = %lf", a, b, pMath->sub(a, b));
@@ -87,7 +88,7 @@ public:
 				ret = pMath->add(a, b);
 
 				// 2.2.2. destroy math
-				LOG_DBG("2.2.2.destroy math!");
+				LOG_DBG("    2.2.2.destroy math!");
 				pFactory->destroy_math(pMath);
 			}
 			else
@@ -96,7 +97,7 @@ public:
 			}
 
 			// 2.3.destroy_factory
-			LOG_DBG("2.3.call destroy_factory!");
+			LOG_DBG("  2.3.call destroy_factory!");
 			typedef	void* (*PFNDestroyFactory)(IFactory* factory);
 			PFNDestroyFactory destroy_factory = (PFNDestroyFactory)DYNLIB_GETSYM(pHandler, "destroy_factory");
 			destroy_factory(pFactory);
@@ -122,6 +123,8 @@ int main()
 	// 1.静态库测试
 	LOG_DBG("--- static library ---");
 	ts.do_static(a, b);
+
+	LOG_DBG("");
 
 	// 2.动态库测试
 	LOG_DBG("--- dynamic library---");
