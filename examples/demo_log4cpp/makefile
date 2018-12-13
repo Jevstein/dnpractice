@@ -40,10 +40,10 @@ OBJS	:= $(addsuffix .o, $(basename $(SRCS)))
 OBJS	:= $(patsubst %.o, $(OBJ_DIR)/%.o, $(OBJS))
 
 # 4.OUTPUT
-all: dist install
+all: prog install
 	$(info $(APP_OUT)\makefile -> all success!)
 
-dist: $(OBJ_DIR)/$(APP_OUT)
+prog: $(OBJ_DIR)/$(APP_OUT)
 	$(info $(APP_OUT)\makefile -> $(OBJ_DIR)/$(APP_OUT))
 
 install: $(OUT_DIR)/$(APP_OUT)
@@ -76,4 +76,4 @@ $(OUT_DIR)/$(APP_OUT): $(OBJ_DIR)/$(APP_OUT)
 #include $(subst .cpp,.d,$(SRCS))
 
 # 6.PHONY
-.PHONY: all dist install clean cleaninstall cleaninstall
+.PHONY: all prog install clean cleaninstall cleanall
