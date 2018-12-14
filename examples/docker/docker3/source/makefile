@@ -8,29 +8,40 @@
 #**********************************************************
 
 # 1.config
-dirs = static_library share_library demo
+ROOR_DIR = ..
+SRC_DIRS = static_library share_library demo
+INSTALL_DIR = $(ROOR_DIR)/docker_demo_app
 
 # 2.TOOL CHAIN OR PARAMETERS
 THREADS_FLAG = #-j2
 
 # 3.OUTPUT
-all:
-	@for dir in $(dirs); \
+all: prog install
+	$(info all success!)
+
+prog :
+	@for dir in $(SRC_DIRS); \
 	do \
 		cd $$dir; $(MAKE) $(THREADS_FLAG); cd -;\
 	done
 
-clean:
-	@for dir in $(dirs); \
+install :
+	mkdir -p $(INSTALL_DIR) $(INSTALL_DIR)/bin $(INSTALL_DIR)/lib;
+	cp -f $(ROOR_DIR)/bin/* $(INSTALL_DIR)/bin/;
+	cp -f $(ROOR_DIR)/lib/* $(INSTALL_DIR)/lib/;
+	
+clean :
+	@for dir in $(SRC_DIRS); \
 	do \
 		cd $$dir; $(MAKE) clean; cd -;\
 	done
 
-cleanall:
-	@for dir in $(dirs); \
+cleanall :
+	@for dir in $(SRC_DIRS); \
 	do \
 		cd $$dir; $(MAKE) cleanall; cd -;\
-	done
+	done;\
+	rm -rf $(INSTALL_DIR)/bin $(INSTALL_DIR)/lib;
 
 # 4.PHONY
-.PHONY: all clean cleanall
+.PHONY : all prog install clean cleanall

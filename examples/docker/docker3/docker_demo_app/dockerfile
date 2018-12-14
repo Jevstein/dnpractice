@@ -1,0 +1,17 @@
+# dockerfile
+
+
+FROM gcc:latest
+ENV APP_DIR=/usr/src/docker_demo_app
+RUN mkdir -p $APP_DIR $APP_DIR/bin $APP_DIR/lib
+ADD startup.sh $APP_DIR/startup.sh
+COPY ./bin/* $APP_DIR/bin/
+COPY ./lib/* $APP_DIR/lib/
+WORKDIR $APP_DIR/bin
+# CMD ["bash ./startup.sh"]
+CMD ["./demo"]
+
+#FROM ubuntu:latest
+#ADD ./DataImportClient.tar.gz  /usr/src/myapp
+#WORKDIR /usr/src/myapp/DataImportClient
+#CMD ["./startup.sh"]

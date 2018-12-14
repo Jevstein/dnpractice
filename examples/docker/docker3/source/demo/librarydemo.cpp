@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <unistd.h>
+#include <time.h>
+#include <string.h>
 #include "StaticMath.h"
 #include "IFactory.h"
 
@@ -118,36 +121,45 @@ int main()
 {
 	double a = 100.0;
 	double b = 200.0;
+	double sum_s = 0.0f;
+	double sum_d = 0.0f;
 	LibTestCase ts;
 
 	// 1.静态库测试
 	LOG_DBG("--- static library ---");
-	ts.do_static(a, b);
+	sum_s = ts.do_static(a, b);
 
 	LOG_DBG("");
 
 	// 2.动态库测试
 	LOG_DBG("--- dynamic library---");
-	ts.do_dynamic(a, b);
+	sum_d = ts.do_dynamic(a, b);
 
-    // FILE* file = fopen("t.txt","w+");
-    // if (file == NULL)
-    // {
-    //     return 0;
-    // }
+    FILE* file = fopen("t.txt","w+");
+    if (file == NULL)
+    {
+        return 0;
+    }
 
-    // char buf[20]="hello world!!!\n";
-    // int len = strlen(buf);
+    char buf[64]={0};
+    int len = strlen(buf);
+	{
+		time_t now_time = time(0);
+		tm* now_tm = localtime(&now_time);
+		char now_str[32] = { 0 };
+		strftime(now_str, 32, "%b%d %H:%M:%S", now_tm);
+		snprintf(buf, sizeof(buf), "[%s]: hello->sum_s=%f, sum_d=%f\n", now_str, sum_s, sum_d);
+	}
 
-    // while(1)
-    // {
-    //     fputs(buf,file);
-    //     fflush(file);
-    // //  printf("%s",buf);
-    //     sleep(1);
-    // }
+    while(1)
+    {
+        fputs(buf,file);
+        fflush(file);
+      	LOG_DBG("%s",buf);
+        sleep(1);
+    }
 
-    // fclose(file);
+    fclose(file);
 
     return 0;
 }
