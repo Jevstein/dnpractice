@@ -1,52 +1,36 @@
 #**********************************************************
 #
 # by jevstein
-# 2018/12/13
+# 2018/12/14
 #
 # DEBUG	: DEBUG can be set to YES to include debug info, or NO otherwise(RELEASE)
 #		  you can also use like this: make DEBUG:=NO
 #**********************************************************
 
 # 1.config
-DEMO_DIR = demo
-SHARE_LIBRARY_DIR = share_library
-STATIC_LIBTARY_DIR = static_library
-
-curr_dir = .
-#dirs = STATIC_LIBTARY_DIR SHARE_LIBRARY_DIR DEMO_DIR
 dirs = static_library share_library demo
 
-# 2.TOOL CHAIN
-THREAD_FLAG =
+# 2.TOOL CHAIN OR PARAMETERS
+THREADS_FLAG = #-j2
 
 # 3.OUTPUT
-
 all:
-	cd static_library; $(MAKE) clean
-	cd share_library; $(MAKE) clean
-	cd demo; $(MAKE) clean
-	#$(foreach name, $(dirs), echo $(name); cd $(name))
-
-all1:
-	for name in $(dirs); \
+	@for dir in $(dirs); \
 	do \
-		echo $$name; cd $$name; $$MAKE $$THREAD_FLAG;\
+		cd $$dir; $(MAKE) $(THREADS_FLAG); cd -;\
 	done
 
-
-#echo "$($$name)"; cd $($$name); $(MAKE) $(THREAD_FLAG);
-
 clean:
-	cd $(DEMO_DIR); $(MAKE) clean
-	cd $(SHARE_LIBRARY_DIR); $(MAKE) clean
-	cd $(STATIC_LIBTARY_DIR); $(MAKE) clean
+	@for dir in $(dirs); \
+	do \
+		cd $$dir; $(MAKE) clean; cd -;\
+	done
 
 cleanall:
-	cd $(DEMO_DIR); $(MAKE) cleanall
-	cd $(SHARE_LIBRARY_DIR); $(MAKE) cleanall
-	cd $(STATIC_LIBTARY_DIR); $(MAKE) cleanall
+	@for dir in $(dirs); \
+	do \
+		cd $$dir; $(MAKE) cleanall; cd -;\
+	done
 
-# 4.COMMON RULE
-
-# 5.PHONY
+# 4.PHONY
 .PHONY: all clean cleanall
