@@ -12,10 +12,7 @@ ROOR_DIR = ..
 SRC_DIRS = static_library share_library demo
 INSTALL_DIR = $(ROOR_DIR)/docker_demo_app
 
-# 2.TOOL CHAIN OR PARAMETERS
-THREADS_FLAG = #-j2
-
-# 3.OUTPUT
+# 2.OUTPUT
 all: prog install
 	$(info all success!)
 
@@ -43,5 +40,5 @@ cleanall :
 	done;\
 	rm -rf $(INSTALL_DIR)/bin $(INSTALL_DIR)/lib;
 
-# 4.PHONY
+# 3.PHONY
 .PHONY : all prog install clean cleanall
