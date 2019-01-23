@@ -5,17 +5,17 @@
  *  Created by Jevstein on 2018/11/1 17:06.
  *  Copyright @ 2018year Jevstein. All rights reserved.
  *
- *  ºËÐÄº¯Êý:
+ *  ï¿½ï¿½ï¿½Äºï¿½ï¿½ï¿½:
  *  1.int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
- *    op:     EPOLL_CTL_ADD¡¢EPOLL_CTL_MOD¡¢EPOLL_CTL_DEL
- *    events£ºEPOLLIN¡¢EPOLLOUT¡¢EPOLLRDHUP¡¢EPOLLPRI¡¢EPOLLERR¡¢EPOLLHUP¡¢EPOLLET¡¢EPOLLONESHOT¡¢EPOLLWAKEUP
+ *    op:     EPOLL_CTL_ADDï¿½ï¿½EPOLL_CTL_MODï¿½ï¿½EPOLL_CTL_DEL
+ *    eventsï¿½ï¿½EPOLLINï¿½ï¿½EPOLLOUTï¿½ï¿½EPOLLRDHUPï¿½ï¿½EPOLLPRIï¿½ï¿½EPOLLERRï¿½ï¿½EPOLLHUPï¿½ï¿½EPOLLETï¿½ï¿½EPOLLONESHOTï¿½ï¿½EPOLLWAKEUP
  */
 
 #ifndef __EPOLL_API_H__
 #define __EPOLL_API_H__
 
 #include <sys/epoll.h>
-#include "../socket_api.h"
+#include "socket_api.h"
 
 //#ifndef LOG_INFO
 //	//#define LOG_INFO(fmt,...) printf(fmt"\n", ##__VA_ARGS__)
@@ -24,15 +24,15 @@
 //	#define LOG_ERR(fmt,...) { time_t now = time(NULL); printf("[%.24s][error] "fmt"\n", ctime(&now), ##__VA_ARGS__); }
 //#endif
 
-//// event¶¨Òå
+//// eventï¿½ï¿½ï¿½ï¿½
 //#if defined(YI_OS_MAC) || defined(YI_OS_WIN32) //mac: kqueue, win: select|iocp
-//#	define EPOLLIN			(1 << 0)	//#define EVFILT_READ	(-1)    //±íÊ¾¶ÔÓ¦µÄÎÄ¼þÃèÊö·û¿ÉÒÔ¶Á£¨°üÀ¨¶Ô¶ËSOCKETÕý³£¹Ø±Õ£©
-//#	define EPOLLOUT			(1 << 1)	//#define EVFILT_WRITE	(-2)    //±íÊ¾¶ÔÓ¦µÄÎÄ¼þÃèÊö·û¿ÉÒÔÐ´
-//#	define EPOLLPRI			(1 << 2)	//#define EVFILT_AIO	(-3)	/* attached to aio requests */ //±íÊ¾¶ÔÓ¦µÄÎÄ¼þÃèÊö·ûÓÐ½ô¼±µÄÊý¾Ý¿É¶Á£¨ÕâÀïÓ¦¸Ã±íÊ¾ÓÐ´øÍâÊý¾Ýµ½À´£©
-//#	define EPOLLERR			(1 << 3)	//#define EVFILT_VNODE	(-4)	/* attached to vnodes */       //±íÊ¾¶ÔÓ¦µÄÎÄ¼þÃèÊö·û·¢Éú´íÎó
-//#	define EPOLLHUP			(1 << 4)	//#define EVFILT_PROC	(-5)	/* attached to struct proc */  //±íÊ¾¶ÔÓ¦µÄÎÄ¼þÃèÊö·û±»¹Ò¶Ï
-//#	define EPOLLET			(1 << 5)	//#define EVFILT_SIGNAL	(-6)	/* attached to struct proc */  //½«EPOLLÉèÎª±ßÔµ´¥·¢(Edge Triggered)Ä£Ê½£¬ÕâÊÇÏà¶ÔÓÚË®Æ½´¥·¢(Level Triggered)À´ËµµÄ
-//#	define EPOLLONESHOT		(1 << 6)	//#define EVFILT_TIMER	(-7)	/* timers */                   //Ö»¼àÌýÒ»´ÎÊÂ¼þ£¬µ±¼àÌýÍêÕâ´ÎÊÂ¼þÖ®ºó£¬Èç¹û»¹ÐèÒª¼ÌÐø¼àÌýÕâ¸ösocketµÄ»°£¬ÐèÒªÔÙ´Î°ÑÕâ¸ösocket¼ÓÈëµ½EPOLL¶ÓÁÐÀï
+//#	define EPOLLIN			(1 << 0)	//#define EVFILT_READ	(-1)    //ï¿½ï¿½Ê¾ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½SOCKETï¿½ï¿½ï¿½ï¿½ï¿½Ø±Õ£ï¿½
+//#	define EPOLLOUT			(1 << 1)	//#define EVFILT_WRITE	(-2)    //ï¿½ï¿½Ê¾ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´
+//#	define EPOLLPRI			(1 << 2)	//#define EVFILT_AIO	(-3)	/* attached to aio requests */ //ï¿½ï¿½Ê¾ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿É¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ã±ï¿½Ê¾ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½ï¿½ï¿½ï¿½ï¿½
+//#	define EPOLLERR			(1 << 3)	//#define EVFILT_VNODE	(-4)	/* attached to vnodes */       //ï¿½ï¿½Ê¾ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//#	define EPOLLHUP			(1 << 4)	//#define EVFILT_PROC	(-5)	/* attached to struct proc */  //ï¿½ï¿½Ê¾ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¶ï¿½
+//#	define EPOLLET			(1 << 5)	//#define EVFILT_SIGNAL	(-6)	/* attached to struct proc */  //ï¿½ï¿½EPOLLï¿½ï¿½Îªï¿½ï¿½Ôµï¿½ï¿½ï¿½ï¿½(Edge Triggered)Ä£Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ï¿½(Level Triggered)ï¿½ï¿½Ëµï¿½ï¿½
+//#	define EPOLLONESHOT		(1 << 6)	//#define EVFILT_TIMER	(-7)	/* timers */                   //Ö»ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½socketï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ù´Î°ï¿½ï¿½ï¿½ï¿½socketï¿½ï¿½ï¿½ëµ½EPOLLï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ////#	define EPOLLMACHPORT	(1 << 7)	//#define EVFILT_MACHPORT (-8)	/* Mach portsets */
 ////#	define EPOLLFS			(1 << 8)	//#define EVFILT_FS		(-9)	/* Filesystem events */
 ////#	define EPOLLUSER		(1 << 9)	//#define EVFILT_USER   (-10)   /* User events */

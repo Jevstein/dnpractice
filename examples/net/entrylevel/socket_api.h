@@ -24,10 +24,12 @@
 #include <arpa/inet.h>		//inet_ntoa
 //#include <netinet/tcp.h>
 
+#ifndef LOG_INFO
 //#define LOG_INFO(fmt,...) printf(fmt"\n", ##__VA_ARGS__)
 //#define LOG_ERR(fmt,...) printf("[error] "fmt"\n", ##__VA_ARGS__)
 #define LOG_INFO(fmt,...) { time_t now = time(NULL); printf("[%.24s] "fmt"\n", ctime(&now), ##__VA_ARGS__); }
 #define LOG_ERR(fmt,...) { time_t now = time(NULL); printf("[%.24s][error] "fmt"\n", ctime(&now), ##__VA_ARGS__); }
+#endif 
 
 typedef int YI_SOCKET;
 
