@@ -11,7 +11,6 @@ typedef int KEY_TYPE;
 struct name {                   \
     struct type* left;          \
     struct type* right;         \
-    struct type* parrent;/**/   \
 }
 
 // 节点
@@ -32,6 +31,7 @@ void bstree_destroy_node(struct bstree_node* node);
 int bstree_traversal(struct bstree_node *node);
 int bstree_insert(struct bstree *T, KEY_TYPE data);                 //增
 int bstree_delete(struct bstree *T, KEY_TYPE data);                 //删: 会删除整棵子树
+void bstree_delete(struct bstree_node *node);                       //删: 递归删除整棵子树
 int bstree_update(struct bstree *T, KEY_TYPE src, KEY_TYPE dest);   //改: 将不再有序了
 struct bstree_node* bstree_find(struct bstree *T, KEY_TYPE data);   //查
 
@@ -40,14 +40,14 @@ struct bstree_node* bstree_create_node(KEY_TYPE data) {
     assert(node != 0);//若连分配内存不成功，其它一定也可能出现异常，此时最适合用断言
 
     node->data = data;
-    node->left = node->right = node->parrent = NULL;
+    node->left = node->right = NULL;
     return node;
 }
 
 void bstree_destroy_node(struct bstree_node* node){
     if (node == NULL) return;
 
-    node->left = node->right = node->parrent = NULL;
+    node->left = node->right = NULL;
     free(node);
 }
 
@@ -71,12 +71,11 @@ int bstree_insert(struct bstree *T, KEY_TYPE data){
         return 0;
     }
 
-    struct bstree_node* node = bstree_create_node(data);
-    struct bstree_node* parrent = T->root;
+    struct bstree_node* node = T->root;
     struct bstree_node* p = T->root;
 
     while (p != NULL) {
-        parrent = p;
+        node = p;
 
         if (data < p->data)
             p = p->left;
@@ -84,14 +83,33 @@ int bstree_insert(struct bstree *T, KEY_TYPE data){
             p = p->right;
     }
 
-    if (data < parrent->data)
-        parrent->left = node;
+    if (data < node->data)
+        node->left = bstree_create_node(data);
     else 
-        parrent->right = node;
+        node->right = bstree_create_node(data);
 
-    node->parrent = parrent;
     
     return 0;
+}
+
+void bstree_delete(struct bstree_node *node) {
+    if (node == NULL) return;
+
+    struct bstree_node** temp = &node;
+
+    if (node->left == NULL && node->right == NULL) {//叶子节点
+        bstree_destroy_node(node);
+    } else if (node->left == NULL) {//左子树为空，重接右子树
+        *temp = node->right;
+        bstree_destroy_node(node);
+    } else if (node->right == NULL) {//右子树为空，重接左子树
+        *temp = node->left;
+        bstree_destroy_node(node);
+    } else {//左右子树都不为空
+        printf("| not null{");
+        bstree_traversal(node);
+        printf("}");
+    }
 }
 
 int bstree_delete(struct bstree *T, KEY_TYPE data) {
@@ -100,12 +118,7 @@ int bstree_delete(struct bstree *T, KEY_TYPE data) {
     struct bstree_node* node = bstree_find(T, data);
     if (node == NULL) return -1;
 
-    if (node->parrent->left == node)
-        node->parrent->left = NULL;
-    else
-        node->parrent->right = NULL;
-
-    bstree_destroy_node(node);
+    bstree_delete(node);
 
     return 0;
 }
@@ -124,7 +137,7 @@ struct bstree_node* bstree_find(struct bstree *T, KEY_TYPE data){
 
     struct bstree_node* node = T->root;
     
-    while (1) {
+    while (node != NULL) {
         if (node->data == data)
             return node;
 
@@ -152,10 +165,10 @@ int main () {
     bstree_traversal(T.root);
     printf("\n");
 
-    // 改
-    bstree_update(&T, 41, 51);
-    bstree_traversal(T.root);
-    printf("\n");
+    // // 改
+    // bstree_update(&T, 41, 51);
+    // bstree_traversal(T.root);
+    // printf("\n");
 
     // 删
     bstree_delete(&T, 43);
