@@ -30,8 +30,7 @@ struct bstree_node* bstree_create_node(KEY_TYPE data);
 void bstree_destroy_node(struct bstree_node* node);
 int bstree_traversal(struct bstree_node *node);
 int bstree_insert(struct bstree *T, KEY_TYPE data);                 //增
-int bstree_delete(struct bstree *T, KEY_TYPE data);                 //删: 会删除整棵子树
-void bstree_delete(struct bstree_node *node);                       //删: 递归删除整棵子树
+int bstree_delete(struct bstree *T, KEY_TYPE data);                 //删
 int bstree_update(struct bstree *T, KEY_TYPE src, KEY_TYPE dest);   //改: 将不再有序了
 struct bstree_node* bstree_find(struct bstree *T, KEY_TYPE data);   //查
 
@@ -92,36 +91,82 @@ int bstree_insert(struct bstree *T, KEY_TYPE data){
     return 0;
 }
 
-void bstree_delete(struct bstree_node *node) {
-    if (node == NULL) return;
+int bstree_delete(struct bstree *T, KEY_TYPE data) {
+    assert(T != NULL);
 
-    struct bstree_node** temp = &node;
+    struct bstree_node* p = T->root;
+    struct bstree_node* parent = NULL;
+    struct bstree_node* node = NULL;
+
+    // 找出待删节点和它的父节点
+    while(p) {
+        if (data = p->data) {
+            node = p;
+            break;
+        }
+
+        parent = p;
+        if (data < p->data)
+            p = p->left;
+        else 
+            p = p->right;
+    }
+
+    if (node == NULL)
+        return -1;
 
     if (node->left == NULL && node->right == NULL) {//叶子节点
+        if (parent == NULL) 
+            T->root = NULL;
         bstree_destroy_node(node);
     } else if (node->left == NULL) {//左子树为空，重接右子树
-        *temp = node->right;
+        if (parent == NULL)
+            T->root = node->right;
+        else {
+            if (parent->left == node)
+                parent->left = node->right;
+            else
+                parent->right = node->right;
+        }
         bstree_destroy_node(node);
     } else if (node->right == NULL) {//右子树为空，重接左子树
-        *temp = node->left;
+        if (parent == NULL)
+            T->root = node->left;
+        else {
+            if (parent->left == node)
+                parent->left = node->left;
+            else
+                parent->right = node->left;
+        }
         bstree_destroy_node(node);
     } else {//左右子树都不为空
+        // 此时分为3步：
+        // 1.找出右子树中最小的数（即：右子树最左的叶子节点）
+        // 2.将找出的节点“覆盖”到待删节点位置
+        // 3.删除待删节点
+        p = node->right;
+        while (!p) {
+            
+        }
+
         printf("| not null{");
         bstree_traversal(node);
         printf("}");
     }
-}
-
-int bstree_delete(struct bstree *T, KEY_TYPE data) {
-    assert(T != NULL);
-
-    struct bstree_node* node = bstree_find(T, data);
-    if (node == NULL) return -1;
-
-    bstree_delete(node);
 
     return 0;
 }
+
+// int bstree_delete(struct bstree *T, KEY_TYPE data) {
+//     assert(T != NULL);
+
+//     struct bstree_node* node = bstree_find(T, data);
+//     if (node == NULL) return -1;
+
+//     bstree_delete(node);
+
+//     return 0;
+// }
 
 int bstree_update(struct bstree *T, KEY_TYPE src, KEY_TYPE dest) {
     struct bstree_node* node = bstree_find(T, src);
