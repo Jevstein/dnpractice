@@ -14,28 +14,28 @@ struct name {                   \
 }
 
 // 节点
-struct bstree_node {
+typedef struct _bstree_node {
     KEY_TYPE data;
 
-    BSTREE_ENTRY(, bstree_node);
+    BSTREE_ENTRY(, _bstree_node);
     // BSTREE_ENTRY(Next, bstree_node) next;
-};
+} bstree_node_t;
 
 // 树
-struct bstree {
-    struct bstree_node *root;
-};
+typedef struct _bstree {
+    bstree_node_t *root;
+} bstree_t;
 
-struct bstree_node* bstree_create_node(KEY_TYPE data);
-void bstree_destroy_node(struct bstree_node* node);
-int bstree_traversal(struct bstree_node *node);
-int bstree_insert(struct bstree *T, KEY_TYPE data);                 //增
-int bstree_delete(struct bstree *T, KEY_TYPE data);                 //删
-int bstree_update(struct bstree *T, KEY_TYPE src, KEY_TYPE dest);   //改
-struct bstree_node* bstree_find(struct bstree *T, KEY_TYPE data);   //查
+bstree_node_t* bstree_create_node(KEY_TYPE data);
+void bstree_destroy_node(bstree_node_t* node);
+int bstree_traversal(bstree_node_t *node);
+int bstree_insert(bstree_t *T, KEY_TYPE data);                              //增
+int bstree_delete(bstree_t *T, KEY_TYPE data);                              //删
+int bstree_update(bstree_t *T, const KEY_TYPE src, const KEY_TYPE dest);    //改
+bstree_node_t* bstree_find(bstree_t *T, KEY_TYPE data);                     //查
 
-struct bstree_node* bstree_create_node(KEY_TYPE data) {
-    struct bstree_node* node = (struct bstree_node*)calloc(1, sizeof(struct bstree_node));
+bstree_node_t* bstree_create_node(KEY_TYPE data) {
+    bstree_node_t* node = (bstree_node_t*)calloc(1, sizeof(bstree_node_t));
     assert(node);//若连分配内存不成功，其它一定也可能出现异常，此时最适合用断言
 
     node->data = data;
@@ -43,7 +43,7 @@ struct bstree_node* bstree_create_node(KEY_TYPE data) {
     return node;
 }
 
-void bstree_destroy_node(struct bstree_node* node){
+void bstree_destroy_node(bstree_node_t* node){
     if (!node)
         return;
 
@@ -51,9 +51,9 @@ void bstree_destroy_node(struct bstree_node* node){
     free(node);
 }
 
-int bstree_traversal(struct bstree_node *node) {
+int bstree_traversal(bstree_node_t *node) {
     if (!node)
-        return 0;
+        return -1;
 
 	// printf("%4d", node->data);//置此：前序遍历
     bstree_traversal(node->left);
@@ -64,7 +64,7 @@ int bstree_traversal(struct bstree_node *node) {
     return 0;
 }
 
-int bstree_insert(struct bstree *T, KEY_TYPE data){
+int bstree_insert(bstree_t *T, KEY_TYPE data){
     assert(T);
 
     if (!T->root) {
@@ -72,16 +72,12 @@ int bstree_insert(struct bstree *T, KEY_TYPE data){
         return 0;
     }
 
-    struct bstree_node* parrent = T->root;
-    struct bstree_node* p = T->root;
+    bstree_node_t* parrent = T->root;
+    bstree_node_t* p = T->root;
 
     while (p) {
         parrent = p;
-
-        if (data < p->data)
-            p = p->left;
-        else 
-            p = p->right;
+        p = (data < p->data) ? p->left : p->right;
     }
 
     if (data < parrent->data)
@@ -92,13 +88,13 @@ int bstree_insert(struct bstree *T, KEY_TYPE data){
     return 0;
 }
 
-int bstree_delete(struct bstree *T, KEY_TYPE data) {
+int bstree_delete(bstree_t *T, KEY_TYPE data) {
     assert(T);
 
-    struct bstree_node* p = T->root;
-    struct bstree_node* temp = NULL;
-    struct bstree_node* parent = NULL;
-    struct bstree_node* node = NULL;
+    bstree_node_t* p = T->root;
+    bstree_node_t* temp = NULL;
+    bstree_node_t* parent = NULL;
+    bstree_node_t* node = NULL;
 
     // 找出待删节点, 和它的父节点
     while(p) {
@@ -108,10 +104,7 @@ int bstree_delete(struct bstree *T, KEY_TYPE data) {
         }
 
         parent = p;
-        if (data < p->data)
-            p = p->left;
-        else 
-            p = p->right;
+        p = (data < p->data) ? p->left : p->right;
     }
 
     if (!node)
@@ -179,32 +172,123 @@ int bstree_delete(struct bstree *T, KEY_TYPE data) {
     return 0;
 }
 
-int bstree_update(struct bstree *T, KEY_TYPE src, KEY_TYPE dest) {
-    // struct bstree_node* node = bstree_find(T, src);
-    // if (!node)
-    //  return -1;
+int bstree_update(bstree_t *T, const KEY_TYPE src, const KEY_TYPE dest) {
+    //分为以下步骤:
+    // 1.找出值为src的源节点node*，并将值替换为dest
+    // 2.赋予新值后检查是否有序，若有序则返回；若无序则移除node*节点，并重新保证二叉排序依然有序
+    // 3.将移除并赋了新值的node*节点,重新挂载到树中合适位置
 
-    // node->data = dest;
+    assert(T);
 
-    
+    if (src == dest)
+        return 0;
 
+    bstree_node_t* parent = NULL;
+    bstree_node_t* node = T->root;
+    bstree_node_t* p = NULL;
+    bstree_node_t* s = NULL;//p的父节点
+
+    //1.查找&赋值
+    while (node) {
+        if (src == node->data)
+            break;
+
+        parent = node;
+        node = (src < node->data) ? node->left : node->right;
+    }
+
+    if (!node)
+        return -1;
+
+    node->data = dest;
+
+    // 2.移除&有序
+    if (!node->left && !node->right) {//叶子节点
+        if (!parent || (parent && parent->data <= node->data))
+            return 0;//有序
+        
+        if (parent->left == node) parent->left = NULL;
+        else                      parent->right = NULL;
+
+    } else if (!node->left) {//无左子树
+        if ((!parent || (parent && parent->data <= node->data)) 
+            && (node->data <= node->right->data))
+            return 0;//有序
+
+        if (!parent) {
+            T->root = node->right;
+        } else {
+            if (parent->left == node) parent->left = node->right;
+            else                      parent->right = node->right;
+        }
+
+    } else if (!node->right) {//无右子树
+        //  if (node->data >= node->left->data)
+        //     return 0;//有序
+
+        if (!parent) {
+            T->root = node->left;
+        } else {
+            if (parent->left == node) parent->left = node->left;
+            else                      parent->right = node->left;
+        }       
+    } else {//有左右子树
+        // if ((!parent || (parent && parent->data <= node->data)) 
+        //     && (node->data >= node->left->data)
+        //     && (node->data <= node->right->data))
+        //     return 0;//有序
+
+        //2.1 找右子树的最左子节点
+        p = node->right;
+        while (p) {
+            if (!p->left)
+                break;
+
+            s = p;
+            p = p->left;
+        }
+
+        //2.2 将最左子节点调整到node节点位置
+        p->left = node->left;
+        if (s) {
+            s->left = p->right;
+            p->right = node->right;
+        }
+
+        if (!parent)
+            T->root = p;
+        else {
+            if (parent->left == node) parent->left = p;
+            else                      parent->right = p;
+        }
+    }
+
+    // 3.重新挂载
+    node->left = node->right = NULL;
+    parent = T->root;
+    p = T->root;
+    while (p) {
+        parent = p;
+        p = (node->data < p->data) ? p->left : p->right;
+    }
+
+    assert(parent);
+    if (node->data < parent->data) parent->left = node;
+    else                           parent->right = node;
 
     return 0;
 }
 
-struct bstree_node* bstree_find(struct bstree *T, KEY_TYPE data){
+bstree_node_t* bstree_find(bstree_t *T, KEY_TYPE data){
     assert(T);
 
-    struct bstree_node* node = T->root;
+    bstree_node_t* node = T->root;
     
     while (node) {
         if (node->data == data)
             return node;
 
-        if (data < node->data)
-            node = node->left;
-        else
-            node = node->right;    
+        node = (data < node->data) ? node->left : node->right;   
     }
 
     return NULL;
@@ -213,28 +297,53 @@ struct bstree_node* bstree_find(struct bstree *T, KEY_TYPE data){
 #define ARRAY_LENGTH 10
 
 int main () {
-    KEY_TYPE data_array[ARRAY_LENGTH] = {23, 45, 56, 32, 41, 90, 21, 43, 87, 76};
+    KEY_TYPE data_array[ARRAY_LENGTH] = {89, 45, 56, 32, 41, 90, 21, 43, 87, 76};
 
-    struct bstree T = {0};
+    bstree_t T = {0};
     int i = 0;
+    int data = 0;
+    bstree_node_t *node = NULL;
 
     // 增
+    printf("========= insert =========\n");
     for (i = 0; i < ARRAY_LENGTH; ++i) {
+        printf("insert[%d][%d]: ", i, data_array[i]);
         bstree_insert(&T, data_array[i]);
+        bstree_traversal(T.root);
+        printf("\n");
     }
-    bstree_traversal(T.root);
-    printf("\n");
 
-    // // 改
-    // bstree_update(&T, 41, 51);
-    // bstree_traversal(T.root);
-    // printf("\n");
-
-    // 删
-    bstree_delete(&T, 23);
-    bstree_traversal(T.root);
-    printf("\n");
+    // 改
+    printf("========= update =========\n");
+    for (i = 0; i < ARRAY_LENGTH; ++i) {
+        data = (i % 2 == 0) ? data_array[i] + 10 : data_array[i] - 10;
+        printf("update[%d][%d->%d]: ", i, data_array[i], data);
+        bstree_update(&T, data_array[i], data);
+        bstree_traversal(T.root);
+        printf("\n");
+        data_array[i] = data;
+    }
 
     // 查
+    printf("========= find =========\n");
+    data = 23;
+    for (i = -1; i < ARRAY_LENGTH; ++i) {
+        if ( i != -1)
+            data = data_array[i];
 
+        node = bstree_find(&T, data);
+        if (node)
+            printf("find[%d][%d][%p]: data=%d, left=%p, right=%p\n", i, data, node, node->data, node->left, node->right);
+        else
+            printf("failed to find [%d] from bstree!\n", data);
+    }
+
+    // 删
+    printf("========= delete =========\n");
+    for (i = 0; i < ARRAY_LENGTH; ++i) {
+        printf("delete[%d][%d]: ", i, data_array[i]);
+        bstree_delete(&T, data_array[i]);
+        bstree_traversal(T.root);
+        printf("\n");
+    }
 }
