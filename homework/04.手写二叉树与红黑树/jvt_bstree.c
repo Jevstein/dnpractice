@@ -1,7 +1,7 @@
 
 /*
- *  jvt_btree.h 
- *  jvt_btree
+ *  jvt_bstree.h 
+ *  jvt_bstree
  *
  *  Created by Jevstein on 2019/01/27 19:36.
  *  Copyright @ 2019year Jevstein. All rights reserved.
@@ -16,7 +16,7 @@
 typedef int KEY_TYPE;
 
 // key与左右子树分离
-#define BSTREE_ENTRY(name, type)\
+#define JVT_BSTREE_ENTRY(name, type)\
 struct name {                   \
     struct type* left;          \
     struct type* right;         \
@@ -26,8 +26,8 @@ struct name {                   \
 typedef struct _jvt_bstree_node {
     KEY_TYPE data;
 
-    BSTREE_ENTRY(, _jvt_bstree_node);
-    // BSTREE_ENTRY(Next, bstree_node) next;
+    JVT_BSTREE_ENTRY(, _jvt_bstree_node);
+    // JVT_BSTREE_ENTRY(Next, bstree_node) next;
 } jvt_bstree_node_t;
 
 // 树
@@ -41,7 +41,7 @@ int jvt_bstree_traversal(jvt_bstree_node_t *node);
 int jvt_bstree_insert(jvt_bstree_t *T, KEY_TYPE data);                              //增
 int jvt_bstree_delete(jvt_bstree_t *T, KEY_TYPE data);                              //删
 int jvt_bstree_update(jvt_bstree_t *T, const KEY_TYPE src, const KEY_TYPE dest);    //改
-jvt_bstree_node_t* jvt_bstree_find(jvt_bstree_t *T, KEY_TYPE data);                     //查
+jvt_bstree_node_t* jvt_bstree_search(jvt_bstree_t *T, KEY_TYPE data);               //查
 
 jvt_bstree_node_t* jvt_bstree_create_node(KEY_TYPE data) {
     jvt_bstree_node_t* node = (jvt_bstree_node_t*)calloc(1, sizeof(jvt_bstree_node_t));
@@ -288,7 +288,7 @@ int jvt_bstree_update(jvt_bstree_t *T, const KEY_TYPE src, const KEY_TYPE dest) 
     return 0;
 }
 
-jvt_bstree_node_t* jvt_bstree_find(jvt_bstree_t *T, KEY_TYPE data){
+jvt_bstree_node_t* jvt_bstree_search(jvt_bstree_t *T, KEY_TYPE data){
     assert(T);
 
     jvt_bstree_node_t* node = T->root;
@@ -302,6 +302,7 @@ jvt_bstree_node_t* jvt_bstree_find(jvt_bstree_t *T, KEY_TYPE data){
 
     return NULL;
 }
+
 
 #define ARRAY_LENGTH 10
 
@@ -340,7 +341,7 @@ int main () {
         if ( i != -1)
             data = data_array[i];
 
-        node = jvt_bstree_find(&T, data);
+        node = jvt_bstree_search(&T, data);
         if (node)
             printf("find[%d][%d][%p]: data=%d, left=%p, right=%p\n", i, data, node, node->data, node->left, node->right);
         else
