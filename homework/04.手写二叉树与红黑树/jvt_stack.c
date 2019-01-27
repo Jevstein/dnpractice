@@ -56,7 +56,7 @@ int jvt_stack_push(jvt_stack_t *s, const KEY_TYPE data) {
     assert(s);
 
     if (s->top >= s->capacity) {
-        s->base = realloc(s->base, (s->capacity + ALLOC_SIZE) * sizeof(KEY_TYPE));
+        s->base = (KEY_TYPE *)realloc(s->base, (s->capacity + ALLOC_SIZE) * sizeof(KEY_TYPE));
         assert(s->base);
 
         s->capacity += ALLOC_SIZE;
