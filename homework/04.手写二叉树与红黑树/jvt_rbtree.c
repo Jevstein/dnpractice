@@ -193,7 +193,7 @@ int jvt_rbtree_insert(jvt_rbtree_t *T, const KEY_TYPE key, const DATA_TYPE data)
             return -1;
 
         parent = p;
-        p = (key < p->left->key) ? p->left : p->right;
+        p = (key < p->key) ? p->left : p->right;
     }
 
     node->parent = parent;
@@ -276,7 +276,9 @@ int jvt_rbtree_traversal(jvt_rbtree_node_t *node) {
 
     jvt_rbtree_traversal(node->left);
     // printf("node: [%d][%p][%p][%p][%d][%d]\n", node->color, node->parent, node->left, node->right, node->key, *(DATA_TYPE*)node->value);
-    printf("{[%d][%p][%p][%p][%d][%d]} ", node->color, node->parent, node->left, node->right, node->key, *(DATA_TYPE*)node->value);
+    // printf("{[%d][%p][%p][%p][%d][%d]} ", node->color, node->parent, node->left, node->right, node->key, *(DATA_TYPE*)node->value);
+    // printf("[%d][%d] ", node->key, *(DATA_TYPE*)node->value);
+    printf("%d ", node->key);
     jvt_rbtree_traversal(node->right);
 
     return 0;
