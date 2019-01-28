@@ -55,6 +55,7 @@ jvt_rbtree_node_t* jvt_rbtree_create_node_data(const KEY_TYPE key, DATA_TYPE dat
 void jvt_rbtree_destroy_node(jvt_rbtree_node_t *node);
 int jvt_rbtree_rotate_l(jvt_rbtree_t *T, jvt_rbtree_node_t *node);                   //private
 int jvt_rbtree_rotate_r(jvt_rbtree_t *T, jvt_rbtree_node_t *node);                   //private
+int jvt_rbtree_adjust_node(jvt_rbtree_t *T, jvt_rbtree_node_t *node);                //adjust
 int jvt_rbtree_insert(jvt_rbtree_t *T, const KEY_TYPE key, const DATA_TYPE data);    //增
 int jvt_rbtree_delete(jvt_rbtree_t *T, const KEY_TYPE key);                          //删
 int jvt_rbtree_update(jvt_rbtree_t *T, const KEY_TYPE key, const DATA_TYPE data);    //改
@@ -180,17 +181,19 @@ int jvt_rbtree_rotate_r(jvt_rbtree_t *T, jvt_rbtree_node_t *y){
 int jvt_rbtree_insert(jvt_rbtree_t *T, const KEY_TYPE key, const DATA_TYPE data) {
     assert(T);
 
+    // I.创建新节点
     jvt_rbtree_node_t *node = jvt_rbtree_create_node_data(key, data);
     assert(node);
 
     jvt_rbtree_node_t *p = T->root;
     jvt_rbtree_node_t *parent = T->nil;//当前节点的"父节点"
-    jvt_rbtree_node_t *uncle = T->nil;//当前节点的"叔节点"
 
-    // I.将节点挂载到树上
+    // II.将新节点挂载到树上的合适位置
     while (p != T->nil) {
-        if (key == p->key)
+        if (key == p->key) {
+            jvt_rbtree_destroy_node(node);
             return -1;
+        }
 
         parent = p;
         p = (key < p->key) ? p->left : p->right;
@@ -207,50 +210,60 @@ int jvt_rbtree_insert(jvt_rbtree_t *T, const KEY_TYPE key, const DATA_TYPE data)
     if (key < parent->key) parent->left = node;
     else                   parent->right = node;
 
-    // II.无需调整
-    if (parent->color == JVT_BLACK)
-    {//当前节点的“父节点”是黑色: 将当前节点直接挂在“父节点”上即可
+    // III.调整红黑树
+    jvt_rbtree_adjust_node(T, node);
+
+    return 0;
+}
+
+int jvt_rbtree_adjust_node(jvt_rbtree_t *T, jvt_rbtree_node_t *node) {
+    if (!node)
+        return -1;
+
+    jvt_rbtree_node_t *parent = node->parent;//当前节点的"叔节点"
+
+    // I.当前节点的“父节点”是黑色: 无需调整
+    if (parent == T->nil || parent->color == JVT_BLACK) {//“父节点”是黑色
+        if (parent == T->nil) {//重置根节点
+             node->color = JVT_BLACK;
+             T->root = node;
+        }
         return 0;
     }
 
-    // III.调整红黑树 - 当前节点的“父节点”是红色 
-    do {
-        parent = node->parent;
-        if (parent == T->nil) {
-            node->color = JVT_BLACK;
-            break;
-        }
+    // II.当前节点的“父节点”是红色: 调整红黑树
+    jvt_rbtree_node_t *uncle = T->nil;          //当前节点的"叔节点"
+    if (parent->parent)
+        uncle = (parent->parent->left == parent) ? parent->parent->right : parent->parent->left;
 
-        uncle = (parent->left == node) ? parent->right : parent->left;
-        if (uncle == T->nil || uncle->color == JVT_BLACK)
-        {//“叔节点”是黑色
-            if (node == parent->right) 
-            {//1.当前节点的"父节点"是红色，"叔节点"是黑色，且当前节点是其"父节点"的"右孩子"
-                // (01) 将“父节点”设为“黑色”
-                // (02) 将“祖父节点”设为“红色”
-                // (03) 以“祖父节点”为支点进行左旋
-                parent->color = JVT_BLACK;
-                parent->parent->color = JVT_RED;
-                jvt_rbtree_rotate_l(T, parent->parent);
-                break;
-            } else {//2.当前节点的"父节点"是红色，"叔节点"是黑色，且当前节点是其"父节点"的"左孩子"
-                //(01) 将“父节点”作为“新的当前节点”
-                //(02) 以“新的当前节点”为支点进行右旋
-                node = parent;
-                jvt_rbtree_rotate_r(T, node);
-            }
-        } else {//3.“叔节点”是红色
-            // (01) 将“父节点”设为黑色
-            // (02) 将“叔叔节点”设为黑色
-            // (03) 将“祖父节点”设为“红色
-            // (04) 将“祖父节点”设为“当前节点”(红色节点)；即，之后继续对“当前节点”进行操作
-
+    if (uncle == T->nil || uncle->color == JVT_BLACK)
+    {//“叔节点”是黑色
+        if (node == parent->right) 
+        {//1.当前节点的"父节点"是红色，"叔节点"是黑色，且当前节点是其"父节点"的"右孩子"
+            // (01) 将“父节点”设为“黑色”
+            // (02) 将“祖父节点”设为“红色”
+            // (03) 以“祖父节点”为支点进行左旋
             parent->color = JVT_BLACK;
-            uncle->color = JVT_BLACK;
             parent->parent->color = JVT_RED;
-            node = parent->parent;
+            jvt_rbtree_rotate_l(T, parent->parent);
+        } else {//2.当前节点的"父节点"是红色，"叔节点"是黑色，且当前节点是其"父节点"的"左孩子"
+            //(01) 将“父节点”作为“新的当前节点”
+            //(02) 以“新的当前节点”为支点进行右旋
+            jvt_rbtree_rotate_r(T, parent);
+            // return jvt_rbtree_adjust_node(T, parent);
         }
-    } while(1);
+    } else {//3.当前节点的"父节点"是红色, 且“叔节点”是红色
+        // (01) 将“父节点”设为黑色
+        // (02) 将“叔节点”设为黑色
+        // (03) 将“祖父节点”设为红色
+        // (04) 将“祖父节点”设为“当前节点”(红色节点)；即，之后继续对“当前节点”进行操作
+
+        parent->color = JVT_BLACK;
+        uncle->color = JVT_BLACK;
+        parent->parent->color = JVT_RED;
+
+        return jvt_rbtree_adjust_node(T, parent->parent);
+    }
 
     return 0;
 }
@@ -275,10 +288,16 @@ int jvt_rbtree_traversal(jvt_rbtree_node_t *node) {
         return -1;
 
     jvt_rbtree_traversal(node->left);
-    // printf("node: [%d][%p][%p][%p][%d][%d]\n", node->color, node->parent, node->left, node->right, node->key, *(DATA_TYPE*)node->value);
-    // printf("{[%d][%p][%p][%p][%d][%d]} ", node->color, node->parent, node->left, node->right, node->key, *(DATA_TYPE*)node->value);
+
+    // printf("node: [%d][%p][%p][%p][%p][%d][%d]\n", node->color, node, node->parent, node->left, node->right, node->key, *(DATA_TYPE*)node->value);
+    // printf("{[%d][%p][%p][%p][%p][%d][%d]} ", node->color, node, node->parent, node->left, node->right, node->key, *(DATA_TYPE*)node->value);
     // printf("[%d][%d] ", node->key, *(DATA_TYPE*)node->value);
-    printf("%d ", node->key);
+    // printf("[%d]%d ", node->key, node->color);
+    printf("%d|%d|%d|%d|%d; ", node->key, node->color
+    , node->parent ? node->parent->key : 0
+    , node->left ? node->left->key : 0
+    , node->right ? node->right->key : 0);
+
     jvt_rbtree_traversal(node->right);
 
     return 0;
@@ -288,7 +307,7 @@ int jvt_rbtree_traversal(jvt_rbtree_node_t *node) {
 #define ARRAY_LENGTH 10
 
 int main () {
-    KEY_TYPE data_array[ARRAY_LENGTH] = {23, 45, 56, 32, 41, 90, 21, 43, 87, 76};
+    KEY_TYPE data_array[] = {23, 45, 56, 32, 41, 90, 21, 43, 87, 76};
 
     jvt_rbtree_t T = {0};
     int i = 0;
@@ -306,10 +325,10 @@ int main () {
     for (i = 0; i < ARRAY_LENGTH; ++i) {
         key = data_array[i];
         value = key * 10;
-        printf("insert[%d][%d][%d]: ", i, key, value);
+        printf("insert_%d[%d-%d]: ", i, key, value);
         jvt_rbtree_insert(&T, key, value);
         jvt_rbtree_traversal(T.root);
-        printf("\n");
+        printf("[%d]\n", T.root->key);
     }
     // jvt_rbtree_traversal(T.root);
     // printf("\n");
@@ -333,10 +352,15 @@ int main () {
             key = data_array[i];
 
         node = jvt_rbtree_search(&T, key);
-        if (node)
-            printf("find: [%d][%p][%p][%p][%d][%d]\n", node->color, node->parent, node->left, node->right, node->key, *(DATA_TYPE*)node->value);
-        else
+        if (node) {
+            printf("find: [%d-%d] %d|%d|%d|%d\n", node->key, *(DATA_TYPE*)node->value
+            , node->color
+            , node->parent ? node->parent->key : 0
+            , node->left ? node->left->key : 0
+            , node->right ? node->right->key : 0);
+        } else {
             printf("failed to find [%d] from bstree!\n", key);
+        }
     }
 
     // // 删

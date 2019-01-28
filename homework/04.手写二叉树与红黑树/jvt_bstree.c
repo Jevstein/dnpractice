@@ -359,4 +359,6 @@ int main () {
 
     printf("========= the end =========\n");
     printf("T.root: %p\n", T.root);
+
+    return 0;
 }
