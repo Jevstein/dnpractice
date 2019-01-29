@@ -55,7 +55,7 @@ jvt_rbtree_node_t* jvt_rbtree_create_node_data(const KEY_TYPE key, DATA_TYPE dat
 void jvt_rbtree_destroy_node(jvt_rbtree_node_t *node);
 int jvt_rbtree_rotate_l(jvt_rbtree_t *T, jvt_rbtree_node_t *node);                   //private
 int jvt_rbtree_rotate_r(jvt_rbtree_t *T, jvt_rbtree_node_t *node);                   //private
-int jvt_rbtree_adjust_node(jvt_rbtree_t *T, jvt_rbtree_node_t *node);                //adjust
+int jvt_rbtree_adjust_node(jvt_rbtree_t *T, jvt_rbtree_node_t *node);                //private
 int jvt_rbtree_insert(jvt_rbtree_t *T, const KEY_TYPE key, const DATA_TYPE data);    //增
 int jvt_rbtree_delete(jvt_rbtree_t *T, const KEY_TYPE key);                          //删
 int jvt_rbtree_update(jvt_rbtree_t *T, const KEY_TYPE key, const DATA_TYPE data);    //改
@@ -169,7 +169,7 @@ int jvt_rbtree_rotate_r(jvt_rbtree_t *T, jvt_rbtree_node_t *y){
     x->parent = y->parent;//3.
     if (y->parent == T->nil)        T->root = x;//4. 
     else if (y == y->parent->left)  y->parent->left = x;
-    else                            y->parent->right = y;
+    else                            y->parent->right = x;
 
     // III.y
     x->right = y;//5.
@@ -220,7 +220,7 @@ int jvt_rbtree_adjust_node(jvt_rbtree_t *T, jvt_rbtree_node_t *node) {
     if (!node)
         return -1;
 
-    jvt_rbtree_node_t *parent = node->parent;//当前节点的"叔节点"
+    jvt_rbtree_node_t *parent = node->parent; //当前节点的"父节点"
 
     // I.当前节点的“父节点”是黑色: 无需调整
     if (parent == T->nil || parent->color == JVT_BLACK) {//“父节点”是黑色
@@ -232,7 +232,7 @@ int jvt_rbtree_adjust_node(jvt_rbtree_t *T, jvt_rbtree_node_t *node) {
     }
 
     // II.当前节点的“父节点”是红色: 调整红黑树
-    jvt_rbtree_node_t *uncle = T->nil;          //当前节点的"叔节点"
+    jvt_rbtree_node_t *uncle = T->nil; //当前节点的"叔节点"
     if (parent->parent)
         uncle = (parent->parent->left == parent) ? parent->parent->right : parent->parent->left;
 
@@ -249,15 +249,16 @@ int jvt_rbtree_adjust_node(jvt_rbtree_t *T, jvt_rbtree_node_t *node) {
         } else {//2.当前节点的"父节点"是红色，"叔节点"是黑色，且当前节点是其"父节点"的"左孩子"
             //(01) 将“父节点”作为“新的当前节点”
             //(02) 以“新的当前节点”为支点进行右旋
-            jvt_rbtree_rotate_r(T, parent);
-            // return jvt_rbtree_adjust_node(T, parent);
+            node = parent;
+            jvt_rbtree_rotate_r(T, node);
+
+            return jvt_rbtree_adjust_node(T, node);
         }
     } else {//3.当前节点的"父节点"是红色, 且“叔节点”是红色
         // (01) 将“父节点”设为黑色
         // (02) 将“叔节点”设为黑色
         // (03) 将“祖父节点”设为红色
         // (04) 将“祖父节点”设为“当前节点”(红色节点)；即，之后继续对“当前节点”进行操作
-
         parent->color = JVT_BLACK;
         uncle->color = JVT_BLACK;
         parent->parent->color = JVT_RED;
