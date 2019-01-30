@@ -55,7 +55,7 @@ jvt_rbtree_node_t* jvt_rbtree_create_node_data(const KEY_TYPE key, DATA_TYPE dat
 void jvt_rbtree_destroy_node(jvt_rbtree_node_t *node);
 int jvt_rbtree_rotate_l(jvt_rbtree_t *T, jvt_rbtree_node_t *node);                   //private
 int jvt_rbtree_rotate_r(jvt_rbtree_t *T, jvt_rbtree_node_t *node);                   //private
-int jvt_rbtree_adjust_node(jvt_rbtree_t *T, jvt_rbtree_node_t *node);                //private
+int jvt_rbtree_fixup_node(jvt_rbtree_t *T, jvt_rbtree_node_t *node);                //private
 int jvt_rbtree_insert(jvt_rbtree_t *T, const KEY_TYPE key, const DATA_TYPE data);    //增
 int jvt_rbtree_delete(jvt_rbtree_t *T, const KEY_TYPE key);                          //删
 int jvt_rbtree_update(jvt_rbtree_t *T, const KEY_TYPE key, const DATA_TYPE data);    //改
@@ -178,45 +178,7 @@ int jvt_rbtree_rotate_r(jvt_rbtree_t *T, jvt_rbtree_node_t *y){
     return 0;
 }
 
-int jvt_rbtree_insert(jvt_rbtree_t *T, const KEY_TYPE key, const DATA_TYPE data) {
-    assert(T);
-
-    // I.创建新节点
-    jvt_rbtree_node_t *node = jvt_rbtree_create_node_data(key, data);
-    assert(node);
-
-    jvt_rbtree_node_t *p = T->root;
-    jvt_rbtree_node_t *parent = T->nil;//当前节点的"父节点"
-
-    // II.将新节点挂载到树上的合适位置
-    while (p != T->nil) {
-        if (key == p->key) {
-            jvt_rbtree_destroy_node(node);
-            return -1;
-        }
-
-        parent = p;
-        p = (key < p->key) ? p->left : p->right;
-    }
-
-    node->parent = parent;
-
-    if (parent == T->nil) {//根节点为空
-        T->root = node;
-        node->color = JVT_BLACK;
-        return 0;
-    }
-
-    if (key < parent->key) parent->left = node;
-    else                   parent->right = node;
-
-    // III.调整红黑树
-    jvt_rbtree_adjust_node(T, node);
-
-    return 0;
-}
-
-int jvt_rbtree_adjust_node(jvt_rbtree_t *T, jvt_rbtree_node_t *node) {
+int jvt_rbtree_fixup_node(jvt_rbtree_t *T, jvt_rbtree_node_t *node) {
     if (!node)
         return -1;
 
@@ -252,7 +214,7 @@ int jvt_rbtree_adjust_node(jvt_rbtree_t *T, jvt_rbtree_node_t *node) {
             node = parent;
             jvt_rbtree_rotate_r(T, node);
 
-            return jvt_rbtree_adjust_node(T, node);
+            return jvt_rbtree_fixup_node(T, node);
         }
     } else {//3.当前节点的"父节点"是红色, 且“叔节点”是红色
         // (01) 将“父节点”设为黑色
@@ -263,8 +225,46 @@ int jvt_rbtree_adjust_node(jvt_rbtree_t *T, jvt_rbtree_node_t *node) {
         uncle->color = JVT_BLACK;
         parent->parent->color = JVT_RED;
 
-        return jvt_rbtree_adjust_node(T, parent->parent);
+        return jvt_rbtree_fixup_node(T, parent->parent);
     }
+
+    return 0;
+}
+
+int jvt_rbtree_insert(jvt_rbtree_t *T, const KEY_TYPE key, const DATA_TYPE data) {
+    assert(T);
+
+    // I.创建新节点
+    jvt_rbtree_node_t *node = jvt_rbtree_create_node_data(key, data);
+    assert(node);
+
+    jvt_rbtree_node_t *p = T->root;
+    jvt_rbtree_node_t *parent = T->nil;//当前节点的"父节点"
+
+    // II.将新节点挂载到树上的合适位置
+    while (p != T->nil) {
+        if (key == p->key) {
+            jvt_rbtree_destroy_node(node);
+            return -1;
+        }
+
+        parent = p;
+        p = (key < p->key) ? p->left : p->right;
+    }
+
+    node->parent = parent;
+
+    if (parent == T->nil) {//根节点为空
+        T->root = node;
+        node->color = JVT_BLACK;
+        return 0;
+    }
+
+    if (key < parent->key) parent->left = node;
+    else                   parent->right = node;
+
+    // III.调整红黑树
+    jvt_rbtree_fixup_node(T, node);
 
     return 0;
 }
@@ -284,6 +284,10 @@ jvt_rbtree_node_t* jvt_rbtree_search(jvt_rbtree_t *T, const KEY_TYPE key) {
     return NULL;
 }
 
+int jvt_rbtree_delete(jvt_rbtree_t *T, const KEY_TYPE key) {
+    return 0;
+}
+
 int jvt_rbtree_traversal(jvt_rbtree_node_t *node) {
     if (!node)
         return -1;
@@ -294,7 +298,7 @@ int jvt_rbtree_traversal(jvt_rbtree_node_t *node) {
     // printf("{[%d][%p][%p][%p][%p][%d][%d]} ", node->color, node, node->parent, node->left, node->right, node->key, *(DATA_TYPE*)node->value);
     // printf("[%d][%d] ", node->key, *(DATA_TYPE*)node->value);
     // printf("[%d]%d ", node->key, node->color);
-    printf("%d|%d|%d|%d|%d; ", node->key, node->color
+    printf("%d|%d|%d|%d|%d, ", node->key, node->color
     , node->parent ? node->parent->key : 0
     , node->left ? node->left->key : 0
     , node->right ? node->right->key : 0);
@@ -317,12 +321,12 @@ int main () {
     DATA_TYPE value = 0;
     jvt_rbtree_node_t *node = NULL;
 
-    // 增
-    printf("========= initialize =========\n");
+    // 初始化
+    printf("========= 1.init =========\n");
     jvt_rbtree_init(&T);
 
     // 增
-    printf("========= insert =========\n");
+    printf("\n========= 2.insert =========\n");
     for (i = 0; i < ARRAY_LENGTH; ++i) {
         key = data_array[i];
         value = key * 10;
@@ -334,8 +338,9 @@ int main () {
     // jvt_rbtree_traversal(T.root);
     // printf("\n");
 
-    // // 改
-    // printf("========= update =========\n");
+    // 改
+    printf("\n========= 3.update =========\n");
+    printf("sorry, please wait a moment for me ...\n");
     // for (i = 0; i < ARRAY_LENGTH; ++i) {
     //     data = (i % 2 == 0) ? data_array[i] + 10 : data_array[i] - 10;
     //     printf("update[%d][%d->%d]: ", i, data_array[i], data);
@@ -346,7 +351,7 @@ int main () {
     // }
 
     // 查
-    printf("========= search =========\n");
+    printf("\n========= 4.search =========\n");
     key = 20;
     for (i = -1; i < ARRAY_LENGTH; ++i) {
         if ( i != -1)
@@ -354,18 +359,20 @@ int main () {
 
         node = jvt_rbtree_search(&T, key);
         if (node) {
-            printf("find: [%d-%d] %d|%d|%d|%d\n", node->key, *(DATA_TYPE*)node->value
+            printf("search key[%d]: [%d-%d] %d|%d|%d|%d\n", key
+            , node->key, *(DATA_TYPE*)node->value
             , node->color
             , node->parent ? node->parent->key : 0
             , node->left ? node->left->key : 0
             , node->right ? node->right->key : 0);
         } else {
-            printf("failed to find [%d] from bstree!\n", key);
+            printf("failed to search key[%d] from bstree!\n", key);
         }
     }
 
-    // // 删
-    // printf("========= delete =========\n");
+    // 删
+    printf("\n========= 5.delete =========\n");
+    printf("sorry, please wait a moment for me ...\n");
     // for (i = 0; i < ARRAY_LENGTH; ++i) {
     //     printf("delete[%d][%d]: ", i, data_array[i]);
     //     jvt_bstree_delete(&T, data_array[i]);
@@ -373,7 +380,7 @@ int main () {
     //     printf("\n");
     // }
 
-    printf("========= the end =========\n");
+    printf("\n========= 6.the end =========\n");
     printf("T.root: %p\n", T.root);
 
     return 0;

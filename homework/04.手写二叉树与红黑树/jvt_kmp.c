@@ -54,11 +54,11 @@ int jvt_kmp_matcher(const char *text, const char *pattern, int *next) {
 
         if (k == n) {
 			//printf("Pattern occurs with shift: %d\n", (i-n+1));
-            break;
+            return i-k+1;
         }
     }
 
-    return i-k+1;
+    return -1;
 }
 
 int jvt_kmp_matcher_all(const char *text, const char *pattern, int *next, int *idxs) {
@@ -71,7 +71,7 @@ int jvt_kmp_matcher_all(const char *text, const char *pattern, int *next, int *i
     int i;
     int k;
     int count = 0;
-    for (i = 0, k=0; i < m; i++) {
+    for (i = 0, k = 0; i < m; i++) {
         while ((k > 0) && (text[i] != pattern[k])) {
             k = next[k-1];
         }
@@ -80,10 +80,12 @@ int jvt_kmp_matcher_all(const char *text, const char *pattern, int *next, int *i
             k++;
 
         if (k == n) {
-			printf("Pattern occurs with shift: %d\n", (i-n+1));
+			// printf("Pattern occurs with shift: %d\n", (i-n+1));
             idxs[count++] = i - k + 1;
             // k = 0;
             continue;
+        } else {
+			// printf("i=%d, k=%d, n=%d\n", i, k, n);
         }
     }
 
@@ -91,41 +93,59 @@ int jvt_kmp_matcher_all(const char *text, const char *pattern, int *next, int *i
 }
 
 int main () {
-    int i, j, n;
+    int k, i, j, n;
 	int next[20] = {0};
     int idxs[20] = {-1};
 
 	char *text = "ababxbabababcdabdcadfdsss";
-	char *pattern = "ababababc";
+    char patterns[][20] = {"abababc", "ab", "a", "ababababc", "hehe"};
 
-    printf("========= init =========\n");
-    printf("text: '%s', pattern: '%s'\n", text, pattern);
+    printf("========= 1.init =========\n");
+    printf("text: '%s'\n", text);
+    for( k = 0; k < sizeof(patterns) / 20; k++)
+    {
+        printf("pattern[%d]: '%s'\n", k, patterns[k]);
+    }
+    
 
-    printf("========= matcher =========\n");
-	int idx = jvt_kmp_matcher(text, pattern, next);
-	printf("match pattern: idx=%d, context='", idx);
-	for (i = 0; i < strlen(pattern); i++) {
-		printf("%c", text[i + idx]);
-	}
-	printf("'\n");
-
-    printf("========= matcher all =========\n");
-    memset(next, 0, sizeof(next));
-    n = jvt_kmp_matcher_all(text, pattern, next, idxs);
-    if (n == 0) {
-        printf("failed to find '%s'!\n", pattern);
-    } else {
-	    printf("match pattern: count=%d, context=\n", n);
-        for (i = 0; i < n; i++) {
-            printf("idx=%d, '", i);
-            for (j = 0; j < strlen(pattern); j++) {
-                printf("%c", text[j + idxs[i]]);
+    printf("\n========= 2.matcher =========\n");
+    for( k = 0; k < sizeof(patterns) / 20; k++)
+    {
+        int idx = jvt_kmp_matcher(text, patterns[k], next);
+        if (idx < 0) {
+            printf("failed to match pattern[%d]['%s'] from '%s'!\n", k, patterns[k], text);
+        } else {
+            printf("match pattern[%d]['%s']: object=[%d]['", k, patterns[k], idx);
+            for (i = 0; i < strlen(patterns[k]); i++) {
+                printf("%c", text[i + idx]);
             }
-	        printf("'\n");
+            printf("']\n");
         }
     }
 
-    printf("========= the end =========\n");
+
+    printf("\n========= 3.matcher all =========\n");
+    for( k = 0; k < sizeof(patterns) / 20; k++)
+    {
+        n = jvt_kmp_matcher_all(text, patterns[k], next, idxs);
+        if (n == 0) {
+            printf("failed to match pattern[%d]['%s'] from '%s'!\n", k, patterns[k], text);
+        } else {
+            printf("match pattern[%d]['%s']: count=%d, objects=\n{\n", k, patterns[k], n);
+            for (i = 0; i < n; i++) {
+                printf("   [%d][%d]['", i, idxs[i]);
+                for (j = 0; j < strlen(patterns[k]); j++) {
+                    printf("%c", text[idxs[i] + j]);
+                }
+                printf("']\n");
+            }
+            printf("}\n");
+        }
+    }
+
+    printf("\n========= 4.the end =========\n");
+    printf("perfect!\n");
+
 
     return 0;
 }
