@@ -124,7 +124,7 @@ int main () {
     }
 
 
-    printf("\n========= 3.matcher all =========\n");
+    printf("\n========= 3.all matcher =========\n");
     for( k = 0; k < sizeof(patterns) / 20; k++)
     {
         n = jvt_kmp_matcher_all(text, patterns[k], next, idxs);
