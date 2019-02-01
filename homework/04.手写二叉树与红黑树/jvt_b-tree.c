@@ -93,14 +93,67 @@ void jvt_btree_destroy_node(jvt_btree_node_t *node){
 }
 
 void jvt_btree_split_child(jvt_btree_t *T, jvt_btree_node_t *x, int idx) {
+    //画图理解:
+    //x = create出来的新子根节点
+    //y = 待分裂的节点作为新左子节点
+    //z = create出来的新右子节点
+
+    int j = 0;
     int t = T->t;
 
     jvt_btree_node_t *y = x->children[idx];
     jvt_btree_node_t *z = jvt_btree_create_node(t, y->leaf);
 
+    // z:
 	z->num = t - 1;
+    for (j = 0; j < t - 1; j++) {
+        z->keys[j] = y->keys[j+t];
+    }
+    if (y->leaf == 0) {
+        for (j = 0; j < t; j++) {
+            z->children[j] = y->children[j+t];
+        }
+    }
+
+    // y:
+    y->num = t - 1;
+
+    // x:
+    for (j = x->num; j >= idx + 1; j--) {
+        x->children[j+1] = x->children[j];
+    }
+    x->children[idx + 1] = z;
+    for (j = x->num - 1; j >= idx; j--) {
+        x->keys[j+1] = x->keys[j];
+    }
+    x->keys[idx] = y->keys[t-1];
+    x->num += 1;
 }
 
+void jvt_btree_insert_nonfull(jvt_btree_t *T, jvt_btree_node_t *x, KEY_VALUE k) {
+    int i = x->num - 1;
+
+    if (x->leaf == 1) {
+        while ((i >= 0) && (x->keys[i] > k)) {
+            x->keys[i+1] = x->keys[i];
+            i--;
+        }
+
+        x->keys[i+1] = k;
+        x->num += 1;
+    } else {
+        while ((i >= 0) && (x->keys[i] > k))
+            i--;
+
+        if (x->children[i+1]->num == (2 * (T->t) - 1)) {
+            jvt_btree_split_child(T, x, i+1);
+            if (k > x->keys[i+1])
+                i++;
+        }
+
+        jvt_btree_insert_nonfull(T, x->children[i+1], k);
+    }
+}
 
 // int jvt_btree_insert(jvt_btree_t *T, KEY_VALUE key) {
 //     assert(T);
