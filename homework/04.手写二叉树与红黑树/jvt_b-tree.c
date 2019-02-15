@@ -468,14 +468,14 @@ int main () {
         }
     }
     
-    printf("\n========= 4.delete =========\n");
+    printf("\n========= 5.delete =========\n");
     for (i = 0; i < KEY_SIZE; i++) {
         printf("delete [%i]['%c']--> \n", i, keys[i]);
         jvt_btree_delete(&T, keys[i]);
         jvt_btree_print(&T, T.root, 0);
     }
 
-    printf("\n========= 5.the end =========\n");
+    printf("\n========= 6.the end =========\n");
     // jvt_btree_destroy(&T);
     printf("T.root: %p, t=%d\n", T.root, T.t);
 
