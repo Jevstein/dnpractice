@@ -1,5 +1,5 @@
 /*
- *  jvt_kmp.h 
+ *  jvt_kmp.c 
  *  jvt_kmp
  *
  *  Created by Jevstein on 2019/01/30 07:20.

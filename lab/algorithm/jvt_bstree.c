@@ -1,6 +1,6 @@
 
 /*
- *  jvt_bstree.h 
+ *  jvt_bstree.c 
  *  jvt_bstree
  *
  *  Created by Jevstein on 2019/01/27 19:36.

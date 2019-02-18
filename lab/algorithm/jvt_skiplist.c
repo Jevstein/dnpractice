@@ -1,5 +1,5 @@
 /*
- *  jvt_skiplist.h 
+ *  jvt_skiplist.c 
  *  jvt_skiplist
  *
  *  Created by Jevstein on 2019/02/14 10:58.
