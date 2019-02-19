@@ -16,18 +16,55 @@
 #include "jvt_algorithm.h"
 #include "sort/jvt_sort.h"
 
-#define MAX_LEVEL 3
+#define NONE                 "\e[0m"
+#define BLACK                "\e[0;30m"
+#define L_BLACK              "\e[1;30m"
+#define RED                  "\e[0;31m"
+#define L_RED                "\e[1;31m"
+#define GREEN                "\e[0;32m"
+#define L_GREEN              "\e[1;32m"
+#define BROWN                "\e[0;33m"
+#define YELLOW               "\e[1;33m"
+#define BLUE                 "\e[0;34m"
+#define L_BLUE               "\e[1;34m"
+#define PURPLE               "\e[0;35m"
+#define L_PURPLE             "\e[1;35m"
+#define CYAN                 "\e[0;36m"
+#define L_CYAN               "\e[1;36m"
+#define GRAY                 "\e[0;37m"
+#define WHITE                "\e[1;37m"
+
+#define BOLD                 "\e[1m"
+#define UNDERLINE            "\e[4m"
+#define BLINK                "\e[5m"
+#define REVERSE              "\e[7m"
+#define HIDE                 "\e[8m"
+#define CLEAR                "\e[2J"
+#define CLRLINE              "\r\e[K" //or "\e[1K\r"
+
+
 enum ELEVEL {
     L1 = 0,
     L2,
     L3,
+    L4,
+    L5,
+    L6,
+
+    LMAX = 8,
 };
 
-char space__[MAX_LEVEL][32] = {
+char space__[LMAX][32] = {
       ""
     , "  "
-    , "      "};
+    , "    "
+    , "      "
+    , "        "
+    , "          "
+    , "            "
+    , "              "};
 
+    
 int data__[] = { 99, 62, 85, 62, 40, 36, 89, 72, 23, 19, 64, 80, 26, 84, 47, 83, 79, 94, 86, 99,
                  43, 54, 20, 10, 34, 20, 65, 91, 55, 38, 42,  5, 51, 27, 18, 90, 14, 58, 15, 89,
                  77, 77, 68, 54, 12, 66, 88, 91, 59, 83,  9, 21, 98, 45, 06,  3, 88, 39, 95, 96,
@@ -35,21 +72,20 @@ int data__[] = { 99, 62, 85, 62, 40, 36, 89, 72, 23, 19, 64, 80, 26, 84, 47, 83,
 
 typedef struct _jvt_sort {
     jvt_datas_t datas;
-    int levels[MAX_LEVEL];
+    // int levels[MAX_LEVEL];
 } jvt_sort_t;
 
 
 void jvt_sort_init(jvt_sort_t *obj);
 void jvt_sort_reset(jvt_sort_t *obj);
-void jvt_sort_print(jvt_sort_t *obj);
-void jvt_sort_title(jvt_sort_t *obj, const char *title);
+void jvt_sort_print(jvt_sort_t *obj, int l);
+void jvt_sort_title(jvt_sort_t *obj, const char *title, int l);
 
 
 void jvt_sort_init(jvt_sort_t *obj) {
     assert(obj);
     obj->datas.size = sizeof(data__) / sizeof(data__[0]);
     obj->datas.data = (int *)calloc(1, obj->datas.size * sizeof(int));
-    memset(obj->levels, 0, sizeof(obj->levels));
 }
 
 void jvt_sort_reset(jvt_sort_t *obj) {
@@ -57,44 +93,46 @@ void jvt_sort_reset(jvt_sort_t *obj) {
     memcpy(obj->datas.data, data__, sizeof(data__));
 }
 
-void jvt_sort_print(jvt_sort_t *obj) {
+void jvt_sort_print(jvt_sort_t *obj, int level) {
     assert(obj);
-    int l=L3;
-    printf("\n%s", space__[l]);
+    printf("\n%s", space__[level]);
 
     int i;
     for (i = 0; i < obj->datas.size; i++) {
         printf("%d %s%s", obj->datas.data[i]
         , (i > 0 && i % 30 == 0) ? "\n" : ""
-        , (i > 0 && i % 30 == 0) ? space__[l] : "");
+        , (i > 0 && i % 30 == 0) ? space__[level] : "");
     }
 
     printf("\n");
 }
 
-void jvt_sort_title(jvt_sort_t *obj, const char *title) {
-    int l = L1;
-    printf("%s⭐️%d.%s\n", space__[l], ++obj->levels[l], title);
-    obj->levels[l+1] = 0;
+void jvt_sort_title(jvt_sort_t *obj, const char *title, int level) {
+    switch (level % 3)
+    {
+    case 0:     printf(BLUE "%s☆%s\n" NONE, space__[level], title);     break;
+    case 1:     printf(GREEN "%s☆%s\n" NONE, space__[level], title);    break;
+    case 2:     printf(RED "%s☆%s\n" NONE, space__[level], title);      break;
+    default:    printf("%s☆%s\n", space__[level], title);               break;
+    }
 }
   
-#define _JVT_TITLE_(s, o) {                         \
-    jvt_sort_title(o, s);                           \
+#define _JVT_TITLE_(s, o, l) {                          \
+    jvt_sort_title(o, s, l);                            \
 }
 
-#define _JVT_CALL_(s, func, o) {                    \
-    int l = L2;                                     \
-    printf("%s>%d.%d.%s:\n%s{", space__[l], (o)->levels[l-1], ++(o)->levels[l], s, space__[l]);\
-    jvt_sort_reset(o);                              \
-    /*jvt_sort_print(o);*/                          \
-	struct timeval tv1;                             \
-	struct timeval tv2;                             \
-	gettimeofday(&tv1, NULL);                       \
-    func(&(o)->datas);                              \
-	gettimeofday(&tv2, NULL);                       \
+#define _JVT_CALL_(s, func, o, l) {                     \
+    printf("%s*%s:\n%s{", space__[l], s, space__[l]);   \
+    jvt_sort_reset(o);                                  \
+    /*jvt_sort_print(o, l);*/                           \
+	struct timeval tv1;                                 \
+	struct timeval tv2;                                 \
+	gettimeofday(&tv1, NULL);                           \
+    func(&(o)->datas);                                  \
+	gettimeofday(&tv2, NULL);                           \
 	int cost = (tv2.tv_sec - tv1.tv_sec) * 1000000 + (tv2.tv_usec - tv1.tv_usec);\
-    jvt_sort_print(o);                              \
-    printf("%s} cost: %d(us)\n\n", space__[l], cost); \
+    jvt_sort_print(o, l + 2);                           \
+    printf("%s} cost: %d(us)\n\n", space__[l], cost);   \
 }
 
 
@@ -106,24 +144,24 @@ int main()
 
     printf("========= sort =========\n");
 
-    _JVT_TITLE_("插入排序", &obj);
+    _JVT_TITLE_("1.插入排序", &obj, L1);
     {
-        _JVT_TITLE_("直接插入排序", &obj);
+        _JVT_TITLE_("1.1.直接插入排序", &obj, L2);
         {
-            _JVT_CALL_("简单", jvt_easy_insertion_sort, &obj);
-            _JVT_CALL_("高级", jvt_enhanced_insertion_sort, &obj);
+            _JVT_CALL_("1.简单", jvt_easy_insertion_sort, &obj, L3);
+            _JVT_CALL_("2.高级", jvt_enhanced_insertion_sort, &obj, L3);
         }
 
-        _JVT_TITLE_("折半插入排序(二分插入)", &obj);
-        {
-            _JVT_CALL_("简单", jvt_easy_insertion_sort, &obj);
-            _JVT_CALL_("高级", jvt_enhanced_insertion_sort, &obj);
-        }
+        _JVT_TITLE_("1.2.折半插入排序(二分插入)", &obj, L2);
+        // {
+        //     _JVT_CALL_("1.简单", jvt_easy_insertion_sort, &obj, L3);
+        //     _JVT_CALL_("2.高级", jvt_enhanced_insertion_sort, &obj, L3);
+        // }
     }
 
-    _JVT_TITLE_("直接插入排序", &obj);
-    _JVT_CALL_("简单", jvt_easy_insertion_sort, &obj);
-    _JVT_CALL_("高级", jvt_enhanced_insertion_sort, &obj);
+    // _JVT_TITLE_("1.直接插入排序", &obj, L1);
+    // _JVT_CALL_("1.简单", jvt_easy_insertion_sort, &obj, L2);
+    // _JVT_CALL_("2.高级", jvt_enhanced_insertion_sort, &obj, L2);
 
     printf("========= the end =========\n");
 
