@@ -24,21 +24,21 @@ bool start_server(const char *ip, int port)
 		return false;
 	}
 
-	// 2.bind: Èô²»°ó¶¨£¬ÎÞ·¨LISTEN×´Ì¬ÇÒÎÞ·¨½øÐÐ"Èý´ÎÎÕÊÖ"£¬¿Í»§¶Ëconnectºó×¥°ü·µ»Ø Flags [R.]
+	// 2.bind: ï¿½ï¿½ï¿½ï¿½ï¿½ó¶¨£ï¿½ï¿½Þ·ï¿½LISTEN×´Ì¬ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½ï¿½ï¿½"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½connectï¿½ï¿½×¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Flags [R.]
 	if (!socket_bind(listen_fd, addrinfo_res_listen))
 	{
 		addrinfo_res_listen = addrinfo_res_listen->ai_next;
 		return false;
 	}
 
-	// 3. listen: ½øÈëLISTEN×´Ì¬£¬Èô¿Í»§¶Ëconnectºó"Èý´ÎÎÕÊÖ"±ãÒÑ½¨Á¢
+	// 3. listen: ï¿½ï¿½ï¿½ï¿½LISTEN×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½connectï¿½ï¿½"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"ï¿½ï¿½ï¿½Ñ½ï¿½ï¿½ï¿½
 	if (!socket_listen(listen_fd, 128))
 	{
 		addrinfo_res_listen = addrinfo_res_listen->ai_next;
 		return false;
 	}
 
-	// 4.accept£ºÈ¥ÄÚºË¶ÓÁÐÀïÈ¡½¨Á¢Íê³É£¨Èý´ÎÎÕÊÖestablished£©µÄÁ¬½Ó
+	// 4.acceptï¿½ï¿½È¥ï¿½ÚºË¶ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½establishedï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	while (true)
 	{
 		struct sockaddr_in6 clt_addr;
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
 }
 
 //complile:
-// $ g++ -o ../../../../bin/tcp_block_server ../socket_api.cpp tcp_block_server.cpp
+// $ g++ -o ../../../../../bin/tcp_block_server ../socket_api.cpp tcp_block_server.cpp
 // 
 //package capture:
 // $ sudo tcpdump -iany tcp port 8888

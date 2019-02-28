@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 }
 
 //complile:
-// $ g++ -o ../../../../bin/tcp_block_client ../socket_api.cpp tcp_block_client.cpp
+// $ g++ -o ../../../../../bin/tcp_block_client ../socket_api.cpp tcp_block_client.cpp
 // 
 //package capture:
 // $ sudo tcpdump -iany tcp port 8888

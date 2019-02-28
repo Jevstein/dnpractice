@@ -11,7 +11,7 @@
 typedef struct st_socket
 {
 	YI_SOCKET sockfd;
-	int type;//0=¼àÌýsocket, 1=Á¬½Ósocket
+	int type;//0=ï¿½ï¿½ï¿½ï¿½socket, 1=ï¿½ï¿½ï¿½ï¿½socket
 	char buf[256];
 
 	st_socket(YI_SOCKET sockfd, int type){ this->sockfd = sockfd; this->type = type; }
@@ -21,16 +21,16 @@ int onRecv(YI_SOCKET sockfd)
 {
 	char buf[256] = { 0 };
 	int len = socket_recv(sockfd, buf, sizeof(buf));
-	if (len <= 0)//×¢ÒâÅÐ¶ÏÁ¬½ÓÊÇ·ñ¶Ï¿ª
+	if (len <= 0)//×¢ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Ï¿ï¿½
 		return -1;
 
 	LOG_INFO("recv[%d]>> %s", len, buf);
 
 	if (strcmp(buf, "close") == 0)
-		return -2;//Ö÷¶¯ÍË³ö
+		return -2;//ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½
 
 	if (strcmp(buf, "exit") == 0)
-		return -3;//Ö÷¶¯ÍË³ö
+		return -3;//ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½
 
 	return 0;
 }
@@ -84,7 +84,7 @@ bool start_epoll(YI_SOCKET listen_fd)
 			}
 
 			if (stsocket->type == 0)
-			{//[listen]¼àÌýÊÂ¼þ: accept
+			{//[listen]ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½: accept
 				struct sockaddr_in6 clt_addr;
 				YI_SOCKET conn_fd = socket_accept(stsocket->sockfd, &clt_addr);
 				if (conn_fd < 0)
@@ -95,7 +95,7 @@ bool start_epoll(YI_SOCKET listen_fd)
 					continue;
 			}
 			else
-			{//[client]Á¬½ÓÊÂ¼þ: recv | send
+			{//[client]ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½: recv | send
 				int events = io_get_event(&ep_events_, i);
 				//LOG_ERR("ev=%d, i=%d", ev, i);
 
@@ -103,7 +103,7 @@ bool start_epoll(YI_SOCKET listen_fd)
 				{//recv
 					int ret = onRecv(stsocket->sockfd);
 					if (ret == -3)
-					{//ÍË³ö
+					{//ï¿½Ë³ï¿½
 						io_del_fd(epfd_, stsocket->sockfd, 0);
 						socket_close(stsocket->sockfd);
 						delete stsocket;
@@ -111,7 +111,7 @@ bool start_epoll(YI_SOCKET listen_fd)
 						break;
 					}
 					else if (ret == -2 || ret == -1)
-					{//¹Ø±Õ
+					{//ï¿½Ø±ï¿½
 						io_del_fd(epfd_, stsocket->sockfd, 0);
 						socket_close(stsocket->sockfd);
 						delete stsocket;
@@ -125,11 +125,11 @@ bool start_epoll(YI_SOCKET listen_fd)
 				else if (events & EPOLLOUT)
 				{//send
 					if (stsocket->buf[0] == '\0')
-					{//»º´æÎÞÊý¾Ý
+					{//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						io_modify_fd(epfd_, stsocket->sockfd, EPOLLIN/* | EPOLLET*/, stsocket);
 					}
 					else
-					{//»º´æÓÐÊý¾Ý
+					{//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 						onSend(stsocket->sockfd, stsocket->buf, strlen(stsocket->buf));
 						stsocket->buf[0] = '\0';
 					}
@@ -170,14 +170,14 @@ bool start_server(const char *ip, int port)
 		return false;
 	}
 
-	// 2.bind: Èô²»°ó¶¨£¬ÎÞ·¨LISTEN×´Ì¬ÇÒÎÞ·¨½øÐÐ"Èý´ÎÎÕÊÖ"£¬¿Í»§¶Ëconnectºó×¥°ü·µ»Ø Flags [R.]
+	// 2.bind: ï¿½ï¿½ï¿½ï¿½ï¿½ó¶¨£ï¿½ï¿½Þ·ï¿½LISTEN×´Ì¬ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½ï¿½ï¿½"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½connectï¿½ï¿½×¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Flags [R.]
 	if (!socket_bind(listen_fd_, addrinfo_res_listen))
 	{
 		addrinfo_res_listen = addrinfo_res_listen->ai_next;
 		return false;
 	}
 
-	// 3. listen: ½øÈëLISTEN×´Ì¬£¬Èô¿Í»§¶Ëconnectºó"Èý´ÎÎÕÊÖ"±ãÒÑ½¨Á¢
+	// 3. listen: ï¿½ï¿½ï¿½ï¿½LISTEN×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½connectï¿½ï¿½"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"ï¿½ï¿½ï¿½Ñ½ï¿½ï¿½ï¿½
 	if (!socket_listen(listen_fd_, 128))
 	{
 		addrinfo_res_listen = addrinfo_res_listen->ai_next;
@@ -220,7 +220,7 @@ int main(int argc, char *argv[])
 }
 
 //complile:
-// $ g++ -g -o ../../../../bin/tcp_epoll_server ../socket_api.cpp epoll_api.cpp tcp_epoll_server.cpp
+// $ g++ -g -o ../../../../../bin/tcp_epoll_server ../socket_api.cpp epoll_api.cpp tcp_epoll_server.cpp
 // 
 //package capture:
 // $ sudo tcpdump -iany tcp port 8888
