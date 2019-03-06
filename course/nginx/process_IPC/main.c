@@ -27,9 +27,8 @@ int main(int argc,char **argv){
         return 0;
     }
 
-	
 	if (ngx_signal) {
-			return ngx_signal_process(ngx_signal);
+		return ngx_signal_process(ngx_signal);
 	}
 
 	if (ngx_init_signals() != NGX_OK) {
@@ -63,22 +62,17 @@ static ngx_int_t ngx_get_options(int argc, char *const *argv)
         }
 
         while (*p) {
-
             switch (*p++) {
-
             case '?':
             case 'h':
                 ngx_show_help = 1;
                 break;
 
-
             case 's':
                 if (*p) {
                     ngx_signal = (char *) p;
-
                 } else if (argv[++i]) {
                     ngx_signal = argv[i];
-
                 } else {
                     fprintf(stderr, "option \"-s\" requires parameter\n");
                     return NGX_ERROR;
@@ -103,17 +97,14 @@ static ngx_int_t ngx_get_options(int argc, char *const *argv)
         }
 
     next:
-
         continue;
     }
 
     return NGX_OK;
 }
 
-
 static void ngx_show_version_info(void)
 {
-
     fprintf(stdout,
             "Usage: nginx [-?hvVtTq] [-s signal] [-c filename] "
                          "[-p prefix] [-g directives]" NGX_LINEFEED
@@ -143,7 +134,7 @@ static ngx_int_t create_pidfile(const char *name)
 	pid = getpid();
 	len = snprintf(buf,64,"%d\r\n",(int)pid);
 
-	if(len < 0 || write(fd,buf,len) != len)
+	if(len < 0 || write(fd, buf, len) != len)
 	{
 		fprintf(stderr, "write to %s failed, reason: %s. \n", PID_FILE, strerror(errno));
 		close(fd);
@@ -153,31 +144,27 @@ static ngx_int_t create_pidfile(const char *name)
 	close(fd);
 
 	return NGX_OK;
-
 }
 
-ngx_int_t
-ngx_signal_process(char *sig)
+ngx_int_t ngx_signal_process(char *sig)
 {
-    size_t           n;
-    pid_t             pid;
+    size_t          n;
+    pid_t           pid;
     char            buf[NGX_INT64_LEN + 2];
 	int fd = -1;
     
-
     if(debug) fprintf(stdout, "signal process started\n");
 
-	buf[0]='\0';
+	buf[0] = '\0';
 	
 	fd = open(PID_FILE, O_RDWR);
     if(fd < 0)
     {
-	    fprintf(stderr, "fopen %s failed, reason: %s. \nexit.\n",PID_FILE,strerror(errno));
+	    fprintf(stderr, "fopen %s failed, reason: %s. \nexit.\n", PID_FILE, strerror(errno));
 	    return NGX_ERROR;
     }
 
-
-	if( (n = read(fd,buf,NGX_INT64_LEN+2)) < 0 )
+	if( (n = read(fd, buf, NGX_INT64_LEN+2)) < 0 )
 	{
 		fprintf(stderr, "read from %s failed, reason: %s. \n", PID_FILE, strerror(errno));
 		return NGX_ERROR;
@@ -188,24 +175,11 @@ ngx_signal_process(char *sig)
     pid = (pid_t)atoi(buf);
 
     if (pid <=0 ) {
-        fprintf(stderr,
-                      "invalid PID number \"%s\" in \"%s\"",buf, PID_FILE);
+        fprintf(stderr, "invalid PID number \"%s\" in \"%s\"",buf, PID_FILE);
         return 1;
     }
 
     if(debug) fprintf(stdout, "get pid: %d\n",(int)pid);
 
     return ngx_os_signal_process(sig, pid);
-
 }
-
-
-
-
-
-
-
-
-
-
-

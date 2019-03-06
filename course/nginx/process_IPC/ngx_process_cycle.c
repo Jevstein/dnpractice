@@ -44,8 +44,7 @@ static void ngx_pass_open_channel(ngx_channel_t *ch);
 static void try_ngx_channel_handler(int fd);
 
 
-void
-ngx_master_process_cycle()
+void ngx_master_process_cycle()
 {
     char              *title;
     u_char            *p;
@@ -57,8 +56,6 @@ ngx_master_process_cycle()
     ngx_uint_t         live;
     int                cpu_num ;
     ngx_uint_t         delay;
-
-    
 
     sigemptyset(&set);
     sigaddset(&set, SIGCHLD);
@@ -72,7 +69,7 @@ ngx_master_process_cycle()
     sigaddset(&set, SIGQUIT);//NGX_SHUTDOWN_SIGNAL
     sigaddset(&set, SIGUSR2);//NGX_CHANGEBIN_SIGNAL
 
-    if (sigprocmask(SIG_BLOCK, &set, NULL) == -1) {
+    if (sigprocmask(SIG_BLOCK, &set, NULL) == -1) {//阻塞信号集
         fprintf(stderr,
                       "sigprocmask() failed");
     }
@@ -80,8 +77,8 @@ ngx_master_process_cycle()
     sigemptyset(&set);
 
     //获取CPU核数
-    worker_processes = sysconf(_SC_NPROCESSORS_ONLN);
-	worker_processes = 1;//worker_processes>0 ? worker_processes:1;
+    //worker_processes = sysconf(_SC_NPROCESSORS_ONLN);
+    worker_processes = 2;//worker_processes>0 ? worker_processes:1;
 	
     ngx_start_worker_processes(worker_processes, NGX_PROCESS_RESPAWN);
 
@@ -231,12 +228,11 @@ ngx_start_worker_processes( ngx_int_t n, ngx_int_t type)
 
     memset(&ch, 0, sizeof(ngx_channel_t));
 
-    ch.command = NGX_CMD_OPEN_CHANNEL;
+    ch.command = NGX_CMD_OPEN_CHANNEL;//socketpair
 
     for (i = 0; i < n; i++) {
 
-        ngx_spawn_process(worker_process_cycle,
-                          (void *) (intptr_t) i, "worker process", type);
+        ngx_spawn_process(worker_process_cycle, (void *) (intptr_t) i, "worker process", type);
 
         ch.pid = ngx_processes[ngx_process_slot].pid;
         ch.slot = ngx_process_slot;
@@ -263,7 +259,7 @@ static void worker_prcoess_init(int worker){
     sigset_t          set;
 	sigemptyset(&set);
 
-    if (sigprocmask(SIG_SETMASK, &set, NULL) == -1) {
+    if (sigprocmask(SIG_SETMASK, &set, NULL) == -1) {//取消阻塞信号集
         fprintf(stderr,
                       "sigprocmask() failed, reason: %s\n",strerror(errno));
     }

@@ -147,4 +147,5 @@ extern sig_atomic_t    ngx_noaccept;
 extern sig_atomic_t    ngx_reconfigure;
 extern sig_atomic_t    ngx_reopen;
 extern sig_atomic_t    ngx_change_binary;
+
 #endif /* _NGX_PROCESS_H_INCLUDED_ */

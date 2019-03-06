@@ -280,20 +280,18 @@ ngx_execute_proc(void *data)
 }
 
 
-ngx_int_t
-ngx_init_signals()
+ngx_int_t ngx_init_signals()
 {
     ngx_signal_t      *sig;
     struct sigaction   sa;
 
     for (sig = signals; sig->signo != 0; sig++) {
 		if(debug) fprintf(stdout,"set up signal: %s %s %d\n",sig->signame,sig->name,sig->signo);
-        memset(&sa,0,sizeof(struct sigaction));
+        memset(&sa, 0, sizeof(struct sigaction));
         sa.sa_handler = sig->handler;
-        sigemptyset(&sa.sa_mask);
-        if (sigaction(sig->signo, &sa, NULL) == -1) {
-
-            fprintf(stderr,"sigaction(%s) failed,reason:%s\n", sig->signame,strerror(errno));
+        sigemptyset(&sa.sa_mask);//初始化或清空信号集
+        if (sigaction(sig->signo, &sa, NULL) == -1) {//检查或修改与指定信号相关联的处理动作（或同时执行这两种操作）
+            fprintf(stderr,"sigaction(%s) failed, reason:%s\n", sig->signame, strerror(errno));
             return NGX_ERROR;
         }
     }
@@ -301,9 +299,7 @@ ngx_init_signals()
     return NGX_OK;
 }
 
-
-static void
-ngx_signal_handler(int signo)
+static void ngx_signal_handler(int signo)
 {
     char            *action;
     ngx_int_t        ignore;
@@ -508,7 +504,7 @@ ngx_process_get_status(void)
         }
 
         if (WTERMSIG(status)) {
-            fprintf(stderr,"%s %P exited on signal %d\n",
+            fprintf(stderr,"%s %d exited on signal %d\n",
                           process, pid, WTERMSIG(status));
 
         } else {
@@ -517,7 +513,7 @@ ngx_process_get_status(void)
         }
 
         if (WEXITSTATUS(status) == 2 && ngx_processes[i].respawn) {//WEXITSTATUS(status) 当WIFEXITED返回非零值时，我们可以用这个宏来提取子进程的返回值，如果子进程调用exit(5)退出，WEXITSTATUS(status)就会返回5；如果子进程调用exit(7)，WEXITSTATUS(status)就会返回7。请注意，如果进程不是正常退出的，也就是说，WIFEXITED返回0，这个值就毫无意义。
-            fprintf(stderr,"%s %P exited with fatal code %d "
+            fprintf(stderr,"%s %d exited with fatal code %d "
                           "and cannot be respawned\n",
                           process, pid, WEXITSTATUS(status));
             ngx_processes[i].respawn = 0;
@@ -527,14 +523,11 @@ ngx_process_get_status(void)
     }
 }
 
-
-
-ngx_int_t
-ngx_os_signal_process(char *name, ngx_pid_t pid)
+ngx_int_t ngx_os_signal_process(char *name, ngx_pid_t pid)
 {
     ngx_signal_t  *sig;
 
-    if(debug) fprintf(stdout,"want to kill %d by signal %s ...\n",pid,name?name:"NULL");
+    if(debug) fprintf(stdout, "want to kill %d by signal %s ...\n", pid, (name ? name : "NULL"));
     for (sig = signals; sig->signo != 0; sig++) {
         if (strcmp(name, sig->name) == 0) {
 			if(debug) fprintf(stdout,"kill %d by signal %s\n",(int)pid,sig->name);
@@ -542,8 +535,7 @@ ngx_os_signal_process(char *name, ngx_pid_t pid)
                 return 0;
             }
 
-            fprintf(stderr,
-                          "kill(%d, %d) failed\n", (int)pid, sig->signo);
+            fprintf(stderr, "kill(%d, %d) failed\n", (int)pid, sig->signo);
         }
     }
 
