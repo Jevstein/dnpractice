@@ -54,10 +54,11 @@
 #	define JVT_MAX(a,b) (((a) > (b)) ? (a) : (b))
 #endif
 
+typedef int JVT_KEY_TYPE;
 
 typedef struct _jvt_datas
 {
-	int *data;
+	JVT_KEY_TYPE *data;
 	int size;
 } jvt_datas_t;
 

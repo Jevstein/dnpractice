@@ -13,30 +13,24 @@
  *          5.将新元素插入到该位置后
  *          6.重复步骤2~5
  *
- *          *.时间复杂度：O(n^2)，最优时间复杂度：O(n), 平均时间复杂度：O(n^2)
+ *          *.复杂度：t=O(n^2)，[t1=O(n), t2=O(n^2)]; s=O(1)
  *          *.稳定
+ * 			*.in-place
  *
  *     [应用场景]: 很少的元素或几乎有序的元素
  */
 #ifndef _JVT_INSERTION_DIRECT_H_
 #define _JVT_INSERTION_DIRECT_H_
-#include "../jvt_algorithm.h"
+#include "../../jvt_algorithm.h"
 
-/************************************************************************/
-/* 1.declare                                                            */
-/************************************************************************/
-void jvt_easy_insertion_sort(jvt_datas_t *datas);     //简单直接插入排序
-void jvt_enhanced_insertion_sort(jvt_datas_t *datas); //高级直接插入排序
+void jvt_insertion_sort_direct_easy(jvt_datas_t *datas);     //简单直接插入排序
+void jvt_insertion_sort_direct_enhanced(jvt_datas_t *datas); //高级直接插入排序
 
-/************************************************************************/
-/* 2.implement                                                          */
-/************************************************************************/
-void jvt_easy_insertion_sort(jvt_datas_t *datas)
+void jvt_insertion_sort_direct_easy(jvt_datas_t *datas)
 {
     int i;
 	for (i = 1; i < datas->size; i++)
 	{//1.每个元素都参与比较，比较个数: n-1
-
 		// ‘0 .. [j - 1]’是已排序序列（第一个元素i=0亦认为是已排序元素）
 		for (int j = i; j > 0 && (datas->data[j] < datas->data[j - 1]); j--)
 		{//2.在已排序的序列中从后向前扫描，若'新元素[j]'小于'该元素（已排序）[j - 1]，则交换
@@ -45,7 +39,7 @@ void jvt_easy_insertion_sort(jvt_datas_t *datas)
 	}
 }
 
-void jvt_enhanced_insertion_sort(jvt_datas_t *datas)
+void jvt_insertion_sort_direct_enhanced(jvt_datas_t *datas)
 {
 	/** 改进直接插入: 先将大的元素都向右移动，最后交换'新元素'与'最小的大元素'，旨在减少交换次数*/
 	int t;
@@ -53,7 +47,6 @@ void jvt_enhanced_insertion_sort(jvt_datas_t *datas)
     int i;
 	for (i = 1; i < datas->size; i++)
 	{//1.每个元素都参与比较，比较个数: n-1
-
 		t = datas->data[i];//记录'新元素t'：待插入元素
 
 		// ‘0 .. [j - 1]’是已排序序列（第一个元素i=0亦认为是已排序元素）

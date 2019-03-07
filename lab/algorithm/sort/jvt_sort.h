@@ -74,6 +74,7 @@
 #ifndef _JVT_SORT_H_
 #define _JVT_SORT_H_
 
-#include "jvt_insertion_direct.h"
+#include "jvt_insertion.h"
+#include "jvt_quick.h"
 
 #endif//_JVT_SORT_H_

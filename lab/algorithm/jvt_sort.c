@@ -85,7 +85,7 @@ void jvt_sort_title(jvt_sort_t *obj, const char *title, int l);
 void jvt_sort_init(jvt_sort_t *obj) {
     assert(obj);
     obj->datas.size = sizeof(data__) / sizeof(data__[0]);
-    obj->datas.data = (int *)calloc(1, obj->datas.size * sizeof(int));
+    obj->datas.data = (int *)calloc(obj->datas.size, sizeof(data__[0]));
 }
 
 void jvt_sort_reset(jvt_sort_t *obj) {
@@ -99,7 +99,7 @@ void jvt_sort_print(jvt_sort_t *obj, int level) {
 
     int i;
     for (i = 0; i < obj->datas.size; i++) {
-        printf("%d %s%s", obj->datas.data[i]
+        printf("%2.2d %s%s", obj->datas.data[i]
         , (i > 0 && i % 30 == 0) ? "\n" : ""
         , (i > 0 && i % 30 == 0) ? space__[level] : "");
     }
@@ -144,24 +144,27 @@ int main()
 
     printf("========= sort =========\n");
 
-    _JVT_TITLE_("1.插入排序", &obj, L1);
+    _JVT_TITLE_("1.快速排序", &obj, L1);
     {
-        _JVT_TITLE_("1.1.直接插入排序", &obj, L2);
+        _JVT_TITLE_("1.快速排序: t=O(n^2), [t1=O(n), t2=O(n^2)]; s=O(1); 不稳定; in-place", &obj, L2);
         {
-            _JVT_CALL_("1.简单", jvt_easy_insertion_sort, &obj, L3);
-            _JVT_CALL_("2.高级", jvt_enhanced_insertion_sort, &obj, L3);
+            _JVT_CALL_("1.快排", jvt_quick_sort, &obj, L3);
         }
-
-        _JVT_TITLE_("1.2.折半插入排序(二分插入)", &obj, L2);
-        // {
-        //     _JVT_CALL_("1.简单", jvt_easy_insertion_sort, &obj, L3);
-        //     _JVT_CALL_("2.高级", jvt_enhanced_insertion_sort, &obj, L3);
-        // }
     }
 
-    // _JVT_TITLE_("1.直接插入排序", &obj, L1);
-    // _JVT_CALL_("1.简单", jvt_easy_insertion_sort, &obj, L2);
-    // _JVT_CALL_("2.高级", jvt_enhanced_insertion_sort, &obj, L2);
+    _JVT_TITLE_("2.插入排序", &obj, L1);
+    {
+        _JVT_TITLE_("1.直接插入: t=O(n^2), [t1=O(n), t2=O(n^2)]; s=O(1); 稳定; in-place", &obj, L2);
+        {
+            _JVT_CALL_("1.简单", jvt_insertion_sort_direct_easy, &obj, L3);
+            _JVT_CALL_("2.改进", jvt_insertion_sort_direct_enhanced, &obj, L3);
+        }
+
+        _JVT_TITLE_("2.折半插入(二分插入)：t=O(n^2), [t1=O(n), t2=O(n^2)]; s=O(1); 稳定; in-place", &obj, L2);
+        {
+            _JVT_CALL_("1.结果", jvt_insertion_sort_half, &obj, L3);
+        }
+    }
 
     printf("========= the end =========\n");
 
