@@ -74,7 +74,12 @@
 #ifndef _JVT_SORT_H_
 #define _JVT_SORT_H_
 
-#include "jvt_insertion.h"
 #include "jvt_quick.h"
+#include "jvt_merge.h"
+#include "jvt_heap.h"
+#include "jvt_bucket_.h"
+#include "jvt_insertion_.h"
+#include "jvt_selection_.h"
+#include "jvt_bubble_.h"
 
 #endif//_JVT_SORT_H_

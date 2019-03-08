@@ -12,7 +12,7 @@
  *        于数列的中间位置。这个称为分区（partition）操作。
  *      3.递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。
  *
- *      *.复杂度：t=O(nlogn)，[t1=O(nlogn), t2=O(n^2)]
+ *      *.复杂度：t=O(nlogn)，[t1=O(nlogn), t2=O(n^2)]; s=O(1)
  *      *.不稳定
  * 		*.in-place
  *

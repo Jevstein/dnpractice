@@ -75,12 +75,11 @@ typedef struct _jvt_sort {
     // int levels[MAX_LEVEL];
 } jvt_sort_t;
 
-
 void jvt_sort_init(jvt_sort_t *obj);
 void jvt_sort_reset(jvt_sort_t *obj);
 void jvt_sort_print(jvt_sort_t *obj, int l);
 void jvt_sort_title(jvt_sort_t *obj, const char *title, int l);
-
+void _print_origin_datas();//private
 
 void jvt_sort_init(jvt_sort_t *obj) {
     assert(obj);
@@ -116,6 +115,23 @@ void jvt_sort_title(jvt_sort_t *obj, const char *title, int level) {
     default:    printf("%s☆%s\n", space__[level], title);               break;
     }
 }
+
+void _print_origin_datas()
+{
+    int level = L5;
+    
+    printf(BLUE "---原始数据: \n" NONE);
+    printf("    {\n%s", space__[level]);
+
+    int i, len = sizeof(data__) / sizeof(data__[0]);
+    for (i = 0; i < len; i++) {
+        printf("%2.2d %s%s", data__[i]
+        , (i > 0 && i % 30 == 0) ? "\n" : ""
+        , (i > 0 && i % 30 == 0) ? space__[level] : "");
+    }
+
+    printf("\n    }\n\n");
+}
   
 #define _JVT_TITLE_(s, o, l) {                          \
     jvt_sort_title(o, s, l);                            \
@@ -143,16 +159,54 @@ int main()
     jvt_sort_init(&obj);
 
     printf("========= sort =========\n");
+    
+    _print_origin_datas();
 
     _JVT_TITLE_("1.快速排序", &obj, L1);
     {
         _JVT_TITLE_("1.快速排序: t=O(n^2), [t1=O(n), t2=O(n^2)]; s=O(1); 不稳定; in-place", &obj, L2);
         {
-            _JVT_CALL_("1.快排", jvt_quick_sort, &obj, L3);
+            _JVT_CALL_("1.快速排序", jvt_quick_sort, &obj, L3);
         }
     }
 
-    _JVT_TITLE_("2.插入排序", &obj, L1);
+    _JVT_TITLE_("2.合并排序", &obj, L1);
+    {
+        _JVT_TITLE_("1.合并排序: t=O(nlogn)，[t1=O(nlogn), O(nlogn)]; s=O(n); 稳定; out-place", &obj, L2);
+        {
+            _JVT_CALL_("1.自顶向下", jvt_merge_sort_top_down, &obj, L3);
+            _JVT_CALL_("2.自底向上", jvt_merge_sort_bottom_up, &obj, L3);
+        }
+    }
+
+    _JVT_TITLE_("3.堆排序", &obj, L1);
+    {
+        _JVT_TITLE_("1.堆排序: t=O(nlogn), [O(nlogn), O(nlogn)]; s=O(n); 不稳定; in-place", &obj, L2);
+        {
+            _JVT_CALL_("1.堆排序", jvt_head_sort, &obj, L3);
+        }
+    }
+
+    _JVT_TITLE_("4.桶排序", &obj, L1);
+    {
+        _JVT_TITLE_("1.桶排序: t=O(n+k)，[t1=O(n+k), t2=O(n^2)]; s=O(n+k); 稳定; out-place", &obj, L2);
+        {
+            _JVT_CALL_("1.桶排序", jvt_bucket_sort, &obj, L3);
+        }
+
+        _JVT_TITLE_("2.基数排序: t=O(n*k)，[t1=O(n*k), t2=O(n*k)]; s=O(n+k); 稳定; out-place", &obj, L2);
+        {
+            _JVT_CALL_("1.LSD", jvt_radix_sort_lsd, &obj, L3);
+            // _JVT_CALL_("2.MSD", jvt_radix_sort_msd, &obj, L3);
+        }
+
+        _JVT_TITLE_("3.计数排序: t=O(n+k), [t1=O(n+k), t2=O(n+k)]; s=O(k); 稳定; out-place", &obj, L2);
+        {
+            _JVT_CALL_("1.计数排序", jvt_counting_sort, &obj, L3);
+        }
+    }
+
+    _JVT_TITLE_("5.插入排序", &obj, L1);
     {
         _JVT_TITLE_("1.直接插入: t=O(n^2), [t1=O(n), t2=O(n^2)]; s=O(1); 稳定; in-place", &obj, L2);
         {
@@ -162,7 +216,35 @@ int main()
 
         _JVT_TITLE_("2.折半插入(二分插入)：t=O(n^2), [t1=O(n), t2=O(n^2)]; s=O(1); 稳定; in-place", &obj, L2);
         {
-            _JVT_CALL_("1.结果", jvt_insertion_sort_half, &obj, L3);
+            _JVT_CALL_("1.折半", jvt_insertion_sort_half, &obj, L3);
+        }
+
+        _JVT_TITLE_("3.希尔(shell)排序：t=O(nlgn), [O(n^1.25), O(nlg^2n)]; s=O(1); t根据步长而不同; 稳定; in-place", &obj, L2);
+        {
+            _JVT_CALL_("1.希尔(shell)", jvt_insertion_sort_shell, &obj, L3);
+        }
+    }
+
+    _JVT_TITLE_("6.选择排序", &obj, L1);
+    {
+        _JVT_TITLE_("1.直接选择排序: t=O(n^2), [t1=O(n^2), t2=O(n^2)]; s=O(1); 不稳定; in-place", &obj, L2);
+        {
+            _JVT_CALL_("1.直接选择排序", jvt_selection_sort_direct, &obj, L3);
+        }
+    }
+
+    _JVT_TITLE_("7.冒泡排序", &obj, L1);
+    {
+        _JVT_TITLE_("1.冒泡排序: t=O(n^2), [t1=O(n), t2=O(n^2)]; s=O(1); 稳定; in-place", &obj, L2);
+        {
+            _JVT_CALL_("1.简单", jvt_bubble_sort_easy, &obj, L3);
+            _JVT_CALL_("2.改进", jvt_bubble_sort_enhanced, &obj, L3);
+            _JVT_CALL_("3.最优", jvt_bubble_sort_optimized, &obj, L3);
+        }
+
+        _JVT_TITLE_("2.鸡尾酒(双冒泡)排序: t=O(n^2), [t1=O(n), t2=O(n^2)]; s=O(1); 稳定; in-place", &obj, L2);
+        {
+            _JVT_CALL_("1.鸡尾酒", jvt_bubble_sort_cocktail, &obj, L3);
         }
     }
 
