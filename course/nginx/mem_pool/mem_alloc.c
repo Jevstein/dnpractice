@@ -13,10 +13,7 @@ ngx_uint_t  ngx_pagesize;
 ngx_uint_t  ngx_pagesize_shift;
 ngx_uint_t  ngx_cacheline_size;
 
-
-
-void *
-ngx_alloc(size_t size)
+void *ngx_alloc(size_t size)
 {
     void  *p;
 
@@ -30,9 +27,7 @@ ngx_alloc(size_t size)
     return p;
 }
 
-
-void *
-ngx_calloc(size_t size)
+void* ngx_calloc(size_t size)
 {
     void  *p;
 

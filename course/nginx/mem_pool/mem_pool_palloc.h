@@ -25,12 +25,7 @@
     ngx_align((sizeof(ngx_pool_t) + 2 * sizeof(ngx_pool_large_t)),            \
               NGX_POOL_ALIGNMENT)
 
-
-
-
 typedef struct ngx_pool_large_s  ngx_pool_large_t;
-
-
 
 struct ngx_pool_large_s {
     ngx_pool_large_t     *next;     // 指向下一块大内存块的指针
@@ -50,10 +45,7 @@ struct ngx_pool_s {
     size_t                max;      // 当前数据块最大可分配的内存大小（Bytes）
     ngx_pool_t           *current;  // 当前正在使用的数据块的指针
     ngx_pool_large_t     *large;    // pool 中指向大数据块的指针（大数据快是指 size > max 的数据块）
-
 };
-
-
 
 void *ngx_alloc(size_t size);
 void *ngx_calloc(size_t size);
@@ -62,12 +54,10 @@ ngx_pool_t *ngx_create_pool(size_t size);
 void ngx_destroy_pool(ngx_pool_t *pool);
 void ngx_reset_pool(ngx_pool_t *pool);
 
-void *ngx_palloc(ngx_pool_t *pool, size_t size);
-void *ngx_pnalloc(ngx_pool_t *pool, size_t size);
-void *ngx_pcalloc(ngx_pool_t *pool, size_t size);
+void *ngx_palloc(ngx_pool_t *pool, size_t size);//内存对齐
+void *ngx_pnalloc(ngx_pool_t *pool, size_t size);//内存不对齐
+void *ngx_pcalloc(ngx_pool_t *pool, size_t size);//对齐并初始化
 void *ngx_pmemalign(ngx_pool_t *pool, size_t size, size_t alignment);
 ngx_int_t ngx_pfree(ngx_pool_t *pool, void *p);
-
-
 
 #endif /* _NGX_PALLOC_H_INCLUDED_ */

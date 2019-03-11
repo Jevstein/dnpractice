@@ -14,8 +14,7 @@ static void *ngx_palloc_block(ngx_pool_t *pool, size_t size);
 static void *ngx_palloc_large(ngx_pool_t *pool, size_t size);
 
 
-ngx_pool_t *
-ngx_create_pool(size_t size)
+ngx_pool_t* ngx_create_pool(size_t size)
 {
     ngx_pool_t  *p;
 
@@ -41,9 +40,7 @@ ngx_create_pool(size_t size)
     return p;
 }
 
-
-void
-ngx_destroy_pool(ngx_pool_t *pool)
+void ngx_destroy_pool(ngx_pool_t *pool)
 {
     ngx_pool_t          *p, *n;
     ngx_pool_large_t    *l;
@@ -94,8 +91,7 @@ ngx_destroy_pool(ngx_pool_t *pool)
 }
 
 
-void
-ngx_reset_pool(ngx_pool_t *pool)
+void ngx_reset_pool(ngx_pool_t *pool)
 {
     ngx_pool_t        *p;
     ngx_pool_large_t  *l;
@@ -117,8 +113,7 @@ ngx_reset_pool(ngx_pool_t *pool)
 }
 
 
-void *
-ngx_palloc(ngx_pool_t *pool, size_t size)
+void* ngx_palloc(ngx_pool_t *pool, size_t size)
 {
 #if !(NGX_DEBUG_PALLOC)
     if (size <= pool->max) {
@@ -130,8 +125,7 @@ ngx_palloc(ngx_pool_t *pool, size_t size)
 }
 
 
-void *
-ngx_pnalloc(ngx_pool_t *pool, size_t size)
+void* ngx_pnalloc(ngx_pool_t *pool, size_t size)
 {
 #if !(NGX_DEBUG_PALLOC)
     if (size <= pool->max) {
@@ -143,8 +137,7 @@ ngx_pnalloc(ngx_pool_t *pool, size_t size)
 }
 
 
-static inline void *
-ngx_palloc_small(ngx_pool_t *pool, size_t size, ngx_uint_t align)
+static inline void * ngx_palloc_small(ngx_pool_t *pool, size_t size, ngx_uint_t align)
 {
     u_char      *m;
     ngx_pool_t  *p;
@@ -172,8 +165,7 @@ ngx_palloc_small(ngx_pool_t *pool, size_t size, ngx_uint_t align)
 }
 
 
-static void *
-ngx_palloc_block(ngx_pool_t *pool, size_t size)
+static void * ngx_palloc_block(ngx_pool_t *pool, size_t size)
 {
     u_char      *m;
     size_t       psize;
@@ -208,8 +200,7 @@ ngx_palloc_block(ngx_pool_t *pool, size_t size)
 }
 
 
-static void *
-ngx_palloc_large(ngx_pool_t *pool, size_t size)
+static void * ngx_palloc_large(ngx_pool_t *pool, size_t size)
 {
     void              *p;
     ngx_uint_t         n;
@@ -247,8 +238,7 @@ ngx_palloc_large(ngx_pool_t *pool, size_t size)
 }
 
 
-void *
-ngx_pmemalign(ngx_pool_t *pool, size_t size, size_t alignment)
+void * ngx_pmemalign(ngx_pool_t *pool, size_t size, size_t alignment)
 {
     void              *p;
     ngx_pool_large_t  *large;
@@ -272,8 +262,7 @@ ngx_pmemalign(ngx_pool_t *pool, size_t size, size_t alignment)
 }
 
 
-ngx_int_t
-ngx_pfree(ngx_pool_t *pool, void *p)
+ngx_int_t ngx_pfree(ngx_pool_t *pool, void *p)
 {
     ngx_pool_large_t  *l;
 
@@ -291,8 +280,7 @@ ngx_pfree(ngx_pool_t *pool, void *p)
 }
 
 
-void *
-ngx_pcalloc(ngx_pool_t *pool, size_t size)
+void * ngx_pcalloc(ngx_pool_t *pool, size_t size)
 {
     void *p;
 
