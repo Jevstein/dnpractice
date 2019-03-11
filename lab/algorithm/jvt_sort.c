@@ -99,8 +99,8 @@ void jvt_sort_print(jvt_sort_t *obj, int level) {
     int i;
     for (i = 0; i < obj->datas.size; i++) {
         printf("%2.2d %s%s", obj->datas.data[i]
-        , (i > 0 && i % 30 == 0) ? "\n" : ""
-        , (i > 0 && i % 30 == 0) ? space__[level] : "");
+        , ((i+1) % 30 == 0 && i != obj->datas.size - 1) ? "\n" : ""
+        , ((i+1) % 30 == 0 && i != obj->datas.size - 1) ? space__[level] : "");
     }
 
     printf("\n");
@@ -126,8 +126,8 @@ void _print_origin_datas()
     int i, len = sizeof(data__) / sizeof(data__[0]);
     for (i = 0; i < len; i++) {
         printf("%2.2d %s%s", data__[i]
-        , (i > 0 && i % 30 == 0) ? "\n" : ""
-        , (i > 0 && i % 30 == 0) ? space__[level] : "");
+        , ((i+1) % 30 == 0 && i != len - 1) ? "\n" : ""
+        , ((i+1) % 30 == 0 && i != len - 1) ? space__[level] : "");
     }
 
     printf("\n    }\n\n");
@@ -170,9 +170,9 @@ int main()
         }
     }
 
-    _JVT_TITLE_("2.合并排序", &obj, L1);
+    _JVT_TITLE_("2.归并排序", &obj, L1);
     {
-        _JVT_TITLE_("1.合并排序: t=O(nlogn)，[t1=O(nlogn), O(nlogn)]; s=O(n); 稳定; out-place", &obj, L2);
+        _JVT_TITLE_("1.归并排序: t=O(nlogn)，[t1=O(nlogn), O(nlogn)]; s=O(n); 稳定; out-place", &obj, L2);
         {
             _JVT_CALL_("1.自顶向下", jvt_merge_sort_top_down, &obj, L3);
             _JVT_CALL_("2.自底向上", jvt_merge_sort_bottom_up, &obj, L3);
