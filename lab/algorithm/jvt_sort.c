@@ -151,7 +151,31 @@ void _print_origin_datas()
     printf("%s} cost: %d(us)\n\n", space__[l], cost);   \
 }
 
+#define _JVT_CALL_DATA(s, func, o, l) {                 \
+    printf("%s*%s:\n%s{", space__[l], s, space__[l]);   \
+	struct timeval tv1;                                 \
+	struct timeval tv2;                                 \
+	gettimeofday(&tv1, NULL);                           \
+    func(&(o)->datas);                                  \
+	gettimeofday(&tv2, NULL);                           \
+	int cost = (tv2.tv_sec - tv1.tv_sec) * 1000000 + (tv2.tv_usec - tv1.tv_usec);\
+    jvt_sort_print(o, l + 2);                           \
+    printf("%s} cost: %d(us)\n\n", space__[l], cost);   \
+}
 
+void _jvt_call_bitmap(const char *title)
+{
+    int i;
+
+    // 1.initailize
+    jvt_sort_t obj;
+    obj.datas.size = 60;
+    obj.datas.data = (JVT_KEY_TYPE*)malloc(sizeof(JVT_KEY_TYPE) * obj.datas.size);
+    for(i = 0; i < obj.datas.size; i++) { obj.datas.data[i] = obj.datas.size - i - 1; }
+
+    // 2.sort
+    _JVT_CALL_DATA(title, jvt_bitmap_sort, &obj, L3);
+}
 
 int main()
 {
@@ -245,6 +269,14 @@ int main()
         _JVT_TITLE_("2.鸡尾酒(双冒泡)排序: t=O(n^2), [t1=O(n), t2=O(n^2)]; s=O(1); 稳定; in-place", &obj, L2);
         {
             _JVT_CALL_("1.鸡尾酒", jvt_bubble_sort_cocktail, &obj, L3);
+        }
+    }
+
+    _JVT_TITLE_("8.位图排序", &obj, L1);
+    {
+        _JVT_TITLE_("1.位图排序: t=O(n+n); s=O(2); 稳定; out-place", &obj, L2);
+        {
+            _jvt_call_bitmap("1.位图排序(不允许重复)");
         }
     }
 

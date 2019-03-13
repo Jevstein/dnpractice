@@ -83,5 +83,6 @@
 #include "jvt_insertion_.h"
 #include "jvt_selection_.h"
 #include "jvt_bubble_.h"
+#include "jvt_bitmap.h"
 
 #endif//_JVT_SORT_H_

@@ -40,16 +40,35 @@
 #define _JVT_BITMAP_H_
 #include "../jvt_algorithm.h"
 
-//位图排序
-void jvt_bitmap_sort(jvt_datas_t *datas);
-
-
-
-// #define MAX 100
 #define BTM_SHIFT 5
 #define BTM_MASK 0x1f
-#define BTM_DIGITS 32
-// #define NUMs 10000
+
+//位图排序
+void jvt_bitmap_sort(jvt_datas_t *datas);
+void _btm_set(int *bit_array, int data);
+void _btm_clear(int *bit_array, int data);
+int _btm_check(int *bit_array, int data);
+
+
+void jvt_bitmap_sort(jvt_datas_t *datas)
+{
+    int *bit_arr = (int *)calloc(datas->size/(sizeof(int) * 8) + 1, sizeof(int));
+    assert(bit_arr);
+
+    int i, j;
+    for (i = 0; i < datas->size; i++)
+    {
+        _btm_set(bit_arr, datas->data[i]);
+    }
+
+    for(i = 0, j = 0; i < datas->size; i++) {
+        if (_btm_check(bit_arr, i)) {
+            datas->data[j++] = i;
+        }
+    }
+
+    free(bit_arr);
+}
 
 void _btm_set(int *bit_array, int data) 
 {
@@ -61,57 +80,47 @@ void _btm_clear(int *bit_array, int data)
     bit_array[data >> BTM_SHIFT] = bit_array[data >> BTM_SHIFT] & ~(1 << (data & BTM_MASK));
 }
 
-int _btm_test(int *bit_array, int data)
+int _btm_check(int *bit_array, int data)
 {
     return bit_array[data >> BTM_SHIFT] & (1 << (data & BTM_MASK));
 }
 
-class A{
-public:///sort 1000000 by decs
-    int data[NUMs];
-    int tmp[NUMs/32+1];
-    void init(){
-        memset(data,0,sizeof(data));
-        for(int i = 0;i<NUMs;i++){
-            data[i] = NUMs-i;
-        }
-    }
 
-    ///
-    void show(){
-        for(int i = 0;i<NUMs;i++){
-            cout<<data[i]<<" ";
-            if((i%10)==0) cout<<endl;
-        }
-    }
+// *C++: std::bitset
+//
+// using namespace std;
+// #define MAX 100
+// #define SHIFT 5
+// #define MASK 0x1f
+// #define DIGITS 32
+// #define NUMs 10000
 
-    ///
-    void sort(){
-        for(int i = 0;i<NUMs;i++){
-            set(data[i]);
-        }
-    }
-    void show_solution(){
-        for(int i = 0;i<NUMs;i++){
-            if(test(i)) cout<<i<<" ";
-            if(i%10==0) cout<<endl;
-        }
-    }
+// class A {
+// public:///sort 1000000 by decs
+//     int data[NUMs];
+//     int tmp[NUMs/32+1];
+//     void init() {
+//         memset(data,0,sizeof(data));
+//         for(int i = 0;i<NUMs;i++){
+//             data[i] = NUMs-i;
+//         }
+//     }
 
-    ///test
-    int test(int n){
-        return tmp[n>>SHIFT] & (1<<(n&MASK));
-    }
+//     void test(){
+//         cout<<"begining"<<endl;
+//         bitset<NUMs+1> b;
+//         init();
+//         for(int i = 0;i<NUMs;i++){
+//             b.set(data[i],1);
+//         }
 
-    void test(){
-        cout<<"begining"<<endl;
-        init();
-        show();
-        sort();
-        show_solution();
+//         for(int i = 0;i<NUMs;i++) {
+//             if(b[i]==1) cout<<i<<" ";
+//             if(i%10==0) cout<<endl;
+//         }
 
-        cout<<"end"<<endl;
-    }
-};
+//         cout<<"end"<<endl;
+//     }
+// };
 
 #endif //_JVT_BITMAP_H_
