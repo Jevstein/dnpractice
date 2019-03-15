@@ -11,8 +11,7 @@
 
 static int debug = 1;
 
-ngx_int_t
-ngx_write_channel(int s, ngx_channel_t *ch, size_t size)
+ngx_int_t ngx_write_channel(int s, ngx_channel_t *ch, size_t size)
 {
     ssize_t             n;
     int                 err;
@@ -91,9 +90,7 @@ ngx_write_channel(int s, ngx_channel_t *ch, size_t size)
     return NGX_OK;
 }
 
-
-ngx_int_t
-ngx_read_channel(int s, ngx_channel_t *ch, size_t size)
+ngx_int_t ngx_read_channel(int s, ngx_channel_t *ch, size_t size)
 {
     ssize_t             n;
     int                 err;
@@ -194,12 +191,7 @@ ngx_read_channel(int s, ngx_channel_t *ch, size_t size)
     return n;
 }
 
-
-
-
-
-void
-ngx_close_channel(int *fd)
+void ngx_close_channel(int *fd)
 {
     if (close(fd[0]) == -1) {
         fprintf(stderr, "close() channel failed, reason:%s\n",strerror(errno));

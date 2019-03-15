@@ -70,8 +70,7 @@ void ngx_master_process_cycle()
     sigaddset(&set, SIGUSR2);//NGX_CHANGEBIN_SIGNAL
 
     if (sigprocmask(SIG_BLOCK, &set, NULL) == -1) {//阻塞信号集
-        fprintf(stderr,
-                      "sigprocmask() failed");
+        fprintf(stderr, "sigprocmask() failed");
     }
 
     sigemptyset(&set);
@@ -95,7 +94,7 @@ void ngx_master_process_cycle()
                 ngx_sigalrm = 0;
             }
 
-            if(debug)fprintf(stdout,"termination cycle: %lu\n", delay);
+            if (debug) fprintf(stdout, "termination cycle: %lu\n", delay);
 
             itv.it_interval.tv_sec = 0;
             itv.it_interval.tv_usec = 0;
@@ -107,7 +106,7 @@ void ngx_master_process_cycle()
             }
         }
 
-        if(debug)fprintf(stdout, "sigsuspend\n");
+        if (debug) fprintf(stdout, "sigsuspend\n");
 
         sigsuspend(&set);
 		
@@ -158,8 +157,7 @@ void ngx_master_process_cycle()
             ngx_reconfigure = 0;
 
             if (ngx_new_binary) {
-                ngx_start_worker_processes(worker_processes,
-                                           NGX_PROCESS_RESPAWN);
+                ngx_start_worker_processes(worker_processes, NGX_PROCESS_RESPAWN);
                 ngx_noaccepting = 0;
 
                 continue;
@@ -177,8 +175,7 @@ void ngx_master_process_cycle()
             ccf = (ngx_core_conf_t *) ngx_get_conf(cycle->conf_ctx,
                                                    ngx_core_module);
             */
-            ngx_start_worker_processes(worker_processes,
-                                       NGX_PROCESS_JUST_RESPAWN);
+            ngx_start_worker_processes(worker_processes, NGX_PROCESS_JUST_RESPAWN);
 
             /* allow new processes to start */
             usleep(100000);
@@ -215,11 +212,7 @@ void ngx_master_process_cycle()
     }
 }
 
-
-
-
-static void
-ngx_start_worker_processes( ngx_int_t n, ngx_int_t type)
+static void ngx_start_worker_processes( ngx_int_t n, ngx_int_t type)
 {
     ngx_int_t      i;
     ngx_channel_t  ch;
@@ -231,7 +224,6 @@ ngx_start_worker_processes( ngx_int_t n, ngx_int_t type)
     ch.command = NGX_CMD_OPEN_CHANNEL;//socketpair
 
     for (i = 0; i < n; i++) {
-
         ngx_spawn_process(worker_process_cycle, (void *) (intptr_t) i, "worker process", type);
 
         ch.pid = ngx_processes[ngx_process_slot].pid;
@@ -242,15 +234,13 @@ ngx_start_worker_processes( ngx_int_t n, ngx_int_t type)
     }
 }
 
-
-
 static void worker_prcoess_init(int worker){
     cpu_set_t cpu_affinity;
 	ngx_int_t         n;
     ngx_uint_t        i;
 
     CPU_ZERO(&cpu_affinity);
-    CPU_SET(worker % CPU_SETSIZE,&cpu_affinity);
+    CPU_SET(worker % CPU_SETSIZE, &cpu_affinity);
     //sched_setaffinity
     if(sched_setaffinity(0,sizeof(cpu_set_t),&cpu_affinity) == -1){
         fprintf(stderr, "sched_setaffinity() failed\n");
@@ -260,13 +250,10 @@ static void worker_prcoess_init(int worker){
 	sigemptyset(&set);
 
     if (sigprocmask(SIG_SETMASK, &set, NULL) == -1) {//取消阻塞信号集
-        fprintf(stderr,
-                      "sigprocmask() failed, reason: %s\n",strerror(errno));
+        fprintf(stderr, "sigprocmask() failed, reason: %s\n", strerror(errno));
     }
 
-	
     for (n = 0; n < ngx_last_process; n++) {
-
         if (ngx_processes[n].pid == -1) {
             continue;
         }
@@ -280,32 +267,27 @@ static void worker_prcoess_init(int worker){
         }
 
         if (close(ngx_processes[n].channel[1]) == -1) {
-            fprintf(stderr,
-                          "close() channel failed, reason: %s\n",strerror(errno));
+            fprintf(stderr, "close() channel failed, reason: %s\n",strerror(errno));
         }
     }
 
     if (close(ngx_processes[ngx_process_slot].channel[0]) == -1) {
-		fprintf(stderr,
-                          "close() channel failed, reason: %s\n",strerror(errno));
+		fprintf(stderr, "close() channel failed, reason: %s\n",strerror(errno));
     }
 }
 
 void worker_process_cycle(void *data){
-     int worker = (intptr_t) data;
-    //初始化
+    int worker = (intptr_t) data;
 
+    //初始化
 	ngx_process = NGX_PROCESS_WORKER;
     ngx_worker = worker;
 	
     worker_prcoess_init(worker);
 
-    
-    for(;;){
-		
-	  try_ngx_channel_handler(ngx_channel);
+    for (;;) {
+	    try_ngx_channel_handler(ngx_channel);
 	
-      
        if (ngx_exiting) {
             //if (ngx_event_no_timers_left() == NGX_OK) {
                 if(debug) fprintf(stdout, "child process[%d] exiting\n",getpid());
@@ -339,7 +321,7 @@ void worker_process_cycle(void *data){
             //ngx_reopen_files(cycle, -1);
         }
       sleep(5);
-      if(debug)fprintf(stdout,"work process[%d] cycle.\n",getpid());
+      if (debug) fprintf(stdout,"work process[%d] cycle.\n",getpid());
     }
 }
 
@@ -374,7 +356,6 @@ void  ngx_signal_worker_processes(int signo)
 	
 	
 	for (i = 0; i < ngx_last_process; i++) {
-	
 		if(debug)fprintf(stdout,"child: %ld %d e:%d t:%d d:%d r:%d j:%d\n",
 						  i,
 						  ngx_processes[i].pid,
@@ -612,7 +593,6 @@ static void try_ngx_channel_handler(int fd)
 	//if(debug) fprintf(stdout,"channel handler\n");
 	
     for ( ;; ) {
-
         n = ngx_read_channel(fd, &ch, sizeof(ngx_channel_t));
 
         if (n == NGX_ERROR) {
@@ -634,7 +614,6 @@ static void try_ngx_channel_handler(int fd)
         if(debug) fprintf(stdout,"channel command: %lu\n", ch.command);
 
         switch (ch.command) {
-
         case NGX_CMD_QUIT:
             ngx_quit = 1;
             break;
@@ -648,23 +627,20 @@ static void try_ngx_channel_handler(int fd)
             break;
 
         case NGX_CMD_OPEN_CHANNEL:
-
-            if(debug)fprintf(stdout,
-                           "get channel s:%d pid:%d fd:%d\n",(int)ch.slot, (int)ch.pid, (int)ch.fd);
+            if(debug) 
+                fprintf(stdout, "get channel s:%d pid:%d fd:%d\n", (int)ch.slot, (int)ch.pid, (int)ch.fd);
 
             ngx_processes[ch.slot].pid = ch.pid;
             ngx_processes[ch.slot].channel[0] = ch.fd;
             break;
 
         case NGX_CMD_CLOSE_CHANNEL:
-
-            if(debug)fprintf(stdout,
-                           "close channel s:%d pid:%d our:%d fd:%d\n",
+            if(debug)fprintf(stdout, "close channel s:%d pid:%d our:%d fd:%d\n",
                            (int)ch.slot, (int)ch.pid, (int)ngx_processes[ch.slot].pid,
                            (int)ngx_processes[ch.slot].channel[0]);
 
             if (close(ngx_processes[ch.slot].channel[0]) == -1) {
-                fprintf(stdout,"close() channel failed\n");
+                fprintf(stdout, "close() channel failed\n");
             }
 
             ngx_processes[ch.slot].channel[0] = -1;

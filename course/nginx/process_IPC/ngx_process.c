@@ -91,9 +91,7 @@ ngx_signal_t  signals[] = {
 };
 
 
-ngx_pid_t
-ngx_spawn_process( ngx_spawn_proc_pt proc, void *data,
-    char *name, ngx_int_t respawn)
+ngx_pid_t ngx_spawn_process(ngx_spawn_proc_pt proc, void *data, char *name, ngx_int_t respawn)
 {
     u_long     on;
     ngx_pid_t  pid;
@@ -424,14 +422,12 @@ static void ngx_signal_handler(int signo)
         break;
     }
 
-    fprintf(stdout,
-                  "signal %d (%s) received%s\n", signo, sig->signame, action);
+    fprintf(stdout, "signal %d (%s) received%s\n", signo, sig->signame, action);
 
     if (ignore) {
-        fprintf(stderr,
-                      "the changing binary signal is ignored: \n"
-                      "you should shutdown or terminate \n"
-                      "before either old or new binary's process\n");
+        fprintf(stderr, "the changing binary signal is ignored: \n"
+                        "you should shutdown or terminate \n"
+                        "before either old or new binary's process\n");
     }
 
     if (signo == SIGCHLD) {

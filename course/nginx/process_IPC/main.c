@@ -5,7 +5,7 @@
 ngx_uint_t    ngx_process;
 static ngx_uint_t   ngx_show_help;
 static char        *ngx_signal;
-ngx_uint_t    ngx_process;
+// ngx_uint_t    ngx_process;
 
 static int debug = 0;
 
@@ -15,7 +15,8 @@ static ngx_int_t ngx_get_options(int argc, char *const *argv);
 ngx_int_t ngx_signal_process(char *sig);
 
 
-int main(int argc,char **argv){
+int main(int argc,char **argv)
+{
 	int cpu_num ;
 	
 	if (ngx_get_options(argc, argv) != NGX_OK) {
@@ -53,7 +54,6 @@ static ngx_int_t ngx_get_options(int argc, char *const *argv)
     ngx_int_t   i;
 
     for (i = 1; i < argc; i++) {
-
         p = (char *) argv[i];
 
         if (*p++ != '-') {
@@ -118,7 +118,6 @@ static void ngx_show_version_info(void)
 
 static ngx_int_t create_pidfile(const char *name)
 {
-    
     int fd = -1;
     int i = 0, len = 0;
 	char buf[64];
@@ -166,6 +165,7 @@ ngx_int_t ngx_signal_process(char *sig)
 
 	if( (n = read(fd, buf, NGX_INT64_LEN+2)) < 0 )
 	{
+	    close(fd);
 		fprintf(stderr, "read from %s failed, reason: %s. \n", PID_FILE, strerror(errno));
 		return NGX_ERROR;
 	}
@@ -175,11 +175,13 @@ ngx_int_t ngx_signal_process(char *sig)
     pid = (pid_t)atoi(buf);
 
     if (pid <=0 ) {
+	    close(fd);
         fprintf(stderr, "invalid PID number \"%s\" in \"%s\"",buf, PID_FILE);
         return 1;
     }
 
-    if(debug) fprintf(stdout, "get pid: %d\n",(int)pid);
+    if(debug) fprintf(stdout, "get pid: %d\n", (int)pid);
 
+	close(fd);
     return ngx_os_signal_process(sig, pid);
 }

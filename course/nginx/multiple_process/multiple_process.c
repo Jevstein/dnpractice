@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdint.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
 
 typedef void (*spawn_proc_pt) (void *data);
 static void worker_process_cycle(void *data);
@@ -11,7 +14,14 @@ static void start_worker_processes(int n);
 pid_t spawn_process(spawn_proc_pt proc, void *data, char *name); 
 
 int main(int argc,char **argv) {
-    start_worker_processes(4);//4 core
+    int worker_processes;
+
+    worker_processes = sysconf(_SC_NPROCESSORS_ONLN);
+    // worker_processes = 2;
+    printf("worker processes: %d\n", worker_processes);
+
+    worker_processes = worker_processes > 0 ? worker_processes : 1;
+    start_worker_processes(worker_processes);//4 core
     wait(NULL);
 }
 
@@ -55,6 +65,6 @@ void worker_process_cycle(void *data){
 
     for(;;) {//干活 - epoll: wait
       sleep(10);
-      printf("pid %ld ,doing ...\n",(long int)getpid());
+      printf("child: pid=%ld, doing ...\n",(long int)getpid());
     }
 }
