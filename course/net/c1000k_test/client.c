@@ -18,16 +18,16 @@ int main(int argc, char **argv){
 	struct sockaddr_in addr;
 	const char *ip = argv[1];
 	int base_port = atoi(argv[2]);
-	int opt = 1;
+	// int opt = 1;
 	int bufsize;
-	socklen_t optlen;
+	// socklen_t optlen;
 	int connections = 0;
 
-	memset(&addr, sizeof(addr), 0);
+	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
 	inet_pton(AF_INET, ip, &addr.sin_addr);
 
-	char tmp_data[10];
+	// char tmp_data[10];
 	int index = 0;
 	while(1){
 		if(++index >= MAX_PORTS){
