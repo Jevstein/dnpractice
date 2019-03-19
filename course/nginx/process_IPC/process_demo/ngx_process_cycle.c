@@ -77,7 +77,7 @@ void ngx_master_process_cycle()
 
     //获取CPU核数
     //worker_processes = sysconf(_SC_NPROCESSORS_ONLN);
-    worker_processes = 2;//worker_processes>0 ? worker_processes:1;
+    worker_processes = 2;//worker_processes>0 ? worker_processes : 1;
 	
     ngx_start_worker_processes(worker_processes, NGX_PROCESS_RESPAWN);
 
@@ -102,17 +102,17 @@ void ngx_master_process_cycle()
             itv.it_value.tv_usec = (delay % 1000 ) * 1000;
 
             if (setitimer(ITIMER_REAL, &itv, NULL) == -1) {
-                fprintf(stderr,"setitimer() failed,reason:%s\n",strerror(errno));
+                fprintf(stderr, "setitimer() failed, reason:%s\n", strerror(errno));
             }
         }
 
         if (debug) fprintf(stdout, "sigsuspend\n");
 
-        sigsuspend(&set);
+        sigsuspend(&set);//sigsuspend实际是将sigprocmask和pause结合起来原子操作
 		
         //ngx_time_update();
 
-        if(debug) fprintf(stdout,"wake up, sigio %lu\n", sigio);
+        if(debug) fprintf(stdout, "wake up, sigio %lu\n", sigio);
 
         if (ngx_reap) {
             ngx_reap = 0;
@@ -415,10 +415,7 @@ void  ngx_signal_worker_processes(int signo)
 	}
 }
 
-
-
-static ngx_uint_t
-ngx_reap_children()
+static ngx_uint_t ngx_reap_children()
 {
     ngx_int_t         i, n;
     ngx_uint_t        live;
@@ -542,8 +539,7 @@ ngx_reap_children()
 }
 
 
-static void
-ngx_master_process_exit()
+static void ngx_master_process_exit()
 {
     ngx_uint_t  i;
 
@@ -557,8 +553,7 @@ ngx_master_process_exit()
     exit(0);
 }
 
-static void
-ngx_pass_open_channel(ngx_channel_t *ch)
+static void ngx_pass_open_channel(ngx_channel_t *ch)
 {
     ngx_int_t  i;
 
@@ -583,7 +578,6 @@ ngx_pass_open_channel(ngx_channel_t *ch)
                           ch, sizeof(ngx_channel_t));
     }
 }
-
 
 static void try_ngx_channel_handler(int fd)
 {

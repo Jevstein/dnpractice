@@ -108,69 +108,59 @@ ngx_pid_t ngx_spawn_process(ngx_spawn_proc_pt proc, void *data, char *name, ngx_
         }
 
 		if (s == NGX_MAX_PROCESSES) {
-					fprintf(stderr,"no more than %d processes can be spawned\n",NGX_MAX_PROCESSES);
-					return NGX_INVALID_PID;
-				}
-			}
-		
+			fprintf(stderr,"no more than %d processes can be spawned\n",NGX_MAX_PROCESSES);
+			return NGX_INVALID_PID;
+		}
+	}
 			
-			 if (respawn != NGX_PROCESS_DETACHED) {
+	if (respawn != NGX_PROCESS_DETACHED) {
 		
-				/* Solaris 9 still has no AF_LOCAL */
-		
-				if (socketpair(AF_UNIX, SOCK_STREAM, 0, ngx_processes[s].channel) == -1)
-				{
-					fprintf(stderr,
-								  "socketpair() failed while spawning \"%s\"\n", name);
-					return NGX_INVALID_PID;
-				}
-		
-				fprintf(stdout,"channel %d:%d\n", ngx_processes[s].channel[0], ngx_processes[s].channel[1]);
-		
-				if (set_nonblock(ngx_processes[s].channel[0]) == -1) {
-					fprintf(stderr,
-								   "set nonblock failed while spawning \"%s\"\n",name);
-					ngx_close_channel(ngx_processes[s].channel);
-					return NGX_INVALID_PID;
-				}
-		
-				if (set_nonblock(ngx_processes[s].channel[1]) == -1) {
-					fprintf(stderr,
-								   "set nonblock failed while spawning \"%s\"\n",name);
-					ngx_close_channel(ngx_processes[s].channel);
-					return NGX_INVALID_PID;
-				}
-		
-				on = 1;
-				if (ioctl(ngx_processes[s].channel[0], FIOASYNC, &on) == -1) {
-					fprintf(stderr,
-								  "ioctl(FIOASYNC) failed while spawning \"%s\"\n", name);
-					ngx_close_channel(ngx_processes[s].channel);
-					return NGX_INVALID_PID;
-				}
-		
-				if (fcntl(ngx_processes[s].channel[0], F_SETOWN, ngx_pid) == -1) {
-					fprintf(stderr,
-								  "fcntl(F_SETOWN) failed while spawning \"%s\"\n", name);
-					ngx_close_channel(ngx_processes[s].channel);
-					return NGX_INVALID_PID;
-				}
-		
-				if (fcntl(ngx_processes[s].channel[0], F_SETFD, FD_CLOEXEC) == -1) {
-					fprintf(stderr,
-								  "fcntl(FD_CLOEXEC) failed while spawning \"%s\"\n",
-								   name);
-					ngx_close_channel(ngx_processes[s].channel);
-					return NGX_INVALID_PID;
-				}
-		
-				if (fcntl(ngx_processes[s].channel[1], F_SETFD, FD_CLOEXEC) == -1) {
-					fprintf(stderr,
-								  "fcntl(FD_CLOEXEC) failed while spawning \"%s\"\n",
-								   name);
-					ngx_close_channel(ngx_processes[s].channel);
-					return NGX_INVALID_PID;
-				}
+        /* Solaris 9 still has no AF_LOCAL */
+
+        if (socketpair(AF_UNIX, SOCK_STREAM, 0, ngx_processes[s].channel) == -1)
+        {
+            fprintf(stderr, "socketpair() failed while spawning \"%s\"\n", name);
+            return NGX_INVALID_PID;
+        }
+
+        fprintf(stdout,"channel %d:%d\n", ngx_processes[s].channel[0], ngx_processes[s].channel[1]);
+
+        if (set_nonblock(ngx_processes[s].channel[0]) == -1) {
+            fprintf(stderr, "set nonblock failed while spawning \"%s\"\n",name);
+            ngx_close_channel(ngx_processes[s].channel);
+            return NGX_INVALID_PID;
+        }
+
+        if (set_nonblock(ngx_processes[s].channel[1]) == -1) {
+            fprintf(stderr, "set nonblock failed while spawning \"%s\"\n",name);
+            ngx_close_channel(ngx_processes[s].channel);
+            return NGX_INVALID_PID;
+        }
+
+        on = 1;
+        if (ioctl(ngx_processes[s].channel[0], FIOASYNC, &on) == -1) {
+            fprintf(stderr, "ioctl(FIOASYNC) failed while spawning \"%s\"\n", name);
+            ngx_close_channel(ngx_processes[s].channel);
+            return NGX_INVALID_PID;
+        }
+
+        if (fcntl(ngx_processes[s].channel[0], F_SETOWN, ngx_pid) == -1) {
+            fprintf(stderr, "fcntl(F_SETOWN) failed while spawning \"%s\"\n", name);
+            ngx_close_channel(ngx_processes[s].channel);
+            return NGX_INVALID_PID;
+        }
+
+        if (fcntl(ngx_processes[s].channel[0], F_SETFD, FD_CLOEXEC) == -1) {
+            fprintf(stderr, "fcntl(FD_CLOEXEC) failed while spawning \"%s\"\n", name);
+            ngx_close_channel(ngx_processes[s].channel);
+            return NGX_INVALID_PID;
+        }
+
+        if (fcntl(ngx_processes[s].channel[1], F_SETFD, FD_CLOEXEC) == -1) {
+            fprintf(stderr, "fcntl(FD_CLOEXEC) failed while spawning \"%s\"\n", name);
+            ngx_close_channel(ngx_processes[s].channel);
+            return NGX_INVALID_PID;
+        }
 
         ngx_channel = ngx_processes[s].channel[1];
 
@@ -255,16 +245,14 @@ ngx_pid_t ngx_spawn_process(ngx_spawn_proc_pt proc, void *data, char *name, ngx_
 }
 
 
-ngx_pid_t
-ngx_execute(ngx_exec_ctx_t *ctx)
+ngx_pid_t ngx_execute(ngx_exec_ctx_t *ctx)
 {
     return ngx_spawn_process( ngx_execute_proc, ctx, ctx->name,
                              NGX_PROCESS_DETACHED);
 }
 
 
-static void
-ngx_execute_proc(void *data)
+static void ngx_execute_proc(void *data)
 {
     ngx_exec_ctx_t  *ctx = data;
 

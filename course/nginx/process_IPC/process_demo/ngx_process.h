@@ -80,7 +80,7 @@ typedef struct {
     int                 status;//由waitpid 系统调用获取取得进程状态
     int                 channel[2];//由socketpair产生的用于父子进程间互相通信的socket 句柄，
 
-    ngx_spawn_proc_pt       proc;
+    ngx_spawn_proc_pt   proc;
     void               *data;
     char               *name;
 
