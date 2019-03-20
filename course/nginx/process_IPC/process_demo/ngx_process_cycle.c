@@ -106,13 +106,13 @@ void ngx_master_process_cycle()
             }
         }
 
-        if (debug) fprintf(stdout, "sigsuspend\n");
+        if (debug) fprintf(stdout, "[master] sigsuspend\n");
 
         sigsuspend(&set);//sigsuspend实际是将sigprocmask和pause结合起来原子操作
 		
         //ngx_time_update();
 
-        if(debug) fprintf(stdout, "wake up, sigio %lu\n", sigio);
+        if(debug) fprintf(stdout, "[master] wake up, sigio %lu\n", sigio);
 
         if (ngx_reap) {
             ngx_reap = 0;
@@ -192,7 +192,7 @@ void ngx_master_process_cycle()
 
         if (ngx_reopen) {
             ngx_reopen = 0;
-            if(debug) fprintf(stdout, "reopening logs\n");
+            if(debug) fprintf(stdout, "[jvt]::ngx_master_process_cycle(): reopening logs\n");
             //ngx_reopen_files(cycle, ccf->user);
             ngx_signal_worker_processes(SIGUSR1);//NGX_REOPEN_SIGNAL
         }
@@ -353,7 +353,9 @@ void  ngx_signal_worker_processes(int signo)
 	}
 	
 	ch.fd = -1;
-	
+
+    if(debug) fprintf(stdout,"[jvt]::ngx_signal_worker_processes(): signo=%d, cmd=%d\n"
+                    , signo, (int)ch.command);
 	
 	for (i = 0; i < ngx_last_process; i++) {
 		if(debug)fprintf(stdout,"child: %ld %d e:%d t:%d d:%d r:%d j:%d\n",
@@ -381,10 +383,8 @@ void  ngx_signal_worker_processes(int signo)
 		}
 	
 		if (ch.command) {
-			if (ngx_write_channel(ngx_processes[i].channel[0],
-									  &ch, sizeof(ngx_channel_t))
-				== NGX_OK)
-			{
+            if(debug) fprintf(stdout,"[jvt]::ngx_signal_worker_processes(): ngx_write_channel!\n");
+			if (ngx_write_channel(ngx_processes[i].channel[0], &ch, sizeof(ngx_channel_t)) == NGX_OK) {
 				if (signo != SIGUSR1) { //NGX_REOPEN_SIGNAL
 					ngx_processes[i].exiting = 1;
 				}
@@ -393,12 +393,11 @@ void  ngx_signal_worker_processes(int signo)
 			}
 		}
 	
-		if(debug) fprintf(stdout,
-						   "kill (%d, %d)\n", ngx_processes[i].pid, signo);
+		if(debug) fprintf(stdout, "kill (%d, %d)\n", ngx_processes[i].pid, signo);
 	
 		if (kill(ngx_processes[i].pid, signo) == -1) {
 			err = errno;
-			fprintf(stderr,"kill(%d, %d) failed\n", ngx_processes[i].pid, signo);
+			fprintf(stderr, "kill(%d, %d) failed\n", ngx_processes[i].pid, signo);
 	
 			if (err == ESRCH) {
 				ngx_processes[i].exited = 1;
@@ -546,7 +545,7 @@ static void ngx_master_process_exit()
     //ngx_delete_pidfile(cycle);
     if(unlink(PID_FILE)) fprintf(stderr,"unlink %s failed, reason: %s\n", PID_FILE, strerror(errno));
 
-    fprintf(stdout, "exit\n");
+    fprintf(stdout, "master: exit\n");
 
    //释放资源
    
@@ -605,7 +604,7 @@ static void try_ngx_channel_handler(int fd)
             return;
         }
 
-        if(debug) fprintf(stdout,"channel command: %lu\n", ch.command);
+        if(debug) fprintf(stdout, "[jvt]::try_ngx_channel_handler(): channel command=%lu\n", ch.command);
 
         switch (ch.command) {
         case NGX_CMD_QUIT:

@@ -90,7 +90,6 @@ ngx_signal_t  signals[] = {
     { 0, NULL, "", NULL }
 };
 
-
 ngx_pid_t ngx_spawn_process(ngx_spawn_proc_pt proc, void *data, char *name, ngx_int_t respawn)
 {
     u_long     on;
@@ -309,7 +308,8 @@ static void ngx_signal_handler(int signo)
     switch (ngx_process) {
 
     case NGX_PROCESS_MASTER:
-    
+	    if(debug) printf("[jvt] master: ngx_process=%d.\n", (int)ngx_process);
+
         switch (signo) {
 
         case SIGQUIT:
@@ -375,6 +375,7 @@ static void ngx_signal_handler(int signo)
         break;
 
     case NGX_PROCESS_WORKER:
+	    if(debug) printf("[jvt] worker: ngx_process=%d.\n", (int)ngx_process);
     
         switch (signo) {
 
@@ -426,8 +427,7 @@ static void ngx_signal_handler(int signo)
 }
 
 
-static void
-ngx_process_get_status(void)
+static void ngx_process_get_status(void)
 {
     int              status;
     char            *process;
@@ -439,7 +439,7 @@ ngx_process_get_status(void)
     one = 0;
 
     for ( ;; ) {
-        pid = waitpid(-1, &status, WNOHANG);
+        pid = waitpid(-1, &status, WNOHANG);//暂时停止目前进程的执行，直到有信号来到或子进程结束
 
         if (pid == 0) {
             return;
