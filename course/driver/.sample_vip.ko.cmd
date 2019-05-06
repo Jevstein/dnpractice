@@ -1,0 +1,1 @@
+cmd_/home/wangbojing/share/snull/vip/sample_vip.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/wangbojing/share/snull/vip/sample_vip.ko /home/wangbojing/share/snull/vip/sample_vip.o /home/wangbojing/share/snull/vip/sample_vip.mod.o
