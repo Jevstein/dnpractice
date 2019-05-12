@@ -1,8 +1,3 @@
-
-
-
-
-
 #include <linux/module.h>
 #include <linux/netdevice.h>
 #include <linux/etherdevice.h>
@@ -236,7 +231,6 @@ static int nic_header_create (struct sk_buff *skb, struct net_device *dev,
 	return dev->hard_header_len;
 }
 
-
 static const struct header_ops nic_header_ops = {
 	.create = nic_header_create,
 };
@@ -318,7 +312,6 @@ alloc_2nd_failed:
 	return ret;
 }
 
-
 static void __exit nic_exit(void) {
 
 	int i = 0;
@@ -329,11 +322,5 @@ static void __exit nic_exit(void) {
 	}
 }
 
-
-
 module_init(nic_init);
 module_exit(nic_exit);
-
-
-
-

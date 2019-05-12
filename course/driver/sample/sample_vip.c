@@ -79,9 +79,7 @@ int	nic_change_mtu(struct net_device *dev, int new_mtu) {
 int	nic_set_mac_address(struct net_device *dev, void *addr) {
 
 	return 0;
-	
 }
-
 
 
 static const struct net_device_ops nic_netdev_ops = {
@@ -165,13 +163,11 @@ alloc_2nd_failed:
 	free_netdev(nic_dev[0]);
 
 	return ret;
-
 }
 
 
 //rmmod
 static void __exit nic_exit(void) {
-
 	int i = 0;
 	pr_info("%s(#%d): remove module\n", __func__, __LINE__);
 
@@ -179,11 +175,8 @@ static void __exit nic_exit(void) {
 		unregister_netdev(nic_dev[i]);
 		free_netdev(nic_dev[i]);
 	}
-	
 }
 
 
 module_init(nic_init);
 module_exit(nic_exit);
-
-
