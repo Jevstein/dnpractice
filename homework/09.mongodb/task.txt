@@ -1,0 +1,5 @@
+作业一：对比MongoDB与MySQL的读写qps。
+
+作业二：把King老师的MongoDB教程存储在MongoDB里面。
+
+作业三：搭建MongoDB的集群。
