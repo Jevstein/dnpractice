@@ -1,4 +1,5 @@
 作业一：对比MongoDB与MySQL的读写qps。
+       如：对mysql进行100w的读写操作->统计时间
 
 作业二：把King老师的MongoDB教程存储在MongoDB里面。
 
