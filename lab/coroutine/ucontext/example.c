@@ -5,21 +5,21 @@
  *  Created by Jevstein on 2018/11/11 14:44.
  *  Copyright @ 2018year Jevstein. All rights reserved.
  *
- *  ²Î¿¼: https://blog.csdn.net/qq910894904/article/details/41911175
+ *  å‚è€ƒ: https://blog.csdn.net/qq910894904/article/details/41911175
  *
- *  ºËĞÄº¯Êı:
- *    //³õÊ¼»¯ucp½á¹¹Ìå£¬½«µ±Ç°µÄÉÏÏÂÎÄ±£´æµ½ucpÖĞ
+ *  æ ¸å¿ƒå‡½æ•°:
+ *    //åˆå§‹åŒ–ucpç»“æ„ä½“ï¼Œå°†å½“å‰çš„ä¸Šä¸‹æ–‡ä¿å­˜åˆ°ucpä¸­
  *    int getcontext(ucontext_t *ucp);
  *
- *    //ÉèÖÃµ±Ç°µÄÉÏÏÂÎÄÎªucp£¬setcontextµÄÉÏÏÂÎÄucpÓ¦¸ÃÍ¨¹ıgetcontext»òÕßmakecontext
- *      È¡µÃ£¬Èç¹ûµ÷ÓÃ³É¹¦Ôò²»·µ»Ø
+ *    //è®¾ç½®å½“å‰çš„ä¸Šä¸‹æ–‡ä¸ºucpï¼Œsetcontextçš„ä¸Šä¸‹æ–‡ucpåº”è¯¥é€šè¿‡getcontextæˆ–è€…makecontext
+ *      å–å¾—ï¼Œå¦‚æœè°ƒç”¨æˆåŠŸåˆ™ä¸è¿”å›
  *    int setcontext(const ucontext_t *ucp);
  *
- *    //ĞŞ¸ÄÍ¨¹ıgetcontextÈ¡µÃµÄÉÏÏÂÎÄucp(ÕâÒâÎ¶×Åµ÷ÓÃmakecontextÇ°±ØĞëÏÈµ÷ÓÃgetcontext),
- *      È»ºó¸ø¸ÃÉÏÏÂÎÄÖ¸¶¨Ò»¸öÕ»¿Õ¼äucp->stack£¬ÉèÖÃºó¼ÌµÄÉÏÏÂÎÄucp->uc_link
+ *    //ä¿®æ”¹é€šè¿‡getcontextå–å¾—çš„ä¸Šä¸‹æ–‡ucp(è¿™æ„å‘³ç€è°ƒç”¨makecontextå‰å¿…é¡»å…ˆè°ƒç”¨getcontext),
+ *      ç„¶åç»™è¯¥ä¸Šä¸‹æ–‡æŒ‡å®šä¸€ä¸ªæ ˆç©ºé—´ucp->stackï¼Œè®¾ç½®åç»§çš„ä¸Šä¸‹æ–‡ucp->uc_link
  *    void makecontext(ucontext_t *ucp, void (*func)(), int argc, ...);
  *
- *    //±£´æµ±Ç°ÉÏÏÂÎÄµ½oucp½á¹¹ÌåÖĞ£¬È»ºó¼¤»îupcÉÏÏÂÎÄ¡£
+ *    //ä¿å­˜å½“å‰ä¸Šä¸‹æ–‡åˆ°oucpç»“æ„ä½“ä¸­ï¼Œç„¶åæ¿€æ´»upcä¸Šä¸‹æ–‡ã€‚
  *    int swapcontext(ucontext_t *oucp, ucontext_t *ucp);
  */
 #include <stdio.h>
@@ -30,14 +30,14 @@ void context_func1()
 {
 	ucontext_t context;
 
-	puts("flag1");//Ö´ĞĞ1´Î
+	puts("flag1");//æ‰§è¡Œ1æ¬¡
 
 	getcontext(&context);
-	puts("flag2");//Ñ­»·Ö´ĞĞ
+	puts("flag2");//å¾ªç¯æ‰§è¡Œ
 	sleep(1);
 	setcontext(&context);
 
-	puts("flag3");//ÓÀ²»Ö´ĞĞ
+	puts("flag3");//æ°¸ä¸æ‰§è¡Œ
 }
 
 void child_func(void * arg)
@@ -54,20 +54,20 @@ void context_func2()
 	ucontext_t child, main;
 
 	puts("flag1");
-	getcontext(&child); //»ñÈ¡µ±Ç°ÉÏÏÂÎÄ
-	child.uc_stack.ss_sp = stack;//Ö¸¶¨Õ»¿Õ¼ä
-	child.uc_stack.ss_size = sizeof(stack);//Ö¸¶¨Õ»¿Õ¼ä´óĞ¡
+	getcontext(&child); //è·å–å½“å‰ä¸Šä¸‹æ–‡
+	child.uc_stack.ss_sp = stack;//æŒ‡å®šæ ˆç©ºé—´
+	child.uc_stack.ss_size = sizeof(stack);//æŒ‡å®šæ ˆç©ºé—´å¤§å°
 	child.uc_stack.ss_flags = 0;
-	child.uc_link = &main;//ÉèÖÃºó¼ÌÉÏÏÂÎÄ
-	//child.uc_link = NULL;//ÎŞºó¼ÌÉÏÏÂÎÄ£¬½«Êä³ö"flag_main"
+	child.uc_link = &main;//è®¾ç½®åç»§ä¸Šä¸‹æ–‡
+	//child.uc_link = NULL;//æ— åç»§ä¸Šä¸‹æ–‡ï¼Œå°†è¾“å‡º"flag_main"
 
 	puts("flag2");
-	makecontext(&child, (void(*)(void))child_func, 0);//ĞŞ¸ÄÉÏÏÂÎÄÖ¸Ïòchild_funcº¯Êı
+	makecontext(&child, (void(*)(void))child_func, 0);//ä¿®æ”¹ä¸Šä¸‹æ–‡æŒ‡å‘child_funcå‡½æ•°
 
 	puts("flag3");
-	swapcontext(&main, &child);//ÇĞ»»µ½childÉÏÏÂÎÄ£¬±£´æµ±Ç°ÉÏÏÂÎÄµ½main
+	swapcontext(&main, &child);//åˆ‡æ¢åˆ°childä¸Šä¸‹æ–‡ï¼Œä¿å­˜å½“å‰ä¸Šä¸‹æ–‡åˆ°main
 
-	puts("flag_main");//Èç¹ûÉèÖÃÁËºó¼ÌÉÏÏÂÎÄ£¬func1º¯ÊıÖ¸ÏòÍêºó»á·µ»Ø´Ë´¦
+	puts("flag_main");//å¦‚æœè®¾ç½®äº†åç»§ä¸Šä¸‹æ–‡ï¼Œfunc1å‡½æ•°æŒ‡å‘å®Œåä¼šè¿”å›æ­¤å¤„
 }
 
 int main(int argc, const char *argv[]){
