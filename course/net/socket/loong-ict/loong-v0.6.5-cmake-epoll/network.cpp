@@ -70,12 +70,12 @@ int network::in(char *const buffer, const size_t size) {
 
 int network::block() {
     int mode = fcntl(this->_socket, F_GETFL, 0);
-    return mode == -1 ? -1 : fcntl(this->_socket, F_SETFL, mode | O_NONBLOCK);
+    return mode == -1 ? -1 : fcntl(this->_socket, F_SETFL, mode & (~O_NONBLOCK));
 }
 
 int network::non_block() {
     int mode = fcntl(this->_socket, F_GETFL, 0);
-    return mode == -1 ? -1 : fcntl(this->_socket, F_SETFL, mode & (~O_NONBLOCK));
+    return mode == -1 ? -1 : fcntl(this->_socket, F_SETFL, mode | O_NONBLOCK);
 }
 
 int network::close() {
