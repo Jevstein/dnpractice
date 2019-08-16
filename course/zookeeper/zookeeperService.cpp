@@ -44,7 +44,7 @@ BOOL CZooKeeperService::zks_init(const std::string& ip, u16 port)
 		return FALSE;
 	}
 
-	/* ÔÚZK·şÎñÆ÷ÉÏ´´½¨½Úµã·şÎñÆ÷½Úµã */
+	/* åœ¨ZKæœåŠ¡å™¨ä¸Šåˆ›å»ºèŠ‚ç‚¹æœåŠ¡å™¨èŠ‚ç‚¹ */
 	std::stringstream path;
 	path << config_->get_zknssvr_path() << "/" << config_->get_zknssvr_ip() << ":" << config_->get_zknssvr_port();
 	char res_path[128] = {0};
@@ -118,7 +118,7 @@ void CZooKeeperService::watcher(zhandle_t *zh, int type, int state, const char *
 
 void CZooKeeperService::zks_close()
 {
-    /* ÔÚZK·şÎñÆ÷ÉÏÉ¾³ı½Úµã·şÎñÆ÷½Úµã */
+    /* åœ¨ZKæœåŠ¡å™¨ä¸Šåˆ é™¤èŠ‚ç‚¹æœåŠ¡å™¨èŠ‚ç‚¹ */
 	std::stringstream path;
 	path << config_->get_zknssvr_path() << "/" << config_->get_zknssvr_ip() << ":" << config_->get_zknssvr_port();
 
@@ -215,11 +215,11 @@ BOOL CZooKeeperService::zks_get_bcs(std::string& ip, u16& port)
 		LOG_WARN("CZooKeeperService : no valid bcs nodes exist on zookeeper service!");
 		return FALSE;
 	}
-	/* ²úÉúÒ»¸ö0 ~ bcsnodes.countµÄËæ»úÊı */
+	/* äº§ç”Ÿä¸€ä¸ª0 ~ bcsnodes.countçš„éšæœºæ•° */
 	srand(time(NULL));
     i32 index = rand()%valid_bcs_nodes.count;
 
-	/* ËùÓĞµÄ½ÚµãÃû³ÆĞÅÏ¢ÊÇip:port¸ñÊ½´æ´¢µÄ */
+	/* æ‰€æœ‰çš„èŠ‚ç‚¹åç§°ä¿¡æ¯æ˜¯ip:portæ ¼å¼å­˜å‚¨çš„ */
     char strip[32] = {0};
 	char strport[32] = {0};
 	char* colon = strchr(valid_bcs_nodes.data[index], ':');
