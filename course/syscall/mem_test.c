@@ -3,31 +3,34 @@
 #include <errno.h>
 #include <string.h>
 
-#define BLOCK_SIZE  512      //Ã¿´Î·ÖÅäÄÚ´æ¿é´óĞ¡
+#define BLOCK_SIZE  512//æ¯æ¬¡åˆ†é…å†…å­˜å—å¤§å°
 
-#define TOTAL_SIZE (  1024 * 1024 ) //·ÖÅäµÄ×ÜÄÚ´æµÄ´óĞ¡
+#define TOTAL_SIZE ( 1024 * 1024 )//åˆ†é…çš„æ€»å†…å­˜çš„å¤§å°
 
 #define NUM   (TOTAL_SIZE/BLOCK_SIZE)
 
 int main(int argc, char **argv)
 {
-        char *ptr[NUM];
-        int i=0, k=0;
+    char *ptr[NUM];
+    int i=0, k=0;
 
-        for(k = 0; k< 1024 ; k++){
-            for(i = 0; i < NUM ; i++)
-            {
-                ptr[i] = malloc(BLOCK_SIZE);
-                if(!ptr[i]) fprintf(stderr,"malloc failed. reason:%s\n",strerror(errno));
-                else{
-                     ptr[i][0] = '\0';
-                }
-            }
-
-            for(i = 0; i < NUM ; i++){
-                if(ptr[i]) free(ptr[i]);
-            }
+    for(k = 0; k < 1024 ; k++)
+	{
+        for(i = 0; i < NUM ; i++)
+        {
+            ptr[i] = malloc(BLOCK_SIZE);
+            if(!ptr[i])
+				fprintf(stderr,"malloc failed. reason:%s\n",strerror(errno));
+            else
+				ptr[i][0] = '\0';
         }
 
-        return 0;
+        for(i = 0; i < NUM ; i++)
+		{
+            if(ptr[i])
+				free(ptr[i]);
+        }
+    }
+
+    return 0;
 }
