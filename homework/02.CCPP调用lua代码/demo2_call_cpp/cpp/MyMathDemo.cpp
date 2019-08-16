@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 // $ g++ -Wall -O2 MyMathDemo.cpp -lmymath -ldl -o demo
 //
 // $ g++ -o demo MyMathDemo.cpp -L. -lmymath -ldl -Wl, -rpath=.
-// $ g++ -Wall -O2 MyMathDemo.cpp -o demo -L. -lmymath -ldl //-L.表示.so在当前目录
+// $ g++ -Wall -O2 MyMathDemo.cpp -o demo -L. -lmymath -ldl //-L.表示.a在当前目录
 //[注意]:
 //在项目开发过层中尽量让lib是垂直关系，避免循环依赖；越是底层的库，越是往后面写！
 //如:

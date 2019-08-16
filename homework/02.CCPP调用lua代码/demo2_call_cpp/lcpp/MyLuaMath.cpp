@@ -19,7 +19,7 @@ extern "C"
 #define MY_EXPORTS
 
 /************************************************************************/
-/* 1.º¯ÊıÊµÏÖ                                                           */
+/* 1.å‡½æ•°å®ç°                                                           */
 /************************************************************************/
 int add_func(lua_State* L)
 {
@@ -31,7 +31,7 @@ int add_func(lua_State* L)
 	int ret = a + b;
 
 	lua_pushnumber(L, ret);
-	return 1;//1¸ö·µ»ØÖµ
+	return 1;//1ä¸ªè¿”å›å€¼
 }
 
 int sub_func(lua_State* L)
@@ -65,7 +65,7 @@ int div_func(lua_State* L)
 }
 
 /************************************************************************/
-/* 2.º¯ÊıÊı×é                                                           */
+/* 2.å‡½æ•°æ•°ç»„                                                           */
 /************************************************************************/
 static const struct luaL_Reg funcs__[] =
 {
@@ -77,16 +77,16 @@ static const struct luaL_Reg funcs__[] =
 };
 
 /************************************************************************/
-/* 3.µ¼³ö½Ó¿Ú                                                           */
-/*   [×¢]º¯ÊıÃûluaopen_libmyluamathÖĞµÄ'libmyluamath'±ØĞëÎª¿âº¯ÊıÃû£¬Èç:*/
+/* 3.å¯¼å‡ºæ¥å£                                                           */
+/*   [æ³¨]å‡½æ•°åluaopen_libmyluamathä¸­çš„'libmyluamath'å¿…é¡»ä¸ºåº“å‡½æ•°åï¼Œå¦‚:*/
 /*       libmyluamath.so                                                */
 /************************************************************************/
 MY_REPORT_API int CALLMODE luaopen_libmyluamath(lua_State* L)
 {
-	//lua5.1Ö®Ç°°æ±¾Ê¹ÓÃÈçÏÂ:
-	//luaL_openlib(L, "MyMath", funcs__, 0); //»òluaL_register(L, "mymath", funcs__);
+	//lua5.1ä¹‹å‰ç‰ˆæœ¬ä½¿ç”¨å¦‚ä¸‹:
+	//luaL_openlib(L, "MyMath", funcs__, 0); //æˆ–luaL_register(L, "mymath", funcs__);
 
-	//lua5.2ÒÔÉÏ°æ±¾Ê¹ÓÃÈçÏÂ:
+	//lua5.2ä»¥ä¸Šç‰ˆæœ¬ä½¿ç”¨å¦‚ä¸‹:
 	lua_getglobal(L, "MyMath");
 	if (lua_isnil(L, -1))
 	{
@@ -99,6 +99,6 @@ MY_REPORT_API int CALLMODE luaopen_libmyluamath(lua_State* L)
 	return 0;
 }
 
-//±àÒë:
+//ç¼–è¯‘:
 // $ g++ -fPIC -shared -o libmyluamath.so *.cpp -llua -ldl -I /usr/include/lua5.2/
 // $ g++ -fPIC -shared -o libmyluamath.so *.cpp -llua -ldl
