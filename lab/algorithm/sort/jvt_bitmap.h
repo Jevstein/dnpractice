@@ -19,7 +19,7 @@
  *  就是排序结果
  *
  *  [位图应用]: 关注大量数据，内存不足
- *      1.给40亿个不重复的unsinged int的整数(没有排过序)，然后给出一个数，如果快速的判断这个数
+ *      1.给40亿个不重复的unsinged int的整数(没有排过序)，然后给出一个数，如何快速的判断这个数
  *  是否在那40亿个数中?
  *  分析：因为unsigned int数据的最大范围在40亿左右，40*10^8/(1024*1024*8) = 476.837M，因此
  *  可以申请512M的内存空间，每个bit位表示一个unsigned int。然后读入40亿个数，并设置相应的bit为1，
@@ -32,8 +32,8 @@
  *      1.假设有若干不重复的数据，数据的范围是[1-100]，则可申请一个int a[100/(4*8)+1] = int a[4];
  *      2.假设有数据95，那么应该将逻辑下标为95的二进制设置1，这个逻辑位置有两部分组成：字节位置（数组下标）
  *  和位位置。(其中: 假设位数组的类型为int, 则一个int包含的位数=8*4=32)
- *  (1).字节位置 = 数据/32; 位运算: data>>5   (右移5位)
- *  (2).位位置 = 数据%32;   位运算: data&0x1f（利用位运算求余数）
+ *  (1).字节位置 = 数据/32; 位运算: data>>5                    (右移5位)
+ *  (2).位的位置 = 数据%32; 位运算: data&0x1f == data&00011111（利用位运算求余数）
  */
 
 #ifndef _JVT_BITMAP_H_
@@ -41,7 +41,7 @@
 #include "../jvt_algorithm.h"
 
 #define BTM_SHIFT 5
-#define BTM_MASK 0x1f
+#define BTM_MASK 0x1f //二进制：0001 1111
 
 //位图排序
 void jvt_bitmap_sort(jvt_datas_t *datas);
@@ -56,12 +56,11 @@ void jvt_bitmap_sort(jvt_datas_t *datas)
     assert(bit_arr);
 
     int i, j;
-    for (i = 0; i < datas->size; i++)
-    {
+    for (i = 0; i < datas->size; i++) {
         _btm_set(bit_arr, datas->data[i]);
     }
 
-    for(i = 0, j = 0; i < datas->size; i++) {
+    for (i = 0, j = 0; i < datas->size; i++) {
         if (_btm_check(bit_arr, i)) {
             datas->data[j++] = i;
         }
@@ -72,12 +71,12 @@ void jvt_bitmap_sort(jvt_datas_t *datas)
 
 void _btm_set(int *bit_array, int data) 
 {
-    bit_array[data >> BTM_SHIFT] = bit_array[data >> BTM_SHIFT] | (1 << (data & BTM_MASK));
+    bit_array[data >> BTM_SHIFT] |= 1 << (data & BTM_MASK);
 }
 
 void _btm_clear(int *bit_array, int data)
 {
-    bit_array[data >> BTM_SHIFT] = bit_array[data >> BTM_SHIFT] & ~(1 << (data & BTM_MASK));
+    bit_array[data >> BTM_SHIFT] &= ~(1 << (data & BTM_MASK));
 }
 
 int _btm_check(int *bit_array, int data)
