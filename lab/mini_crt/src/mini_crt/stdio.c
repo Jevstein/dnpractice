@@ -113,7 +113,7 @@ static int _write(int fd, const void *buffer, unsigned size)
     return ret;
 }
 
-static int _open(cont char* filename, int flags, int mode)
+static int _open(const char* filename, int flags, int mode)
 {
     int fd = 0;
     asm("movl $5, %%eax \n\t"
@@ -152,7 +152,7 @@ static int _seek(int fd, int offset, int mode)
 FILE* fopen(const char *filename, const char *mode)
 {
     int fd = -1;
-    int falgs = 0;
+    int flags = 0;
     int access = 00700;
 
 //come from: /usr/include/bits/fcntl.h [octal]

@@ -10,6 +10,26 @@
  * 确定Min CRT的入口函数，它得至少负责三部分工作：1.准备好程序运行环境及完成CRT的初始化；2.调用main函数
  * 执行程序主题；3.清理程序运行后的各种资源。其次，运行库为所有程序提供的入口函数应该相同，在链接程序时要
  * 指定该入口函数名。Mini CRT的入口函数约定为：void mini_crt_entry(void)
+ * 
+ * [编译]：
+ * 1.linux编译：
+ *   $gcc -c -fno-builtin -nostdlib -fno-stack-protector *.c
+ *   $ar -rs minicrt.a *.o
+ * 
+ * 2.Windows编译：
+ *   $cl /c /DWIN32 /GS-  *.c
+ *   $lib *.obj /OUT:minicrt.lib
+ * 
+ * 3.编译解释：
+ *   1）-fno-builtin: 关闭GCC内置函数功能，默认情况下GCC会将strlen、strcmp等函数展开成它的内部实现
+ *   2）-nostdlib: 不使用任何来自Glibc、GCC的库文件和启动文件，它包含了-nostartfiles参数
+ *   3）-fno-stack-protector: 关闭堆栈保护功能。最近版本的GCC会在vfprintf的变长参数函数中插入堆栈
+ *      保护函数，若不关闭将报错：未定义__stack_chk_fail函数
+ * 
+ *   4）/DWIN32：定义WIN32宏，区分平台
+ *   5）/GS-：关闭堆栈保护功能，否则链接时会报错：发生“__security_cookie”和"__security_check_cokie“
+ *      符号未定义错误
+ * 
  */
  #include "mini_crt.h"
 
@@ -57,9 +77,10 @@ void mini_crt_entry(void)
     int argc;
     char **argv;
 
-    char *ebp_reg = 0;
+    int ebp_reg = 0; // char *ebp_reg = 0;
     //ebp_reg = %ebp
-    asm("movl %%ebp, %0 \n":"=r"(ebp_reg));
+    asm("movl %%ebp,%0 \n\t"
+        :"=r"(ebp_reg));
 
     argc = *(int *)(ebp_reg + 4);
     argv = (char **)(ebp_reg + 8);

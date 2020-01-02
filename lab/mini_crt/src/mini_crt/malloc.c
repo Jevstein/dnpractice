@@ -54,7 +54,7 @@ void free(void *ptr)
             header->next->prev = header->prev;
 
         header->prev->size += header->size;
-        header = heard->prev;
+        header = header->prev;
     }
 
     //merge next
@@ -71,7 +71,7 @@ void* malloc(unsigned size)
     if (size == 0)
         return NULL;
 
-    for (header = list_head__; header != NULL; header = header->next;) {
+    for (header = list_head__; header != NULL; header = header->next) {
         if (header->type == HEAP_BLOCK_USED)
             continue;
 
@@ -115,6 +115,8 @@ static int brk(void *end_data_segment)
         "int $0x80 \n\t"
         "movl %%eax, %0 \n\t"
         : "=r"(ret): "m"(end_data_segment));
+
+    return ret;
 }
 #endif
 

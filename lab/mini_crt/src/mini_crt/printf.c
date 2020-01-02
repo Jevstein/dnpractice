@@ -1,5 +1,5 @@
 /*
- *  format.c 
+ *  printf.c 
  *
  *  Created by Jevstein on 2020/01/01 21:34.
  *  Copyright @ 2020year Jevstein. All rights reserved.
@@ -70,12 +70,12 @@ int vfprintf(FILE *stream, const char *format, va_list arglist)
         } break;
         case 's': {
             if (translating) {//%s
-                const char str = va_arg(arglist, const char*);
+                const char *str = va_arg(arglist, const char*);
                 translating = 0;
                 if (fputs(str, stream) < 0)
                     return EOF;
 
-                ret += strlen(buf);
+                ret += strlen(str);
             }
             else if (fputc('s', stream) < 0)
                 return EOF;
@@ -87,7 +87,7 @@ int vfprintf(FILE *stream, const char *format, va_list arglist)
                 translating = 0;
 
             if (fputc(*p, stream) < 0)
-                return EOF:
+                return EOF;
             
             ++ret;
         } break;
