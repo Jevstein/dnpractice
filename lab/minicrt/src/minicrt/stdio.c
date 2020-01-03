@@ -13,7 +13,7 @@
  * 通过系统调用，内嵌汇编实现：_open、_read、_write、_close和_seek
  *      5.仅实现“r”、“w”和“+”几个模式和它们的组合，不区分文本模式和二进制模式，不支持“a”的追加模式
  */
-#include "mini_crt.h"
+#include "minicrt.h"
 
 int mini_crt_io_init()
 {

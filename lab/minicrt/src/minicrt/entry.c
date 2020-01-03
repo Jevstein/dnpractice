@@ -31,7 +31,7 @@
  *      符号未定义错误
  * 
  */
- #include "mini_crt.h"
+ #include "minicrt.h"
 
 #ifdef WIN32
 #include <windows.h>

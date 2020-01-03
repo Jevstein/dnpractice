@@ -1,4 +1,4 @@
-#include "mini_crt/mini_crt.h"
+#include "minicrt/minicrt.h"
 
 int main(int argc, char *argv[])
 {

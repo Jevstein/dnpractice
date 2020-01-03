@@ -9,7 +9,7 @@
  *      提供变长参数函数printf。此处实现仅支持%d、%s，且不支持个数控制（如%08d）。注意printf其实时fprintf
  * 的特殊形式，即目标文件为标准输出的fprintf
  */
-#include "mini_crt.h"
+#include "minicrt.h"
 
 int fputc(int c, FILE *stream)
 {

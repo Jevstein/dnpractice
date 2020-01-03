@@ -14,14 +14,14 @@
  * [编译]：
  * 1.linux编译：
  *     $gcc -c -ggdb -fno-builtin -nostdlib -fno-stack-protector *.c
- *     $ld -static -e mini_crt_entry mini_crt/entry.o example1.o mini_crt/minicrt.a -o example1
+ *     $ld -static -e mini_crt_entry minicrt/entry.o example1.o minicrt/minicrt.a -o example1
  * 
  * 2.windows编译：
  *     $cl /c /DWIN32 *.c
- *     $link example1.obj mini_crt/minicrt.lib kernel32.lib /NODEFAULTLIB /entry:mini_crt_entry
+ *     $link example1.obj minicrt/minicrt.lib kernel32.lib /NODEFAULTLIB /entry:mini_crt_entry
  * 
  */
-#include "mini_crt/mini_crt.h"
+#include "minicrt/minicrt.h"
 
 int main(int argc, char *argv[])
 {

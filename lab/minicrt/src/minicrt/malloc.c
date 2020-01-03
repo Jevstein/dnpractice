@@ -20,7 +20,7 @@
  * [改进]：
  *      采用“多级位图算法”分配堆空间
  */
-#include "mini_crt.h"
+#include "minicrt.h"
 
 typedef struct _heap_header
 {

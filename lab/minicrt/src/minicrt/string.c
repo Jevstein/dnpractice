@@ -9,7 +9,7 @@
  *      提供字符串长度计算、字符串比较、整数与字符串转换。该部分不涉及任何与内核交互的操作，即为纯粹的用户态
  * 计算
  */
-#include "mini_crt.h"
+#include "minicrt.h"
 
 char* itoa(int n, char *str, int radix)
 {
