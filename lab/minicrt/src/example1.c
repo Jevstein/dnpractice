@@ -20,6 +20,8 @@
  *     $cl /c /DWIN32 *.c
  *     $link example1.obj minicrt/minicrt.lib kernel32.lib /NODEFAULTLIB /entry:mini_crt_entry
  * 
+ * 3.编译解释：
+ *     1) -e mini_crt_entry: 用于指定入口函数
  */
 #include "minicrt/minicrt.h"
 

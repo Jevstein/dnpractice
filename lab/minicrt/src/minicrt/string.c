@@ -51,6 +51,31 @@ char* itoa(int n, char *str, int radix)
     return str;
 }
 
+void *memcpy(void *dst, const void *src, size_t n)
+{
+    char *p1 = (char *)dst;
+    char *p2 = (char *)src;
+
+    if (p1 == NULL || p2 == NULL || n == 0)
+        return NULL;
+
+    if (p1 < p2 + n && dst > src) {//同一块内存：向前拷贝
+		p1 += n;
+		p2 += n;
+ 
+		while (n-- > 0) {
+			*p1-- = *p2--;
+		}
+	}
+	else {//同一块内存：向后拷贝
+		while (n-- > 0) {
+			*p1++ = *p2++;
+		}
+	}
+    
+    return dst;
+}
+
 int strcmp(const char *src, const char *dest)
 {
     int ret = 0;

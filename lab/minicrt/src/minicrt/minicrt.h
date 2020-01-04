@@ -5,11 +5,15 @@
 extern "C" {
 #endif
 
-// malloc
 #ifndef NULL
 #define NULL (0)
 #endif
 
+#ifndef size_t
+typedef unsigned size_t;
+#endif
+
+// malloc
 void free(void *ptr);
 void* malloc(unsigned size);
 static int brk(void *end_data_segment);
@@ -17,6 +21,7 @@ int mini_crt_heap_init();
 
 // string
 char* itoa(int n, char *str, int radix);
+void *memcpy(void *dst, const void *src, size_t n);
 int strcmp(const char *src, const char *dest);
 char* strcpy(char *dest, const char *src);
 char* strcpy_s(char *dest, const char *src, const unsigned max_size);

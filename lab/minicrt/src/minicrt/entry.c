@@ -87,7 +87,7 @@ void mini_crt_entry(void)
 #endif
 
     if (!mini_crt_heap_init())
-        crt_fatal_error("failed to initialize head!");
+        crt_fatal_error("failed to initialize heap!");
 
     if (!mini_crt_io_init())
         crt_fatal_error("failed to initialize IO!");
