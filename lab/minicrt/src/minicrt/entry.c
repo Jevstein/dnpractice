@@ -92,13 +92,15 @@ void mini_crt_entry(void)
     if (!mini_crt_io_init())
         crt_fatal_error("failed to initialize IO!");
 
+    do_global_ctors();
+
     ret = main(argc, argv);
     exit(ret);
 }
 
 void exit(int exit_code)
 {
-    //mini_crt_call_exit_routine();
+    mini_crt_call_exit_routine();
 #ifdef WIN32
     ExitProcess(exit_code);
 #else
@@ -108,3 +110,12 @@ void exit(int exit_code)
         "hlt \n\t"::"m"(exit_code));
 #endif
 }
+
+#ifdef MINI_CRT
+void do_global_ctors()
+{
+    //该函数在minicrt++中实现，目的是为了解决c++的全局构造和释放，所以，仅仅为了编译
+    //的通过，在minicrt中进行空实现即可；在minicrt++中此处无需编译，因为ctors.cpp
+    //中已对此做了实现。
+}
+#endif

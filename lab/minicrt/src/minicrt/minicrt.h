@@ -10,7 +10,7 @@ extern "C" {
 #endif
 
 #ifndef size_t
-typedef unsigned size_t;
+typedef unsigned int size_t;
 #endif
 
 // malloc
@@ -60,7 +60,9 @@ void do_global_ctors();
 void mini_crt_call_exit_routine();
 
 // atexit
+typedef void (*cxa_funt_t)(void *);//兼容gcc
 typedef void (*atexit_func_t)(void);
+int __cax_atexit(cxa_funt_t func, void* arg, void*);//兼容gcc
 int atexit(atexit_func_t func);
 
 #ifdef __cplusplus

@@ -14,14 +14,21 @@
  * [编译]：
  * 1.linux编译：
  *     $gcc -c -ggdb -fno-builtin -nostdlib -fno-stack-protector *.c
- *     $ld -static -e mini_crt_entry minicrt/entry.o example1.o minicrt/minicrt.a -o example1
+ *     $ld -static -e mini_crt_entry minicrt/entry.o example.o minicrt/minicrt.a -o example
  * 
  * 2.windows编译：
  *     $cl /c /DWIN32 *.c
- *     $link example1.obj minicrt/minicrt.lib kernel32.lib /NODEFAULTLIB /entry:mini_crt_entry
+ *     $link example.obj minicrt/minicrt.lib kernel32.lib /NODEFAULTLIB /entry:mini_crt_entry
  * 
  * 3.编译解释：
  *     1) -e mini_crt_entry: 用于指定入口函数
+ * 
+ * 4.注意：
+ *   1）mac下编译发现错误：“ld: warning: No version-min specified on command line”，
+ * 运行报“Segmentation fault: 11”，
+ *     安装nasm: $brew install nasm
+ *   2) 入口函数mini_crt_entry被编译器进行了修饰，所以编译修改为：$ld -static -e _mini_crt_entry ***
+ * 
  */
 #include "minicrt/minicrt.h"
 

@@ -9,17 +9,17 @@
 
 ### 1.CONFIG
 DEBUG		 = YES
-APP_NAME     = example1
+APP_NAME     = example
 APP_OUT      = $(APP_NAME)
 APP_OUTS     = $(APP_NAME)
 ROOT_DIR	 = ../../..
 OUT_DIR      = $(ROOT_DIR)/bin
-OBJ_DIR		 = $(ROOT_DIR)/bin/obj/win32/minicrt/example1
+OBJ_DIR		 = $(ROOT_DIR)/bin/obj/win32/minicrt/example
 INCS_DIR	 = $(ROOT_DIR)/include
 LIBS_DIR	 = $(ROOT_DIR)/lib
 LIBS		 = $(LIBS_DIR)/minicrt.lib kernel32.lib
 VPATH		 = $(ROOT_DIR)/src
-SRCS		 = $(wildcard $(ROOT_DIR)/src/example1.c)
+SRCS		 = $(wildcard $(ROOT_DIR)/src/example.c)
 
 EXTRA_OBJS   = $(ROOT_DIR)/bin/obj/win32/minicrt/lib/entry.o
 

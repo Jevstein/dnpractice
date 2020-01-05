@@ -9,17 +9,17 @@
 
 ### 1.CONFIG
 DEBUG		 = YES
-APP_NAME     = example1
+APP_NAME     = example
 APP_OUT      = $(APP_NAME)
 APP_OUTS     = $(APP_NAME)
 ROOT_DIR	 = ../../..
 OUT_DIR      = $(ROOT_DIR)/bin
-OBJ_DIR		 = $(ROOT_DIR)/bin/obj/linux/minicrt/example1
+OBJ_DIR		 = $(ROOT_DIR)/bin/obj/linux/minicrt/example
 INCS_DIR	 = $(ROOT_DIR)/include
 LIBS_DIR	 = $(ROOT_DIR)/lib
 LIBS		 = $(LIBS_DIR)/libminicrt.a
 VPATH		 = $(ROOT_DIR)/src
-SRCS		 = $(wildcard $(ROOT_DIR)/src/example1.c)
+SRCS		 = $(wildcard $(ROOT_DIR)/src/example.c)
 
 EXTRA_OBJS   = $(ROOT_DIR)/bin/obj/linux/minicrt/lib/entry.o
 
@@ -42,7 +42,7 @@ else
 endif
 
 ARFLAGS		 := -rs
-CFLAGS		 := $(DEBUG_FLAGS) -ggdb -fno-builtin -nostdlib -fno-stack-protector
+CFLAGS		 := $(DEBUG_FLAGS) -ggdb -fno-builtin -nostdlib -fno-stack-protector -DMINI_CRT
 CFLAGS		 += $(EXTRA_CFLAGS) -I$(INCS_DIR)
 # LDFALGS		 := -static -e mini_crt_entry
 LDFALGS		 := -static -e _mini_crt_entry

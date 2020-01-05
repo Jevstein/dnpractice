@@ -40,7 +40,7 @@ else
 endif
 
 ARFLAGS		 := -rs
-CFLAGS		 := $(DEBUG_FLAGS) -fno-builtin -nostdlib -fno-stack-protector
+CFLAGS		 := $(DEBUG_FLAGS) -fno-builtin -nostdlib -fno-stack-protector -DMINI_CRT
 CFLAGS		 += $(EXTRA_CFLAGS) -I$(INCS_DIR)
 # LDFALGS		 := -lm -ldl
 # LDFALGS		 += $(EXTRA_LFLAGS)
