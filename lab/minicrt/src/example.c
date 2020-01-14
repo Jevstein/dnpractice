@@ -1,5 +1,5 @@
 /*
- *  entry.c 
+ *  example.c 
  *
  *  Created by Jevstein on 2020/01/01 22:20.
  *  Copyright @ 2020year Jevstein. All rights reserved.
