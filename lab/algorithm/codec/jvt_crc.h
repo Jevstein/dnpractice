@@ -16,19 +16,23 @@
 #ifndef _JVT_CRC_H_
 #define _JVT_CRC_H_
 
-//CRC-CCITT (XModem)
-//G(x) = x^16 + x^12 + x^5 + x^0 = 0001 0001 0000 0010 0001 = 0x11021
-#define GX 0x11021 
+//CRC-CCITT (XModem), e.g:
+//G(x) = X^16 + X^12 + X^5 + X^0
+//     = 1*X^16 + 0*X^15 + ... + 0*^X13 + 1*X12 + ... + 1*X^5 + ... + X^0
+//     = 0001 0001 0000 0010 0001
+//     = 0x11021
+#define GX 0x11021
+typedef unsigned int UINT32;
 
-int jvt_crc_code_16(const int data, int *crc);
-int jvt_crc_decode_16(int data);
+UINT32 jvt_crc_code_16(const UINT32 data, UINT32 *crc);
+UINT32 jvt_crc_decode_16(const UINT32 data);
 
-int jvt_crc_code_16(const int data, int *crc)
+UINT32 jvt_crc_code_16(const UINT32 data, UINT32 *crc)
 {
-    int temp = 0;
-    int ax = 0;
-    int bx = 0;
-    int cx = 15;
+    UINT32 temp = 0;
+    UINT32 ax = 0;
+    UINT32 bx = 0;
+    UINT32 cx = 15;
 
     temp = data;        //eg: 0xAB12 = 0000 0000 0000 0000 1010 1011 0001 0010
 
@@ -57,12 +61,12 @@ int jvt_crc_code_16(const int data, int *crc)
     return (data << 16) + (*crc);
 }
 
-int jvt_crc_decode_16(const int data_crc)
+UINT32 jvt_crc_decode_16(const UINT32 data_crc)
 {
-    int data = 0;
-    int ax = 0;
-    int bx = 0;
-    int cx = 0;
+    UINT32 data = 0;
+    UINT32 ax = 0;
+    UINT32 bx = 0;
+    UINT32 cx = 0;
 
     data = data_crc;//data_crc为信息内容
     data <<= 16;
@@ -77,7 +81,7 @@ int jvt_crc_decode_16(const int data_crc)
         bx = data >> 31;
         ax += bx;
         data <<= 1;
-    }   
+    }
     if (((ax >> 16) & 0x1) == 0x1)
         ax ^= GX;
 

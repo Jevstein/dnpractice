@@ -16,10 +16,11 @@
 
 void crc_debug()
 {
-    int data = 0xAB12;
-    int crc = 0;
-    int data_crc = 0;
-    int crc_ret = 0;
+    UINT32 data = 0xAB12;
+    UINT32 crc = 0;
+    UINT32 data_crc = 0;
+    UINT32 crc_ret = 0;
+    const UINT32 N = 16;
 
     //1.发送端
     printf("--------- 1.对将发送的数据进行CRC编码 ---------\n");
@@ -31,13 +32,16 @@ void crc_debug()
 
     //2.接收端
     printf("\n--------- 2.对接收到到数据进行CRC校验 ---------\n");
-    crc_ret = jvt_crc_decode_16(data_crc);
-    printf("原始信息:%x\n", data_crc);
+    data = data_crc >> N;
+    printf("带CRC的原始信息:%x，实际原始信息: %x\n", data_crc, data);
+    crc_ret = jvt_crc_decode_16(data);
+    // printf("CRC校验码:%x\n", crc_ret);
     printf("多项式信息:%x\n", GX);
     printf("最后模2除结果:%x\n", crc_ret);
 
-    printf((data_crc ^ crc_ret) == 0 ? "\n 传输成功！\n" :
-            "\n 传输错误！\n" );
+    data_crc <<= N;
+    data_crc >>= N;
+    printf((data_crc ^ crc_ret) == 0 ? "\n传输成功！\n" : "\n传输错误！\n" );
 }
 
 
